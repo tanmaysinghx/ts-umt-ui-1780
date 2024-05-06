@@ -7,6 +7,7 @@ import { MaintenancePageComponent } from './shared/maintenance-page/maintenance-
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ServerErrorPageComponent } from './shared/server-error-page/server-error-page.component';
 import { UserProfileComponent } from './features/user-section/user-profile/user-profile.component';
+import { UserChatsComponent } from './features/communication/user-chats/user-chats.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'user-profile', pathMatch: 'full' },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'page-not-found', component: PageNotFoundComponent },
     { path: 'server-error-page', component: ServerErrorPageComponent },
     { path: 'user-profile', component: UserProfileComponent },
+    { path: 'user-chats', component: UserChatsComponent },
 ];
 
 

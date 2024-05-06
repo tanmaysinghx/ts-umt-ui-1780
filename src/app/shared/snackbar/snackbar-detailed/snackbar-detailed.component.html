@@ -1,5 +1,7 @@
 <!--Snackbar detailed Component-->
-<div id="alert-additional-content-1"
+
+<!--Info alert-->
+<div id="alert-additional-content-1" *ngIf="infoFlag"
   class="p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800 alert-1"
   role="alert">
   <div class="flex items-center">
@@ -33,8 +35,8 @@
   </div>
 </div>
 
-<!--
-<div id="alert-additional-content-2"
+<!--Danger alert-->
+<div id="alert-additional-content-2" *ngIf="dangerFlag"
   class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
   role="alert">
   <div class="flex items-center">
@@ -67,7 +69,9 @@
     </button>
   </div>
 </div>
-<div id="alert-additional-content-3"
+
+<!--Success alert-->
+<div id="alert-additional-content-3" *ngIf="successFlag"
   class="p-4 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
   role="alert">
   <div class="flex items-center">
@@ -100,7 +104,9 @@
     </button>
   </div>
 </div>
-<div id="alert-additional-content-4"
+
+<!--Warning alert-->
+<div id="alert-additional-content-4" *ngIf="warningFlag"
   class="p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
   role="alert">
   <div class="flex items-center">
@@ -133,7 +139,9 @@
     </button>
   </div>
 </div>
-<div id="alert-additional-content-5"
+
+<!--Dark alert-->
+<div id="alert-additional-content-5" *ngIf="darkFlag"
   class="p-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800" role="alert">
   <div class="flex items-center">
     <svg class="flex-shrink-0 w-4 h-4 me-2 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -164,4 +172,4 @@
       Dismiss
     </button>
   </div>
-</div> -->
+</div>
