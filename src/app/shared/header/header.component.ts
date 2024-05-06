@@ -14,7 +14,7 @@ export class HeaderComponent {
 
   ngOnInit() {
     console.log("header");
-    this.loggedInFlag = true;
+    this.loggedInFlag = false;
   }
 
 }
