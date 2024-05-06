@@ -10,14 +10,14 @@
     <div class="breadcrump-section">
         <app-breadcrump></app-breadcrump>
     </div>
+    <div class="speed-up-dial-section">
+        <app-speed-up-dial></app-speed-up-dial>
+    </div>
     <div class="main-section">
         <router-outlet />
     </div>
 </div>
 <!--Screen once the user is not logged in-->
 <div class="" *ngIf="!loggedInFlag">
-    <div class="">
-        <app-side-nav></app-side-nav>
-    </div>
     <router-outlet />
 </div>
