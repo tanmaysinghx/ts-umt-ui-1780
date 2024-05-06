@@ -5,11 +5,12 @@ import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { HeaderComponent } from './shared/header/header.component';
 import { SideNavComponent } from './shared/side-nav/side-nav.component';
+import { BreadcrumpComponent } from './shared/breadcrump/breadcrump.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, CommonModule, HeaderComponent, SideNavComponent],
+  imports: [RouterOutlet, HttpClientModule, CommonModule, HeaderComponent, SideNavComponent, BreadcrumpComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -20,6 +21,6 @@ export class AppComponent {
 
   ngOnInit(): void {
     initFlowbite();
-    this.loggedInFlag = false;
+    this.loggedInFlag = true;
   }
 }

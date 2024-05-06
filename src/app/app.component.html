@@ -1,7 +1,23 @@
+<!--Header section-->
 <div class="header-section">
     <app-header></app-header>
 </div>
-<div class="" *ngIf="loggedInFlag">
-    <app-side-nav></app-side-nav>
+<!--Screen once the user is logged in-->
+<div class="screen" *ngIf="loggedInFlag">
+    <div class="side-nav-section">
+        <app-side-nav></app-side-nav>
+    </div>
+    <div class="breadcrump-section">
+        <app-breadcrump></app-breadcrump>
+    </div>
+    <div class="main-section">
+        <router-outlet />
+    </div>
 </div>
-<router-outlet />
+<!--Screen once the user is not logged in-->
+<div class="" *ngIf="!loggedInFlag">
+    <div class="">
+        <app-side-nav></app-side-nav>
+    </div>
+    <router-outlet />
+</div>
