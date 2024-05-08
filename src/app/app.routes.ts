@@ -11,23 +11,30 @@ import { MyProfileComponent } from './features/my-section/my-profile/my-profile.
 import { ProfileDetailsComponent } from './features/account-id-creation/profile-details/profile-details.component';
 import { CompanyDetailsComponent } from './features/account-id-creation/company-details/company-details.component';
 import { SubscriptionDetailsComponent } from './features/account-id-creation/subscription-details/subscription-details.component';
+import { TermsConditionsReviewComponent } from './features/account-id-creation/terms-conditions-review/terms-conditions-review.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'account-id-creation/profile-details', pathMatch: 'full' },
+
+    //auth urls
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register', component: RegisterComponent },
     { path: 'auth/reset-password', component: ResetPasswordComponent },
     { path: 'auth/otp-verification', component: OtpVerificationComponent },
+
+    { path: 'my-section/my-profile', component: MyProfileComponent },
+
+    //account-id-creation urls
+    { path: 'account-id-creation/profile-details', component: ProfileDetailsComponent },
+    { path: 'account-id-creation/company-details', component: CompanyDetailsComponent },
+    { path: 'account-id-creation/subscription-details', component: SubscriptionDetailsComponent },
+    { path: 'account-id-creation/terms-conditions-review', component: TermsConditionsReviewComponent },
+
+    //service urls
     { path: 'maintenance-page', component: MaintenancePageComponent },
     { path: 'page-not-found', component: PageNotFoundComponent },
     { path: 'server-error-page', component: ServerErrorPageComponent },
     { path: 'user-chats', component: UserChatsComponent },
-    { path: 'my-section/my-profile', component: MyProfileComponent },
-
-    { path: 'account-id-creation/profile-details', component: ProfileDetailsComponent },
-    { path: 'account-id-creation/company-details', component: CompanyDetailsComponent },
-    { path: 'account-id-creation/subscription-details', component: SubscriptionDetailsComponent },
-    { path: 'account-id-creation/terms-conditions-review', component: SubscriptionDetailsComponent },
 ];
 
 
