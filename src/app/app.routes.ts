@@ -12,9 +12,12 @@ import { ProfileDetailsComponent } from './features/account-id-creation/profile-
 import { CompanyDetailsComponent } from './features/account-id-creation/company-details/company-details.component';
 import { SubscriptionDetailsComponent } from './features/account-id-creation/subscription-details/subscription-details.component';
 import { TermsConditionsReviewComponent } from './features/account-id-creation/terms-conditions-review/terms-conditions-review.component';
+import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'account-id-creation/profile-details', pathMatch: 'full' },
+    { path: '', redirectTo: 'ui-testing', pathMatch: 'full' },
+
+    { path: 'ui-testing', component: UiTestingComponent },
 
     //auth urls
     { path: 'auth/login', component: LoginComponent },

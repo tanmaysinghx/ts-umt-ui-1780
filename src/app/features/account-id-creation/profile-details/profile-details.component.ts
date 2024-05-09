@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileDetailsComponent {
 
-  constructor(private router: Router,) {}
+  constructor(private router: Router) {}
 
   ngOnIntit() {
 

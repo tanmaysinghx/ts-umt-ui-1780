@@ -9,6 +9,7 @@ import { BreadcrumpComponent } from './shared/breadcrump/breadcrump.component';
 import { SpeedUpDialComponent } from './shared/speed-up-dial/speed-up-dial.component';
 import { SnackbarDetailedComponent } from './shared/snackbar/snackbar-detailed/snackbar-detailed.component';
 import { SharedService } from './shared/services/shared.service';
+import { UiTestingService } from './features/services/ui-testing.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ import { SharedService } from './shared/services/shared.service';
   imports: [RouterOutlet, HttpClientModule, CommonModule, HeaderComponent, SideNavComponent, BreadcrumpComponent, SpeedUpDialComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [HttpClient, SharedService]
+  providers: [HttpClient, SharedService, UiTestingService]
 })
 export class AppComponent {
   title = 'sso-app-ui-2508';

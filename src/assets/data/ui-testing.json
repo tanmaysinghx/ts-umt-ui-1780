@@ -1,0 +1,69 @@
+{
+    "screens": [
+        {
+            "name": "Login",
+            "stage": "Auth",
+            "link": "/auth/login"
+        },
+        {
+            "name": "Register",
+            "stage": "Auth",
+            "link": "/auth/register"
+        },
+        {
+            "name": "Reset Password",
+            "stage": "Auth",
+            "link": "/auth/reset-password"
+        },
+        {
+            "name": "OTP Verification",
+            "stage": "Auth",
+            "link": "/auth/otp-verification"
+        },
+        {
+            "name": "My Profile",
+            "stage": "My Section",
+            "link": "/my-section/my-profile"
+        },
+        {
+            "name": "Profile Details",
+            "stage": "Account ID Creation",
+            "link": "/account-id-creation/profile-details"
+        },
+        {
+            "name": "Company Details",
+            "stage": "Account ID Creation",
+            "link": "/account-id-creation/company-details"
+        },
+        {
+            "name": "Subscription Details",
+            "stage": "Account ID Creation",
+            "link": "/account-id-creation/subscription-details"
+        },
+        {
+            "name": "Terms & Conditions Review",
+            "stage": "Account ID Creation",
+            "link": "/account-id-creation/terms-conditions-review"
+        },
+        {
+            "name": "Maintenance Page",
+            "stage": "Service",
+            "link": "/maintenance-page"
+        },
+        {
+            "name": "Page Not Found",
+            "stage": "Service",
+            "link": "/page-not-found"
+        },
+        {
+            "name": "Server Error Page",
+            "stage": "Service",
+            "link": "/server-error-page"
+        },
+        {
+            "name": "User Chats",
+            "stage": "Service",
+            "link": "/user-chats"
+        }
+    ]
+}
