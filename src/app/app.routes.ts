@@ -13,9 +13,10 @@ import { CompanyDetailsComponent } from './features/account-id-creation/company-
 import { SubscriptionDetailsComponent } from './features/account-id-creation/subscription-details/subscription-details.component';
 import { TermsConditionsReviewComponent } from './features/account-id-creation/terms-conditions-review/terms-conditions-review.component';
 import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
+import { UserListComponent } from './features/user-management/user-list/user-list.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'ui-testing', pathMatch: 'full' },
+    { path: '', redirectTo: 'user-management/user-list', pathMatch: 'full' },
 
     { path: 'ui-testing', component: UiTestingComponent },
 
@@ -38,6 +39,9 @@ export const routes: Routes = [
     { path: 'page-not-found', component: PageNotFoundComponent },
     { path: 'server-error-page', component: ServerErrorPageComponent },
     { path: 'user-chats', component: UserChatsComponent },
+
+    // user management urls
+    { path: 'user-management/user-list', component: UserListComponent },
 ];
 
 
