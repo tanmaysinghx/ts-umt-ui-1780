@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sso-app-ui-2508": {
+    "ts-umt-ui-1780": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/sso-app-ui-2508",
+            "outputPath": "dist/ts-umt-ui-1780",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sso-app-ui-2508:build:production"
+              "buildTarget": "ts-umt-ui-1780:build:production"
             },
             "development": {
-              "buildTarget": "sso-app-ui-2508:build:development"
+              "buildTarget": "ts-umt-ui-1780:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sso-app-ui-2508:build"
+            "buildTarget": "ts-umt-ui-1780:build"
           }
         },
         "test": {

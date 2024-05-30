@@ -20,7 +20,7 @@ import { UiTestingService } from './features/services/ui-testing.service';
   providers: [HttpClient, SharedService, UiTestingService]
 })
 export class AppComponent {
-  title = 'sso-app-ui-2508';
+  title = 'ts-umt-ui-1780';
 
   loggedInFlag: boolean = false;
 

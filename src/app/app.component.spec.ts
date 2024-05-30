@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'sso-app-ui-2508' title`, () => {
+  it(`should have the 'ts-umt-ui-1780' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sso-app-ui-2508');
+    expect(app.title).toEqual('ts-umt-ui-1780');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sso-app-ui-2508');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ts-umt-ui-1780');
   });
 });
