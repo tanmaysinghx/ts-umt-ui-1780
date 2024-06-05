@@ -16,7 +16,7 @@ import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'ui-testing', pathMatch: 'full' },
+    { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
     { path: 'ui-testing', component: UiTestingComponent },
 
