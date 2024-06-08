@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
+import { SharedService } from '../../../shared/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +24,10 @@ export class LoginComponent {
   loginFormPayload: any;
 
   constructor(
-    private loginService: LoginService, 
+    private loginService: LoginService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -58,6 +60,14 @@ export class LoginComponent {
         this.setSessionStorage(data);
         this.openSnackbar("Login is successfull, you will be redirected to dashboard !!!", "success", 6000);
         console.log(data);
+        this.sharedService.refreshHeader();
+        this.sharedService.refreshMenu();
+        this.sharedService.refreshMain();
+        this.router.navigate(['/dashboard']);
+      }, (error) => {
+        console.log("API Fails", error);
+        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
+        this.openSnackbar(err, "danger", 6000);
       })
     }
   }

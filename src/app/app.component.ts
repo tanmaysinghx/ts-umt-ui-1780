@@ -7,10 +7,10 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SideNavComponent } from './shared/side-nav/side-nav.component';
 import { BreadcrumpComponent } from './shared/breadcrump/breadcrump.component';
 import { SpeedUpDialComponent } from './shared/speed-up-dial/speed-up-dial.component';
-import { SnackbarDetailedComponent } from './shared/snackbar/snackbar-detailed/snackbar-detailed.component';
 import { SharedService } from './shared/services/shared.service';
 import { UiTestingService } from './features/services/ui-testing.service';
 import { LoginService } from './features/auth/services/login.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -26,26 +26,43 @@ export class AppComponent {
   loggedInFlag: boolean = false;
   accessToken: any;
 
-  @HostListener('window:storage', ['$event'])
+  private subscription: Subscription = new Subscription;
+
+  constructor(private sharedService: SharedService,) { }
 
   ngOnInit(): void {
     initFlowbite();
-    window.addEventListener('storage', this.onStorageChange.bind(this));
     this.getSessionStorage();
-    this.loggedInFlag = false;
-    if (this.accessToken) {
-      console.log("Logged In")
-    }
   }
 
-  onStorageChange(event: StorageEvent) {
-    if (event.key === 'yourKey') {
-      // Do something when the specific key is changed in session storage
-      console.log('Session storage changed for yourKey');
-    }
+  detectLogin() {
+    this.subscription = this.sharedService.mainState$.subscribe(state => {
+      if (state) {
+        this.refreshMain();
+      }
+    });
   }
 
   getSessionStorage() {
     this.accessToken = sessionStorage.getItem("access-token");
+    this.checkLoginStatus(this.accessToken);
+  }
+
+  checkLoginStatus(token?: any) {
+    if (token != null) {
+      this.loggedInFlag = true;
+      console.log("User is logged in !!!")
+    } else {
+      this.loggedInFlag = false;
+    }
+  }
+
+  refreshMain() {
+    console.log("main");
+    this.ngOnInit();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
