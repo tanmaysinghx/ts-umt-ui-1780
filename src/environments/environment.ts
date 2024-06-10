@@ -5,7 +5,8 @@
  export const environment = {
     production: false,
     cmsUrl: 'http://localhost:4200/',
-    ssoService: 'http://localhost:1727/'
+    ssoService: 'http://localhost:1727/',
+    umtService: 'http://localhost:1780/'
   };
   
   /*

@@ -24,6 +24,7 @@ export class SnackbarDetailedComponent {
 
   ngOnInit() {
     this.openSnackBar(this.message, this.snackbarType, this.duration);
+    console.log("Snackbar Triggered !!!")
   }
 
   openSnackBar(message: any, snackbarType: any, duration: any) {

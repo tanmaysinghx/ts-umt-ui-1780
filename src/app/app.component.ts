@@ -11,6 +11,8 @@ import { SharedService } from './shared/services/shared.service';
 import { UiTestingService } from './features/services/ui-testing.service';
 import { LoginService } from './features/auth/services/login.service';
 import { Subscription } from 'rxjs';
+import { OtpService } from './features/auth/services/otp.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ import { Subscription } from 'rxjs';
   imports: [RouterOutlet, HttpClientModule, CommonModule, HeaderComponent, SideNavComponent, BreadcrumpComponent, SpeedUpDialComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [HttpClient, SharedService, UiTestingService, LoginService]
+  providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService]
 })
 export class AppComponent {
   title = 'ts-umt-ui-1780';

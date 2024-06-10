@@ -19,4 +19,12 @@ export class LoginService {
     });
     return this.http.post(assetUrl, {}, { headers });
   }
+
+  generateOtp(emailId: any): Observable<any> {
+    let assetUrl = environment.umtService + 'otp/generate-otp';
+    let body = {
+      "userEmail": emailId
+    }
+    return this.http.post(assetUrl, body);
+  }
 }
