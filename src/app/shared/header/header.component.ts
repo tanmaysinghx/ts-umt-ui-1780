@@ -13,12 +13,20 @@ import { SharedService } from '../services/shared.service';
 export class HeaderComponent {
 
   loggedInFlag: boolean = false;
+  loggedInUsername: any;
+  loggedInEmailId: any;
+  accessToken: any;
 
   private subscription: Subscription = new Subscription;
 
   constructor(private sharedService: SharedService) { }
 
   ngOnInit() {
+    this.detectLogin();
+    this.getSessionStorage();
+  }
+
+  detectLogin() {
     this.subscription = this.sharedService.headerState$.subscribe(state => {
       if (state) {
         this.refreshHeader();
@@ -26,9 +34,18 @@ export class HeaderComponent {
     });
   }
 
+  getSessionStorage() {
+    this.loggedInUsername = sessionStorage.getItem("user-name");
+    this.loggedInEmailId = sessionStorage.getItem("user-email");
+    this.accessToken = sessionStorage.getItem("access-token");
+    if (this.accessToken != null) {
+      this.loggedInFlag = true;
+    }
+  }
+
   refreshHeader() {
     console.log("header");
-    this.loggedInFlag = true;
+    this.getSessionStorage();
   }
 
   ngOnDestroy() {

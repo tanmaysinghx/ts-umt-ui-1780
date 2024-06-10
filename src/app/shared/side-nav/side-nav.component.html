@@ -1,6 +1,6 @@
 <!--Side-nav Component-->
 <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
-  type="button"
+  type="button" *ngIf="apiResponseData"
   class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
   <span class="sr-only">Open sidebar</span>
   <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -12,8 +12,8 @@
 
 <aside id="default-sidebar"
   class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-  aria-label="Sidenav">
-  <div
+  aria-label="Sidenav" *ngIf="apiResponseData">
+  <div *ngIf="apiResponseData"
     class="menu-card overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <ul class="space-y-2">
       <div *ngFor="let elements of apiResponseData">

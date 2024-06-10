@@ -20,11 +20,7 @@ export class SideNavComponent {
 
   ngOnInit() {
     this.getApiResponse();
-    this.subscription = this.sharedService.headerState$.subscribe(state => {
-      if (state) {
-        this.refreshHeader();
-      }
-    });
+    this.detectLogin();
   }
 
   getApiResponse() {
@@ -34,8 +30,17 @@ export class SideNavComponent {
     })
   }
 
-  refreshHeader() {
+  detectLogin() {
+    this.subscription = this.sharedService.headerState$.subscribe(state => {
+      if (state) {
+        this.refreshMenu();
+      }
+    });
+  }
+
+  refreshMenu() {
     console.log("menu");
+    this.getApiResponse();
   }
 
   ngOnDestroy() {

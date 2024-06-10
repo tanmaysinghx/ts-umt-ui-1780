@@ -33,6 +33,7 @@ export class AppComponent {
   ngOnInit(): void {
     initFlowbite();
     this.getSessionStorage();
+    this.detectLogin();
   }
 
   detectLogin() {
@@ -59,7 +60,7 @@ export class AppComponent {
 
   refreshMain() {
     console.log("main");
-    this.ngOnInit();
+    this.getSessionStorage();
   }
 
   ngOnDestroy() {

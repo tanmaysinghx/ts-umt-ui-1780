@@ -17,6 +17,13 @@ export class UiTestingComponent {
   constructor(private uiTestingService: UiTestingService, private router: Router,) {}
 
   ngOnInit() {
+    let temp = sessionStorage.getItem("intial-ui-refresh");
+    if (temp == null) {
+      sessionStorage.setItem("intial-ui-refresh", "done");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
     this.uiTestingService.getUIScreens().subscribe((data) => {
       this.apiData = data.screens;
       console.log(this.apiData)

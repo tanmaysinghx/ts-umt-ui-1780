@@ -63,7 +63,7 @@ export class LoginComponent {
         this.sharedService.refreshHeader();
         this.sharedService.refreshMenu();
         this.sharedService.refreshMain();
-        this.router.navigate(['/dashboard']);
+        this.navigateToDashbaord();
       }, (error) => {
         console.log("API Fails", error);
         let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
@@ -97,10 +97,6 @@ export class LoginComponent {
     sessionStorage.setItem("user-role", data.user_role);
   }
 
-  navigateToRegister() {
-    this.router.navigate(["../auth/register"]);
-  }
-
   openSnackbar(message: any, type: any, duration: any) {
     this.snackbarMessage = message;
     this.snackbarType = type;
@@ -109,5 +105,13 @@ export class LoginComponent {
     setTimeout(() => {
       this.snackbarFlag = false;
     }, duration);
+  }
+
+  navigateToRegister() {
+    this.router.navigate(["../auth/register"]);
+  }
+
+  navigateToDashbaord() {
+    this.router.navigate(["../ui-testing"]);
   }
 }
