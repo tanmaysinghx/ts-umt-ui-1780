@@ -13,6 +13,7 @@ import { LoginService } from './features/auth/services/login.service';
 import { Subscription } from 'rxjs';
 import { OtpService } from './features/auth/services/otp.service';
 import { CookieService } from 'ngx-cookie-service';
+import { RegisterService } from './features/auth/services/register.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ import { CookieService } from 'ngx-cookie-service';
   imports: [RouterOutlet, HttpClientModule, CommonModule, HeaderComponent, SideNavComponent, BreadcrumpComponent, SpeedUpDialComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService]
+  providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService, RegisterService]
 })
 export class AppComponent {
   title = 'ts-umt-ui-1780';

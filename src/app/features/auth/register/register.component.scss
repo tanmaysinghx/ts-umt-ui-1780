@@ -1,3 +1,42 @@
 .custom-height {
     height: 92vh;
 }
+
+/* Define styles for screens smaller than 600px */
+@media screen and (max-width: 600px) {
+
+    /* CSS rules for small screens */
+    .snackbar-detailed {
+        position: fixed;
+        bottom: 4px;
+        z-index: 1000;
+        width: 96%;
+        right: 8px;
+    }
+}
+
+/* Define styles for screens between 600px and 900px */
+@media screen and (min-width: 600px) and (max-width: 900px) {
+
+    /* CSS rules for medium screens */
+    .snackbar-detailed {
+        position: fixed;
+        bottom: 4px;
+        z-index: 1000;
+        width: 45%;
+        right: 8px;
+    }
+}
+
+/* Define styles for screens larger than 900px */
+@media screen and (min-width: 900px) {
+
+    /* CSS rules for large screens */
+    .snackbar-detailed {
+        position: fixed;
+        bottom: 4px;
+        z-index: 1000;
+        width: 35%;
+        right: 8px;
+    }
+}
