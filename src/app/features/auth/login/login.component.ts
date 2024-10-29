@@ -48,7 +48,7 @@ export class LoginComponent {
 
   createLoginPayload() {
     this.loginFormPayload = {
-      "username": this.loginForm.controls['userEmailId'].value,
+      "email": this.loginForm.controls['userEmailId'].value,
       "password": this.loginForm.controls['userPassword'].value
     }
   }
@@ -69,7 +69,7 @@ export class LoginComponent {
     }
     if (this.loginForm?.status == "VALID") {
       this.createLoginPayload();
-      this.loginService.login(this.loginFormPayload.username, this.loginFormPayload.password).subscribe((data) => {
+      this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
         this.setSessionStorage(data);
         this.setCookies();
         this.checkBrowserTrustFlag();

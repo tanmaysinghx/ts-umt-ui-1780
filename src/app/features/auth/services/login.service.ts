@@ -10,14 +10,23 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
+  // login(userEmailId: string, password: string): Observable<any> {
+  //   let assetUrl = environment.ssoService + 'v2/api/auth/login';
+  //   const authHeader = 'Basic ' + btoa(`${userEmailId}:${password}`);
+  //   const headers = new HttpHeaders({
+  //     'Authorization': authHeader,
+  //     'Content-Type': 'application/json'
+  //   });
+  //   return this.http.post(assetUrl, {}, { headers });
+  // }
+
   login(userEmailId: string, password: string): Observable<any> {
-    let assetUrl = environment.ssoService + 'sign-in';
-    const authHeader = 'Basic ' + btoa(`${userEmailId}:${password}`);
-    const headers = new HttpHeaders({
-      'Authorization': authHeader,
-      'Content-Type': 'application/json'
-    });
-    return this.http.post(assetUrl, {}, { headers });
+    let assetUrl = environment.apiGatewayService + '1625/auth-service/v2/api/auth/login';
+    let body = {
+      "email": userEmailId,
+      "password": password
+    }
+    return this.http.post(assetUrl, body);
   }
 
   generateOtp(emailId: any): Observable<any> {

@@ -5,8 +5,9 @@
  export const environment = {
     production: false,
     cmsUrl: 'http://localhost:4200/',
-    ssoService: 'http://localhost:1727/',
-    umtService: 'http://localhost:1780/'
+    ssoService: 'http://localhost:3000/',
+    umtService: 'http://localhost:1780/',
+    apiGatewayService: 'https://ts-api-gateway-service-1605-z7txd.ondigitalocean.app/'
   };
   
   /*
