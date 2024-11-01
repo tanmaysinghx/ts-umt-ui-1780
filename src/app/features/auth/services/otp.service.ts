@@ -11,7 +11,19 @@ export class OtpService {
   constructor(private http: HttpClient) { }
 
   verifyOtp(userEmailId: any, otp: any): Observable<any> {
-    let assetUrl = environment.umtService + 'otp/verify-otp/' + userEmailId + "/" + otp;
-    return this.http.get(assetUrl);
+    let assetUrl = environment.ssoProdService + 'otp/verify-otp';
+    let body = {
+      "email": userEmailId,
+      "otp": otp
+    }
+    return this.http.post(assetUrl, body);
+  }
+
+  generateOtp(userEmailId: any): Observable<any> {
+    let assetUrl = environment.ssoProdService + 'otp/request-otp';
+    let body = {
+      "email": userEmailId,
+    }
+    return this.http.post(assetUrl, body);
   }
 }

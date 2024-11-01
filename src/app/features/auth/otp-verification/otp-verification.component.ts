@@ -31,8 +31,22 @@ export class OtpVerificationComponent {
   ) { }
 
   ngOnInit() {
+    this.generateOtp();
     this.getDataFromState();
     this.createOtpForm();
+  }
+
+  generateOtp() {
+    let emailId = sessionStorage.getItem("user-email");
+    this.otpService.generateOtp(emailId).subscribe((data) => {
+      if (data.success) {
+        this.openSnackbar("OTP generation is successfull, otp will be valid for 10 mins", "success", 6000);
+      }
+    },
+      (error) => {
+        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
+        this.openSnackbar(err, "danger", 6000);
+      })
   }
 
   getDataFromState() {
@@ -65,15 +79,23 @@ export class OtpVerificationComponent {
     let emailId = sessionStorage.getItem("user-email");
     this.otpService.verifyOtp(emailId, this.otpFormPayload.otp).subscribe((data) => {
       if (data.success) {
-        console.log(this.rememberMeFlag)
         if (this.rememberMeFlag) {
-          localStorage.setItem("browser-trust-flag", "trusted");
+          this.setBrowserTrustFlag(emailId);
         }
         this.navigateToDashboard();
       } else if (!data.success) {
         this.openSnackbar("OTP is incorrect", "danger", 6000);
       }
     })
+  }
+
+  setBrowserTrustFlag(email: any) {
+    localStorage.setItem("browser-trust-flag", "trusted");
+    let trustedEmails = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
+    if (!trustedEmails.includes(email)) {
+      trustedEmails.push(email);
+    }
+    localStorage.setItem("trusted-emails", JSON.stringify(trustedEmails));
   }
 
   navigateToDashboard() {

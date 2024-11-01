@@ -21,7 +21,8 @@ export class LoginService {
   // }
 
   login(userEmailId: string, password: string): Observable<any> {
-    let assetUrl = environment.apiGatewayService + '1625/auth-service/v2/api/auth/login';
+    //let assetUrl = environment.apiGatewayService + '1625/auth-service/v2/api/auth/login';
+    let assetUrl = environment.ssoProdService + 'auth/login';
     let body = {
       "email": userEmailId,
       "password": password

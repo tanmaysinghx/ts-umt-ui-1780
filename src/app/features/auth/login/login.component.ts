@@ -70,11 +70,12 @@ export class LoginComponent {
     if (this.loginForm?.status == "VALID") {
       this.createLoginPayload();
       this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
-        this.setSessionStorage(data);
-        this.setCookies();
-        this.checkBrowserTrustFlag();
+        if (data.success) {
+          this.setSessionStorage(data);
+          this.setCookies();
+          this.checkBrowserTrustFlag(this.loginFormPayload.email);
+        }
       }, (error) => {
-        console.log("API Fails", error);
         let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
         this.openSnackbar(err, "danger", 6000);
       })
@@ -98,37 +99,41 @@ export class LoginComponent {
     }
   }
 
-  checkBrowserTrustFlag() {
+  checkBrowserTrustFlag(email: string) {
     let flagValue = localStorage.getItem("browser-trust-flag");
-    if (flagValue == null) {
+    let trustedEmails = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
+    if (flagValue === null) {
       this.browserTrustFlag = false;
       this.navigateToOtpVerification();
-    } else if (flagValue == "trusted") {
+    } else if (flagValue === "trusted" && trustedEmails.includes(email)) {
       this.browserTrustFlag = true;
       this.navigateToDashboard();
+    } else {
+      this.browserTrustFlag = false;
+      this.navigateToOtpVerification();
     }
   }
 
   setSessionStorage(data: any) {
-    sessionStorage.setItem("access-token", data.access_token);
-    sessionStorage.setItem("refresh-token", data.refresh_token);
-    sessionStorage.setItem("user-email", data.user_email);
-    sessionStorage.setItem("user-name", data.user_name);
-    sessionStorage.setItem("user-role", data.user_role);
+    sessionStorage.setItem("access-token", data?.data?.accessToken);
+    sessionStorage.setItem("refresh-token", data?.data?.refreshToken);
+    sessionStorage.setItem("user-email", data?.data?.email);
+    sessionStorage.setItem("user-role", data?.data?.roleName);
+    sessionStorage.setItem("user-role-id", data?.data?.roleId);
   }
 
-  generateOtp() {
-    let emailId = sessionStorage.getItem("user-email");
-    this.loginService.generateOtp(emailId).subscribe((data) => {
-      console.log(data);
-    })
-  }
+  // generateOtp() {
+  //   let emailId = sessionStorage.getItem("user-email");
+  //   this.loginService.generateOtp(emailId).subscribe((data) => {
+  //     console.log(data);
+  //   })
+  // }
 
   setCookies() {
     let flag = this.loginForm.controls['rememberMe'].value;
     if (flag) {
-      this.cookieService.set('user-email', this.loginFormPayload.username, 7); // Expires in 7 days
-      this.cookieService.set('user-password', this.loginFormPayload.password, 7); // Expires in 7 days
+      this.cookieService.set('user-email', this.loginFormPayload.email, 7);
+      this.cookieService.set('user-password', this.loginFormPayload.password, 7);
     }
   }
 
@@ -153,7 +158,7 @@ export class LoginComponent {
   }
 
   navigateToOtpVerification() {
-    this.generateOtp();
+    //this.generateOtp();
     this.openSnackbar("OTP is generated succesfully, you will be redirected to OTP verification page !!!", "info", 6000);
     setTimeout(() => {
       this.router.navigate(["../auth/otp-verification"], {
