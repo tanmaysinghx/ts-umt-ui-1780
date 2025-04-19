@@ -28,9 +28,7 @@ export class RegisterComponent {
 
   createRegisterForm() {
     this.registerForm = new FormGroup({
-      userName: new FormControl('', [Validators.required]),
       userEmailId: new FormControl('', [Validators.required, Validators.email]),
-      userPhoneNumber: new FormControl('', [Validators.required]),
       userPassword: new FormControl('', Validators.required),
       userPasswordConfirm: new FormControl('', Validators.required),
       termsFlag: new FormControl()
@@ -40,13 +38,10 @@ export class RegisterComponent {
   createRegisterPayload() {
     console.log(this.registerForm);
     this.registerFormPayload = {
-      "userName": this.registerForm.controls['userName'].value,
-      "userMobileNo": this.registerForm.controls['userPhoneNumber'].value,
-      "userEmail": this.registerForm.controls['userEmailId'].value,
-      "userPassword": this.registerForm.controls['userPassword'].value,
-      "userRole": "ROOT_USER"
+      "email": this.registerForm.controls['userEmailId'].value,
+      "password": this.registerForm.controls['userPassword'].value,
+      "roleName": "user"
     }
-    console.log(this.registerFormPayload);
   }
 
   submitForm() {

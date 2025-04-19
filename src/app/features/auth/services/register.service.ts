@@ -11,7 +11,7 @@ export class RegisterService {
   constructor(private http: HttpClient) { }
 
   registerUser(payload: any): Observable<any> {
-    let assetUrl = environment.ssoService + 'sign-up';
+    let assetUrl = environment.ssoProdService + 'auth/register';
     return this.http.post(assetUrl, payload);
   }
 }

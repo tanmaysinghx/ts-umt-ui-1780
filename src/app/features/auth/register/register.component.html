@@ -7,26 +7,6 @@
             Create a Free Account
         </h2>
         <form [formGroup]="registerForm" class="mt-8 space-y-6">
-            <!--User Full Name-->
-            <div>
-                <label *ngIf="(!registerForm.controls['userName'].errors) || registerForm.controls['userName'].pristine"
-                    for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                    full name</label>
-                <!-- Label for error case -->
-                <label
-                    *ngIf="(registerForm.controls['userName'].errors?.['required']) && !registerForm.controls['userName'].pristine"
-                    htmlFor="error" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">
-                    Your full name
-                </label>
-                <input type="text" name="userName" id="userName" formControlName="userName"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="example name">
-                <!-- Error message -->
-                <p *ngIf="(registerForm.controls['userName'].errors?.['required']) && !registerForm.controls['userName'].pristine"
-                    class="mt-2 text-sm text-red-600 dark:text-red-500">
-                    <span class="font-medium">Oh, snap!</span> Please verify this field.
-                </p>
-            </div>
             <!--User Email Id-->
             <div>
                 <label
@@ -44,27 +24,6 @@
                     placeholder="name@company.com">
                 <!-- Error message -->
                 <p *ngIf="(registerForm.controls['userEmailId'].errors?.['required']) && !registerForm.controls['userEmailId'].pristine"
-                    class="mt-2 text-sm text-red-600 dark:text-red-500">
-                    <span class="font-medium">Oh, snap!</span> Please verify this field.
-                </p>
-            </div>
-            <!--User Phone Number-->
-            <div>
-                <label
-                    *ngIf="(!registerForm.controls['userPhoneNumber'].errors?.['required']) || registerForm.controls['userPhoneNumber'].pristine"
-                    for="userPhoneNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                    phone number</label>
-                <!-- Label for error case -->
-                <label
-                    *ngIf="(registerForm.controls['userPhoneNumber'].errors?.['required']) && !registerForm.controls['userPhoneNumber'].pristine"
-                    htmlFor="error" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">
-                    Your phone number
-                </label>
-                <input type="text" name="userPhoneNumber" id="userPhoneNumber" formControlName="userPhoneNumber"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="12345 67890">
-                <!-- Error message -->
-                <p *ngIf="(registerForm.controls['userPhoneNumber'].errors?.['required']) && !registerForm.controls['userPhoneNumber'].pristine"
                     class="mt-2 text-sm text-red-600 dark:text-red-500">
                     <span class="font-medium">Oh, snap!</span> Please verify this field.
                 </p>
