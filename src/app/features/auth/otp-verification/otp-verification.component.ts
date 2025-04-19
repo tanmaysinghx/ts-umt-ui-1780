@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OtpService } from '../services/otp.service';
 import { SnackbarDetailedComponent } from '../../../shared/snackbar/snackbar-detailed/snackbar-detailed.component';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 
 export class OtpVerificationComponent {
+  @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
 
   otpForm!: FormGroup;
   otpFormPayload: any;
@@ -23,11 +24,12 @@ export class OtpVerificationComponent {
   snackbarDuration: any;
   snackbarFlag: boolean = false;
   rememberMeFlag: boolean = false;
+  otpLength = 6;
 
   constructor(
-    private otpService: OtpService,
-    private sharedService: SharedService,
-    private router: Router,
+    private readonly otpService: OtpService,
+    private readonly sharedService: SharedService,
+    private readonly router: Router,
   ) { }
 
   ngOnInit() {
@@ -38,13 +40,21 @@ export class OtpVerificationComponent {
 
   generateOtp() {
     let emailId = sessionStorage.getItem("user-email");
-    this.otpService.generateOtp(emailId).subscribe((data) => {
+    let requestBody = {
+      "gearId": "1625",
+      "scenarioId": "00002",
+      "userEmail": emailId,
+      "emailOTP": true,
+      "mobileOTP": false
+    }
+    this.otpService.generateOtp(requestBody).subscribe((data) => {
       if (data.success) {
         this.openSnackbar("OTP generation is successfull, otp will be valid for 10 mins", "success", 6000);
       }
     },
       (error) => {
-        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
+        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.message;
+        console.log(error);
         this.openSnackbar(err, "danger", 6000);
       })
   }
@@ -78,6 +88,7 @@ export class OtpVerificationComponent {
     this.createOtpPayload();
     let emailId = sessionStorage.getItem("user-email");
     this.otpService.verifyOtp(emailId, this.otpFormPayload.otp).subscribe((data) => {
+      console.log(data);
       if (data.success) {
         if (this.rememberMeFlag) {
           this.setBrowserTrustFlag(emailId);
@@ -86,7 +97,12 @@ export class OtpVerificationComponent {
       } else if (!data.success) {
         this.openSnackbar("OTP is incorrect", "danger", 6000);
       }
-    })
+    },
+      (error) => {
+        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.message;
+        console.log(error);
+        this.openSnackbar(err, "danger", 6000);
+      })
   }
 
   setBrowserTrustFlag(email: any) {
@@ -117,4 +133,38 @@ export class OtpVerificationComponent {
       this.snackbarFlag = false;
     }, duration);
   }
+
+  onInputChange(event: any, index: number): void {
+    const input = event.target;
+    const value = input.value;
+
+    if (value.length === 1 && index < this.otpLength - 1) {
+      const nextInput = this.otpInputs.toArray()[index + 1];
+      nextInput.nativeElement.focus();
+    }
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text') || '';
+    if (pastedText.length === this.otpLength) {
+      const inputsArray = this.otpInputs.toArray();
+      for (let i = 0; i < this.otpLength; i++) {
+        const char = pastedText.charAt(i);
+        inputsArray[i].nativeElement.value = char;
+        this.otpForm.get(`phoneOtpDigit${i + 1}`)?.setValue(char);
+      }
+      inputsArray[this.otpLength - 1].nativeElement.focus();
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent, index: number): void {
+    const input = event.target as HTMLInputElement;
+    if (event.key === 'Backspace' && !input.value && index > 0) {
+      const prevInput = this.otpInputs.toArray()[index - 1];
+      prevInput.nativeElement.focus();
+      prevInput.nativeElement.select();
+    }
+  }
+
 }

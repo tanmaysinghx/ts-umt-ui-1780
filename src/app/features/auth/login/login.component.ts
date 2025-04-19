@@ -26,11 +26,11 @@ export class LoginComponent {
   browserTrustFlag: boolean = false;
 
   constructor(
-    private loginService: LoginService,
-    private cdr: ChangeDetectorRef,
-    private router: Router,
-    private sharedService: SharedService,
-    private cookieService: CookieService
+    private readonly loginService: LoginService,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly router: Router,
+    private readonly sharedService: SharedService,
+    private readonly cookieService: CookieService
   ) { }
 
   ngOnInit() {
@@ -122,13 +122,6 @@ export class LoginComponent {
     sessionStorage.setItem("user-role-id", data?.data?.roleId);
   }
 
-  // generateOtp() {
-  //   let emailId = sessionStorage.getItem("user-email");
-  //   this.loginService.generateOtp(emailId).subscribe((data) => {
-  //     console.log(data);
-  //   })
-  // }
-
   setCookies() {
     let flag = this.loginForm.controls['rememberMe'].value;
     if (flag) {
@@ -158,7 +151,6 @@ export class LoginComponent {
   }
 
   navigateToOtpVerification() {
-    //this.generateOtp();
     this.openSnackbar("OTP is generated succesfully, you will be redirected to OTP verification page !!!", "info", 6000);
     setTimeout(() => {
       this.router.navigate(["../auth/otp-verification"], {

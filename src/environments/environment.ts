@@ -5,8 +5,8 @@
  export const environment = {
     production: false,
     cmsUrl: 'http://localhost:4200/',
-    ssoService: 'http://localhost:3000/',
-    umtService: 'http://localhost:1780/',
+    ssoService: 'http://localhost:1605/1625/auth-service/v2/api',
+    umtService: 'http://localhost:1605/1689/notification-service',
     apiGatewayService: 'https://ts-api-gateway-service-1605-z7txd.ondigitalocean.app/',
     ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/'
   };

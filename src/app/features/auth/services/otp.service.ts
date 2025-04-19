@@ -8,22 +8,19 @@ import { environment } from '../../../../environments/environment';
 })
 export class OtpService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   verifyOtp(userEmailId: any, otp: any): Observable<any> {
-    let assetUrl = environment.ssoProdService + 'otp/verify-otp';
+    let assetUrl = environment.umtService + '/v2/api/notifications/verify-otp';
     let body = {
       "email": userEmailId,
-      "otp": otp
+      "otpCode": otp
     }
     return this.http.post(assetUrl, body);
   }
 
-  generateOtp(userEmailId: any): Observable<any> {
-    let assetUrl = environment.ssoProdService + 'otp/request-otp';
-    let body = {
-      "email": userEmailId,
-    }
-    return this.http.post(assetUrl, body);
+  generateOtp(requestBody: any): Observable<any> {
+    let assetUrl = environment.umtService + '/v2/api/notifications/send';
+    return this.http.post(assetUrl, requestBody);
   }
 }

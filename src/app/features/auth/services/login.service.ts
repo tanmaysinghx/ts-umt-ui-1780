@@ -8,11 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   login(userEmailId: string, password: string): Observable<any> {
-    //let assetUrl = environment.apiGatewayService + '1625/auth-service/v2/api/auth/login';
-    let assetUrl = environment.ssoProdService + 'auth/login';
+    let assetUrl = environment.ssoService + '/auth/login';
     let body = {
       "email": userEmailId,
       "password": password
@@ -21,7 +20,7 @@ export class LoginService {
   }
 
   generateOtp(emailId: any): Observable<any> {
-    let assetUrl = environment.umtService + 'otp/generate-otp';
+    let assetUrl = environment.umtService + '/v2/api/notifications/send';
     let body = {
       "userEmail": emailId
     }

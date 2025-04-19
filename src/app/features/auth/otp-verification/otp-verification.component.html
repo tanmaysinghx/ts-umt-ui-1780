@@ -8,72 +8,44 @@
                 Verify OTP!
             </h2>
             <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-                Please verify otp recieved on email to proceed further
+                Please verify OTP received on email to proceed further
             </p>
+
             <form [formGroup]="otpForm" class="mt-8 space-y-6">
                 <div class="flex mb-2 space-x-2 rtl:space-x-reverse">
-                    <div>
-                        <label for="code-1" class="sr-only">First code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-next="code-2"
-                            formControlName="phoneOtpDigit1" id="code-1"
-                            class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            required />
-                    </div>
-                    <div>
-                        <label for="code-2" class="sr-only">Second code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-prev="code-1"
-                            formControlName="phoneOtpDigit2" data-focus-input-next="code-3" id="code-2"
-                            class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            required />
-                    </div>
-                    <div>
-                        <label for="code-3" class="sr-only">Third code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-prev="code-2"
-                            formControlName="phoneOtpDigit3" data-focus-input-next="code-4" id="code-3"
-                            class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            required />
-                    </div>
-                    <div>
-                        <label for="code-4" class="sr-only">Fourth code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-prev="code-3"
-                            formControlName="phoneOtpDigit4" data-focus-input-next="code-5" id="code-4"
-                            class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            required />
-                    </div>
-                    <div>
-                        <label for="code-5" class="sr-only">Fifth code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-prev="code-4"
-                            formControlName="phoneOtpDigit5" data-focus-input-next="code-6" id="code-5"
-                            class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            required />
-                    </div>
-                    <div>
-                        <label for="code-6" class="sr-only">Sixth code</label>
-                        <input type="text" maxlength="1" data-focus-input-init data-focus-input-prev="code-5"
-                            formControlName="phoneOtpDigit6" id="code-6"
+                    <div *ngFor="let digit of [1,2,3,4,5,6]; let i = index">
+                        <input #otpInput type="text" maxlength="1" [id]="'code-' + (i + 1)"
+                            [formControlName]="'phoneOtpDigit' + (i + 1)" (input)="onInputChange($event, i)"
+                            (keydown)="onKeyDown($event, i)" (paste)="i === 0 && onPaste($event)"
                             class="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             required />
                     </div>
                 </div>
+
                 <div class="flex items-start">
                     <div class="flex items-center h-5">
                         <input id="remember" aria-describedby="remember" name="remember" type="checkbox"
                             class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                            required>
+                            required />
                     </div>
                     <div class="ml-3 text-sm">
-                        <label for="remember" class="font-medium text-gray-900 dark:text-white">I accept the <a href="#"
-                                class="text-primary-700 hover:underline dark:text-primary-500">Terms and
-                                Conditions</a></label>
+                        <label for="remember" class="font-medium text-gray-900 dark:text-white">
+                            I accept the
+                            <a href="#" class="text-primary-700 hover:underline dark:text-primary-500">Terms and
+                                Conditions</a>
+                        </label>
                     </div>
                 </div>
+
                 <button type="submit" (click)="submitOtp()"
-                    class="w-full px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Submit
-                    form</button>
+                    class="w-full px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    Submit form
+                </button>
             </form>
         </div>
     </div>
-    <div class="snackbar-detailed" *ngIf=snackbarFlag>
+
+    <div class="snackbar-detailed" *ngIf="snackbarFlag">
         <app-snackbar-detailed [message]="snackbarMessage" [snackbarType]="snackbarType"
             [duration]="snackbarDuration"></app-snackbar-detailed>
     </div>
