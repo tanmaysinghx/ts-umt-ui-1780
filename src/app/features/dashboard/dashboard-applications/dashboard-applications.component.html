@@ -1,0 +1,66 @@
+<div
+    class="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <!-- <div>
+            <h1 class="text-4xl font-bold">🚀 Applications Dashboard</h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Version: <span class="font-medium">v5.0.0</span> •
+                Environment: <span class="font-medium">Production</span></p>
+        </div> -->
+        <button (click)="toggleDarkMode()"
+            class="flex items-center gap-2 px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg shadow hover:shadow-md transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path *ngIf="!darkMode" stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 3v1m0 16v1m8.485-8.485l-.707.707m-14.142 0l-.707-.707M21 12h-1M4 12H3m16.485 4.485l-.707-.707m-14.142 0l-.707.707M12 5a7 7 0 000 14 7 7 0 000-14z" />
+                <path *ngIf="darkMode" stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.27 4.27a9 9 0 1012.728 12.728 9 9 0 00-12.728-12.728z" />
+            </svg>
+            Toggle Theme
+        </button>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="mb-6">
+        <div class="flex items-center gap-4">
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Search applications..."
+                class="w-full max-w-xs px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 placeholder-gray-500 dark:placeholder-gray-400" />
+
+            <select [(ngModel)]="selectedCategory"
+                class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500">
+                <option value="">All Categories</option>
+                <option value="dev-tools">Dev Tools</option>
+                <option value="infra">Infra</option>
+                <option value="tickets">Tickets</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Application Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let app of filterApplications()"
+            class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.title }}</h2>
+                <span
+                    class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 font-medium px-2 py-1 rounded">{{
+                    app.version }}</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ app.description }}</p>
+            <div class="flex flex-wrap gap-2 text-xs mb-4">
+                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300">{{
+                    app.category }}</span>
+                <span
+                    class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded dark:bg-yellow-900 dark:text-yellow-300">Critical</span>
+            </div>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-sm text-gray-700 dark:text-gray-300">{{ app.status }}</span>
+            </div>
+            <div class="flex justify-between items-center mt-4">
+                <button
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 transition">
+                    Launch
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

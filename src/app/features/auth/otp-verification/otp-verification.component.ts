@@ -120,7 +120,7 @@ export class OtpVerificationComponent {
       this.sharedService.refreshHeader();
       this.sharedService.refreshMenu();
       this.sharedService.refreshMain();
-      this.router.navigate(["../ui-testing"]);
+      this.router.navigate(["../dashboard/applications"]);
     }, 6000);
   }
 

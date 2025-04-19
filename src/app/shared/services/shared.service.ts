@@ -8,14 +8,14 @@ import { environment } from '../../../environments/environment';
 })
 export class SharedService {
 
-  private headerState = new BehaviorSubject<boolean>(false);
-  private menuState = new BehaviorSubject<boolean>(false);
-  private mainState = new BehaviorSubject<boolean>(false);
+  private readonly headerState = new BehaviorSubject<boolean>(false);
+  private readonly menuState = new BehaviorSubject<boolean>(false);
+  private readonly mainState = new BehaviorSubject<boolean>(false);
   headerState$ = this.headerState.asObservable();
   menuState$ = this.menuState.asObservable();
   mainState$ = this.mainState.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   refreshHeader() {
     this.headerState.next(true);
@@ -29,8 +29,15 @@ export class SharedService {
     this.mainState.next(true);
   }
 
-  getMenuData(): Observable<any> {
-    let assetUrl =  environment.cmsUrl + 'assets/data/menu-options-admin.json';
+  getMenuData(userType: any): Observable<any> {
+    let assetUrl = '';
+    if (userType === '0005') {
+      assetUrl = environment.cmsUrl + 'assets/data/menu-options-user.json';
+    } else if (userType === '0002') {
+      assetUrl = environment.cmsUrl + 'assets/data/menu-options-admin.json';
+    } else {
+      throw new Error('Invalid userType provided');
+    }
     return this.http.get<any>(assetUrl);
   }
 

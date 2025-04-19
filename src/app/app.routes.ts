@@ -14,6 +14,7 @@ import { SubscriptionDetailsComponent } from './features/account-id-creation/sub
 import { TermsConditionsReviewComponent } from './features/account-id-creation/terms-conditions-review/terms-conditions-review.component';
 import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
+import { DashboardApplicationsComponent } from './features/dashboard/dashboard-applications/dashboard-applications.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -27,6 +28,9 @@ export const routes: Routes = [
     { path: 'auth/otp-verification', component: OtpVerificationComponent },
 
     { path: 'my-section/my-profile', component: MyProfileComponent },
+
+    //dashboard urls
+    { path: 'dashboard/applications', component: DashboardApplicationsComponent },
 
     //account-id-creation urls
     { path: 'account-id-creation/profile-details', component: ProfileDetailsComponent },
