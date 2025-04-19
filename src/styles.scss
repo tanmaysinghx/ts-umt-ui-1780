@@ -3,3 +3,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add global dark mode styles */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+    background-color: #1a202c;
+    /* Dark background */
+    color: #f7fafc;
+    /* Light text */
+}
+
+body {
+    background-color: #f7fafc;
+    /* Light background */
+    color: #2d3748;
+    /* Dark text */
+}

@@ -1,0 +1,20 @@
+.speed-up-dial {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 1000;
+
+  .mat-fab {
+    margin: 0 0 16px 0;
+    background-color: var(--primary-color);
+    color: white;
+
+    &:hover {
+      background-color: var(--primary-color-dark);
+    }
+  }
+
+  .mat-fab + .mat-fab {
+    margin-left: -56px;
+  }
+}

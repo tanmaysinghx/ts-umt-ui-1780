@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 
@@ -8,7 +8,8 @@ import { SharedService } from '../services/shared.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class HeaderComponent {
 
@@ -16,14 +17,20 @@ export class HeaderComponent {
   loggedInUsername: any;
   loggedInEmailId: any;
   accessToken: any;
+  isDarkMode = false;
 
   private subscription: Subscription = new Subscription;
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private readonly sharedService: SharedService) { }
 
   ngOnInit() {
     this.detectLogin();
     this.getSessionStorage();
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+      document.documentElement.classList.add('dark');
+    }
   }
 
   detectLogin() {
@@ -50,6 +57,15 @@ export class HeaderComponent {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  // Method to toggle between light and dark mode
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    const theme = this.isDarkMode ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', this.isDarkMode);
+    // Save preference in localStorage so it persists
+    localStorage.setItem('theme', theme);
   }
 
 }

@@ -5,3 +5,44 @@
 .main-navbar {
     z-index: 26;
 }
+
+/* Smooth transition effect when switching between themes */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Simple Toggle Styling */
+#theme-toggle {
+    display: none;
+}
+
+#theme-toggle:checked+.dot {
+    transform: translateX(100%);
+}
+
+/* Add transitions for smooth change of toggle */
+input[type="checkbox"]:checked+.w-10 {
+    background-color: #4B5563;
+    /* Dark mode background */
+}
+
+input[type="checkbox"]:not(:checked)+.w-10 {
+    background-color: #E5E7EB;
+    /* Light mode background */
+}
+
+/* Optional: Add the toggle dot animation */
+.dot {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Global Styles */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+    background-color: #1a202c;
+    color: white;
+}
