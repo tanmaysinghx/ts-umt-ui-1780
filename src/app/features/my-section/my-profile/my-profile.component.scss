@@ -1,0 +1,5 @@
+/* Optional: Add soft transition and hover animation for buttons */
+.btn {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  

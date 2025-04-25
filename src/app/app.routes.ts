@@ -15,6 +15,7 @@ import { TermsConditionsReviewComponent } from './features/account-id-creation/t
 import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
 import { DashboardApplicationsComponent } from './features/dashboard/dashboard-applications/dashboard-applications.component';
+import { MyAccountComponent } from './features/my-section/my-account/my-account.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -27,7 +28,9 @@ export const routes: Routes = [
     { path: 'auth/reset-password', component: ResetPasswordComponent },
     { path: 'auth/otp-verification', component: OtpVerificationComponent },
 
+    //my-section urls
     { path: 'my-section/my-profile', component: MyProfileComponent },
+    { path: 'my-section/my-account', component: MyAccountComponent },
 
     //dashboard urls
     { path: 'dashboard/applications', component: DashboardApplicationsComponent },
