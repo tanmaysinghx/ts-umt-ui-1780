@@ -1,14 +1,18 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private readonly http: HttpClient) { }
+  private readonly loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  public isLoggedIn$: Observable<boolean> = this.loggedIn.asObservable();
+
+  constructor(private readonly http: HttpClient, private readonly router: Router) { }
 
   login(userEmailId: string, password: string): Observable<any> {
     let assetUrl = environment.ssoService + '/auth/login';
@@ -25,5 +29,20 @@ export class LoginService {
       "userEmail": emailId
     }
     return this.http.post(assetUrl, body);
+  }
+
+  private hasToken(): boolean {
+    return !!sessionStorage.getItem('token');
+  }
+
+  loginEvent(token: string) {
+    sessionStorage.setItem('token', token);
+    this.loggedIn.next(true);
+  }
+
+  logoutEvent() {
+    sessionStorage.clear();
+    this.loggedIn.next(false);
+    this.router.navigate(['/login']);
   }
 }

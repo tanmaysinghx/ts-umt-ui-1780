@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { Router } from '@angular/router';
+import { LoginService } from '../../features/auth/services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +21,7 @@ export class HeaderComponent {
   userRole: any = 'Username';
   userEmail: any = 'user@example.com';
 
-  constructor(private readonly sharedService: SharedService, private readonly router: Router) { }
+  constructor(private readonly sharedService: SharedService, private readonly router: Router, private readonly loginService: LoginService) { }
 
   ngOnInit() {
     this.getSessionStorage();
@@ -54,6 +54,8 @@ export class HeaderComponent {
 
   signOut() {
     sessionStorage.clear();
+    this.loginService.logoutEvent();
+
     this.router.navigate(['/auth/login']);
   }
 

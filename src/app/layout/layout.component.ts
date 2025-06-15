@@ -5,6 +5,7 @@ import { BreadcrumpComponent } from "../shared/breadcrump/breadcrump.component";
 import { SpeedUpDialComponent } from "../shared/speed-up-dial/speed-up-dial.component";
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../features/auth/services/login.service';
 
 @Component({
   selector: 'app-layout',
@@ -15,12 +16,17 @@ import { CommonModule } from '@angular/common';
 })
 export class LayoutComponent {
 
+  constructor(private readonly loginService: LoginService) { }
+
   loggedInFlag: any = false;
   sidebarOpen = true;
   isMobileView = false;
 
   ngOnInit() {
-    this.checkLoggedInFlag();
+    this.loginService.isLoggedIn$.subscribe((isLoggedIn) => {
+      this.loggedInFlag = isLoggedIn;
+    });
+    // this.checkLoggedInFlag();
     this.checkViewport();
   }
 

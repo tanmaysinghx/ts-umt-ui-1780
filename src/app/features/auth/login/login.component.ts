@@ -143,9 +143,7 @@ export class LoginComponent {
   navigateToDashboard() {
     this.openSnackbar("Login is successfull, you will be redirected to dashboard !!!", "success", 6000);
     setTimeout(() => {
-      this.sharedService.refreshHeader();
-      this.sharedService.refreshMenu();
-      this.sharedService.refreshMain();
+      this.loginService.loginEvent(sessionStorage.getItem("access-token") ?? "");
       this.router.navigate(["../dashboard/applications"]);
     }, 6000);
   }

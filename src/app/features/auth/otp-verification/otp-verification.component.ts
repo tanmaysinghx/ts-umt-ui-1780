@@ -5,6 +5,7 @@ import { OtpService } from '../services/otp.service';
 import { SnackbarDetailedComponent } from '../../../shared/snackbar/snackbar-detailed/snackbar-detailed.component';
 import { SharedService } from '../../../shared/services/shared.service';
 import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -30,6 +31,7 @@ export class OtpVerificationComponent {
     private readonly otpService: OtpService,
     private readonly sharedService: SharedService,
     private readonly router: Router,
+    private readonly loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -120,6 +122,7 @@ export class OtpVerificationComponent {
       this.sharedService.refreshHeader();
       this.sharedService.refreshMenu();
       this.sharedService.refreshMain();
+      this.loginService.loginEvent(sessionStorage.getItem("access-token") ?? "");
       this.router.navigate(["../dashboard/applications"]);
     }, 6000);
   }
