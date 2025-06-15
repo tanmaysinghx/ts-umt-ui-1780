@@ -1,0 +1,71 @@
+<!-- PC Layout (visible on sm and above) -->
+<div *ngIf="!isMobileView" class="app-container hidden sm:flex flex-col min-h-screen">
+    <!-- PC Header -->
+    <header class="app-header" *ngIf="loggedInFlag">
+        <app-header></app-header>
+    </header>
+
+    <!-- PC Logged In View -->
+    <div class="app-body" *ngIf="loggedInFlag">
+        <!-- Sidebar -->
+        <nav class="app-sidebar">
+            <app-side-nav></app-side-nav>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <div class="breadcrumbs">
+                <app-breadcrump></app-breadcrump>
+            </div>
+
+            <div class="main-content">
+                <router-outlet></router-outlet>
+            </div>
+
+            <div class="speed-dial">
+                <app-speed-up-dial></app-speed-up-dial>
+            </div>
+        </div>
+    </div>
+
+    <!-- PC Logged Out View -->
+    <div class="auth-view" *ngIf="!loggedInFlag">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<!-- Mobile Layout (only visible on small screens) -->
+<div *ngIf="isMobileView" class="sm:hidden flex flex-col min-h-screen">
+    <!-- Mobile Header -->
+    <div class="" *ngIf="loggedInFlag">
+        <header class="sticky top-0 z-50 bg-white shadow flex items-center justify-between px-4 h-14">
+            <button (click)="toggleSidebar()">☰</button>
+            <app-header></app-header>
+        </header>
+
+        <!-- Sidebar Backdrop -->
+        <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleSidebar()"></div>
+
+        <!-- Slide-in Sidebar -->
+        <aside
+            class="fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-white border-r shadow z-50 transform transition-transform duration-300"
+            [class.translate-x-0]="sidebarOpen" [class.-translate-x-full]="!sidebarOpen">
+            <app-side-nav></app-side-nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 pt-5 bg-gray-50 min-h-[calc(100vh-56px)]">
+            <app-breadcrump></app-breadcrump>
+            <div class="bg-white rounded shadow mt-2">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+    <div class="" *ngIf="!loggedInFlag">
+        <main class="flex-1 bg-gray-50 min-h-[calc(100vh-56px)]">
+            <div class="bg-white rounded shadow mt-2">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+</div>

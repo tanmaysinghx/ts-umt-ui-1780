@@ -1,3 +1,30 @@
-.menu-card {
-    margin-top: 56.5px !important;
+/* Smooth scrolling for menu */
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.dark .scroll-area {
+  scrollbar-color: #4a5568 #2d3748;
+}
+
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-area::-webkit-scrollbar-track {
+  background: #f7fafc;
+}
+
+.dark .scroll-area::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+.scroll-area::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 3px;
+}
+
+.dark .scroll-area::-webkit-scrollbar-thumb {
+  background-color: #4a5568;
 }

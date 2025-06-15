@@ -1,0 +1,116 @@
+/* Base Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Sticky Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* App Body */
+.app-body {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+/* Sidebar */
+.app-sidebar {
+  width: 250px;
+  height: calc(100vh - 64px);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  z-index: 1100;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  flex: 1;
+  padding: 20px;
+  margin-left: 250px;
+  min-height: calc(100vh - 64px);
+  transition: margin-left 0.3s ease;
+}
+
+/* Main Content */
+.main-content {
+  background: white;
+  border-radius: 8px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  margin-bottom: 12px;
+}
+
+/* Speed Dial */
+.speed-dial {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 950;
+}
+
+/* Logged Out View */
+.auth-view {
+  align-items: center;
+  justify-content: center;
+}
+
+/* MOBILE STYLES */
+@media (max-width: 992px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .content-wrapper {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .app-header {
+    padding: 0 12px;
+  }
+
+  .mobile-toggle-button {
+    display: block;
+  }
+}
+
+/* LARGE SCREEN HEADER CENTERING */
+@media (min-width: 1600px) {
+  .app-header > * {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+/* Hide mobile button on large screens */
+.mobile-toggle-button {
+  display: none;
+  background: none;
+  border: none;
+  padding: 8px;
+  font-size: 24px;
+  cursor: pointer;
+}

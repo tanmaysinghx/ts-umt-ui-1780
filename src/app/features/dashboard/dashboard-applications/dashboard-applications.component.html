@@ -1,5 +1,6 @@
 <div
     class="min-h-screen bg-gradient-to-b to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6">
+
     <!-- Search and Filter Section -->
     <div class="mb-6">
         <div class="flex items-center gap-4">
@@ -19,24 +20,51 @@
     <!-- Application Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <div *ngFor="let app of filterApplications()"
-            class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl">
+            class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl cursor-pointer"
+            (click)="launchApp(app)">
+            <!-- Loader Overlay -->
+            <div *ngIf="loadingAppId === app.id"
+                class="absolute inset-0 bg-white/70 dark:bg-gray-900/70 flex items-center justify-center z-10 rounded-2xl">
+                <div class="flex flex-col items-center gap-2">
+                    <svg class="animate-spin h-6 w-6 text-blue-600 dark:text-blue-400"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Launching...</span>
+                </div>
+            </div>
+
+            <!-- Card Content -->
             <div class="flex items-center justify-between mb-3">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.title }}</h2>
                 <span
-                    class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 font-medium px-2 py-1 rounded">{{
-                    app.version }}</span>
+                    class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 font-medium px-2 py-1 rounded">
+                    {{ app.version }}
+                </span>
             </div>
+
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ app.description }}</p>
+
             <div class="flex flex-wrap gap-2 text-xs mb-4">
                 <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300">{{
                     app.category }}</span>
                 <span
                     class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded dark:bg-yellow-900 dark:text-yellow-300">Critical</span>
             </div>
+
+            <!-- Dynamic Status -->
             <div class="flex items-center gap-2 mb-4">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="w-2 h-2 rounded-full" [ngClass]="{
+          'bg-green-500 animate-pulse': app.status === 'Running',
+          'bg-yellow-400': app.status === 'Starting...',
+          'bg-red-500': app.status === 'Failed to Launch',
+          'bg-gray-400': app.status === 'Not Running'
+        }"></span>
                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ app.status }}</span>
             </div>
+
             <div class="flex justify-between items-center mt-4">
                 <button
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 transition">
@@ -45,4 +73,5 @@
             </div>
         </div>
     </div>
+
 </div>

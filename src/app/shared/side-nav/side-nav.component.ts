@@ -58,4 +58,8 @@ export class SideNavComponent {
     this.router.navigate([url]);
   }
 
+  // Add this to your component class
+  toggleDropdown(item: any) {
+    item.isExpanded = !item.isExpanded;
+  }
 }

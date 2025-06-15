@@ -14,19 +14,16 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  loggedInFlag: boolean = false;
-  loggedInUsername: any;
-  loggedInEmailId: any;
-  accessToken: any;
-  isDarkMode = false;
-  userGroup: any;
-
-  private subscription: Subscription = new Subscription;
+  isSidebarOpen: boolean = false;
+  isDarkMode: boolean = false;
+  isUserMenuOpen: boolean = false;
+  userProfileImage: string = 'https://flowbite.com/docs/images/people/profile-picture-5.jpg';
+  userRole: any = 'Username';
+  userEmail: any = 'user@example.com';
 
   constructor(private readonly sharedService: SharedService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.detectLogin();
     this.getSessionStorage();
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -35,43 +32,11 @@ export class HeaderComponent {
     }
   }
 
-  detectLogin() {
-    this.subscription = this.sharedService.headerState$.subscribe(state => {
-      if (state) {
-        this.refreshHeader();
-      }
-    });
-  }
-
   getSessionStorage() {
-    this.loggedInUsername = sessionStorage.getItem("user-name");
-    this.loggedInEmailId = sessionStorage.getItem("user-email");
-    this.accessToken = sessionStorage.getItem("access-token");
-    let userGroupNumber = sessionStorage.getItem("user-role-id");
-    if (userGroupNumber == "0004") {
-      this.userGroup = "Admin";
-    } else if (userGroupNumber == "0005") {
-      this.userGroup = "User";
-    } else if (userGroupNumber == "3") {
-      this.userGroup = "Guest";
-    } else {
-      this.userGroup = "Unknown";
-    }
-    if (this.accessToken != null) {
-      this.loggedInFlag = true;
-    }
+    this.userEmail = sessionStorage?.getItem('user-email') ?? null;
+    this.userRole = sessionStorage?.getItem('user-role')?.toUpperCase() ?? null;
   }
 
-  refreshHeader() {
-    console.log("header");
-    this.getSessionStorage();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  /* Method to toggle between light and dark mode */
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     const theme = this.isDarkMode ? 'dark' : 'light';
@@ -79,8 +44,17 @@ export class HeaderComponent {
     localStorage.setItem('theme', theme);
   }
 
-  navigateToProfile() {
-    this.router.navigate(['/my-section/my-profile']);
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  toggleUserMenu() {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  signOut() {
+    sessionStorage.clear();
+    this.router.navigate(['/auth/login']);
   }
 
 }

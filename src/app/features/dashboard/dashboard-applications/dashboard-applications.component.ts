@@ -13,21 +13,11 @@ export class DashboardApplicationsComponent {
   searchQuery = '';
   selectedCategory = '';
   darkMode: boolean = localStorage.getItem('theme') === 'dark';
+  loadingAppId: string | null = null;
 
   appData = [
-    { title: 'VDI Desktop', version: 'v2.3.1', description: 'Launch your secure virtual desktop environment', category: 'dev-tools', status: 'Running' },
-    { title: 'Ticketing App', version: 'v1.9.0', description: 'Track and resolve tickets', category: 'tickets', status: 'Running' },
-    { title: 'Jira Board', version: 'v3.1.0', description: 'Manage your Jira board tasks', category: 'infra', status: 'Down' },
-    { title: 'Code Repository', version: 'v4.2.0', description: 'Git-based source code management', category: 'dev-tools', status: 'Running' },
-    { title: 'CI/CD Pipeline', version: 'v1.5.3', description: 'Continuous integration and deployment', category: 'devops', status: 'Running' },
-    { title: 'Monitoring Dashboard', version: 'v2.0.4', description: 'Real-time system performance monitoring', category: 'monitoring', status: 'Running' },
-    { title: 'Database Manager', version: 'v3.7.2', description: 'Manage and query databases', category: 'database', status: 'Degraded' },
-    { title: 'Auth Gateway', version: 'v1.2.1', description: 'Single sign-on and authentication service', category: 'security', status: 'Running' },
-    { title: 'File Storage', version: 'v5.1.0', description: 'Cloud-based file storage solution', category: 'storage', status: 'Maintenance' },
-    { title: 'API Gateway', version: 'v2.8.0', description: 'Manage and route API requests', category: 'networking', status: 'Running' },
-    { title: 'Log Analyzer', version: 'v1.0.3', description: 'Centralized log collection and analysis', category: 'monitoring', status: 'Down' },
-    { title: 'Kubernetes Cluster', version: 'v1.22.5', description: 'Container orchestration platform', category: 'devops', status: 'Running' }
-];
+    { id: "1", title: 'Ticketing App', version: 'v1.1.0', description: 'Track and resolve tickets', category: 'tickets', status: 'Not Running' },
+  ];
 
   filterApplications() {
     return this.appData.filter(app =>
@@ -46,4 +36,37 @@ export class DashboardApplicationsComponent {
       document.documentElement.classList.remove('dark');
     }
   }
+
+  launchApp(app: any) {
+    if (this.loadingAppId) return;
+
+    this.loadingAppId = app.id;
+    app.status = 'Starting...';
+
+    const accessToken = sessionStorage.getItem('access-token');
+    const refreshToken = sessionStorage.getItem('refresh-token');
+
+    if (!accessToken || !refreshToken) {
+      console.error('Tokens not found in localStorage');
+      app.status = 'Failed to Launch';
+      this.loadingAppId = null;
+      return;
+    }
+
+    const url = `http://localhost:1725/sso?token=${encodeURIComponent(accessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
+    console.log(`Launching app with URL: ${url}`);
+
+    setTimeout(() => {
+      const success = true;
+      app.status = success ? 'Running' : 'Failed to Launch';
+      this.loadingAppId = null;
+    }, 4000);
+
+    setTimeout(() => {
+      if (app.status === 'Running') {
+        window.open(url, '_blank');
+      }
+    }, 6000);
+  }
+
 }

@@ -1,24 +1,73 @@
-.header-section {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+/* Base Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
 }
 
-.side-nav-section {
-    position: sticky;
-    left: 0;
-    z-index: 1000;
+/* Sticky Header - FIXED */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
-.main-section {
-    margin-left: 252px;
+/* Main Body */
+.app-body {
+  display: flex;
+  flex: 1;
+  margin-top: 64px; /* Push content below fixed header */
 }
 
-.breadcrump-section {
-    margin-top: 10px;
-    margin-left: 270px;
+/* Sidebar - FIXED */
+.app-sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  background: white;
+  z-index: 900;
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
 }
 
-.speed-up-dial-section {
-    z-index: 10000;;
+/* Content Wrapper */
+.content-wrapper {
+  flex: 1;
+  margin-left: 250px; /* Match sidebar width */
+  padding: 20px;
+  min-height: calc(100vh - 64px);
+}
+
+/* Main Content */
+.main-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  margin-bottom: 20px;
+}
+
+/* Speed Dial */
+.speed-dial {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+}
+
+/* Auth View */
+.auth-view {
+  width: 100%;
+  min-height: 100vh;
 }
