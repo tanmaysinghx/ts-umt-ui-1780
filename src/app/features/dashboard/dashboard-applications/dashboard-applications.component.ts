@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonService } from '../../services/common.service';
+import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard-applications',
@@ -15,9 +17,21 @@ export class DashboardApplicationsComponent {
   darkMode: boolean = localStorage.getItem('theme') === 'dark';
   loadingAppId: string | null = null;
 
-  appData = [
-    { id: "1", title: 'Ticketing App', version: 'v1.1.0', description: 'Track and resolve tickets', category: 'tickets', status: 'Not Running' },
-  ];
+  appData: any[] = [];
+
+  constructor(private readonly commonService: CommonService, private readonly dashboardService: DashboardService) { }
+
+  ngOnInit() {
+    this.getApplicationList();
+  }
+
+  getApplicationList() {
+    this.dashboardService.getApplications().subscribe((data: any) => {
+      if (data) {
+        this.appData = data;
+      }
+    });
+  }
 
   filterApplications() {
     return this.appData.filter(app =>
@@ -47,26 +61,54 @@ export class DashboardApplicationsComponent {
     const refreshToken = sessionStorage.getItem('refresh-token');
 
     if (!accessToken || !refreshToken) {
-      console.error('Tokens not found in localStorage');
       app.status = 'Failed to Launch';
       this.loadingAppId = null;
       return;
     }
 
-    const url = `http://localhost:1725/sso?token=${encodeURIComponent(accessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
-    console.log(`Launching app with URL: ${url}`);
+    app.status = 'Verifying JWT Token...';
 
-    setTimeout(() => {
-      const success = true;
-      app.status = success ? 'Running' : 'Failed to Launch';
-      this.loadingAppId = null;
-    }, 4000);
+    this.commonService.checkJWTTokenIsValid(accessToken).subscribe((isValid: boolean) => {
+      if (isValid) {
+        const url = app.appUrl + `${encodeURIComponent(accessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
 
-    setTimeout(() => {
-      if (app.status === 'Running') {
-        window.open(url, '_blank');
+        setTimeout(() => {
+          app.status = 'Running';
+          this.loadingAppId = null;
+        }, 4000);
+
+        setTimeout(() => {
+          if (app.status === 'Running') {
+            window.open(url, '_blank');
+          }
+        }, 6000);
+
+      } else {
+        app.status = 'Generating new JWT Token...';
+
+        this.commonService.generateJWTTokenBasedOnRefreshToken(refreshToken).subscribe((data: any) => {
+          if (data?.success) {
+            const newAccessToken = data?.data?.accessToken;
+            sessionStorage.setItem('access-token', newAccessToken);
+
+            const url = app.appUrl + `${encodeURIComponent(newAccessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
+
+            app.status = 'Running';
+            this.loadingAppId = null;
+
+            setTimeout(() => {
+              window.open(url, '_blank');
+            }, 1000);
+
+          } else {
+            app.status = 'Failed to Launch';
+            this.loadingAppId = null;
+          }
+        });
       }
-    }, 6000);
+    });
   }
-
 }
+
+
+

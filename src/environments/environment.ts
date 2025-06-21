@@ -8,7 +8,8 @@
     ssoService: 'http://localhost:1605/1625/auth-service/v2/api',
     umtService: 'http://localhost:1605/1689/notification-service',
     apiGatewayService: 'https://ts-api-gateway-service-1605-z7txd.ondigitalocean.app/',
-    ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/'
+    ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/',
+    tsAuthService: 'http://localhost:1625/v2/api/auth/',
   };
   
   /*

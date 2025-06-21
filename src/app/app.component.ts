@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { SharedService } from './shared/services/shared.service';
 import { UiTestingService } from './features/services/ui-testing.service';
@@ -10,14 +9,16 @@ import { OtpService } from './features/auth/services/otp.service';
 import { CookieService } from 'ngx-cookie-service';
 import { RegisterService } from './features/auth/services/register.service';
 import { LayoutComponent } from "./layout/layout.component";
+import { CommonService } from './features/services/common.service';
+import { DashboardService } from './features/dashboard/services/dashboard.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, CommonModule, LayoutComponent],
+  imports: [HttpClientModule, CommonModule, LayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService, RegisterService]
+  providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService, RegisterService, CommonService, DashboardService]
 })
 export class AppComponent {
   title = 'ts-umt-ui-1780';

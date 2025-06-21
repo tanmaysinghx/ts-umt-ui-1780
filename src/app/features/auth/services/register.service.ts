@@ -8,10 +8,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegisterService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   registerUser(payload: any): Observable<any> {
-    let assetUrl = environment.ssoProdService + 'auth/register';
+    let assetUrl = environment.tsAuthService + 'register';
     return this.http.post(assetUrl, payload);
   }
 }

@@ -20,7 +20,7 @@ export class RegisterComponent {
   snackbarDuration: any;
   snackbarFlag: boolean = false;
 
-  constructor(private registerService: RegisterService) { }
+  constructor(private readonly registerService: RegisterService) { }
 
   ngOnInit() {
     this.createRegisterForm();

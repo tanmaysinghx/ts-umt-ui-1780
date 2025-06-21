@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "title": "Ticketing App",
+        "version": "v1.0.0",
+        "description": "Track and resolve tickets",
+        "category": "tickets",
+        "status": "Not Running",
+        "appUrl": "http://localhost:1725/sso?token="
+    },
+    {
+        "id": "2",
+        "title": "Kanban Board",
+        "version": "v1.0.5",
+        "description": "Manage tasks visually",
+        "category": "kanban",
+        "status": "Not Running",
+        "appUrl": "https://kanban-angular-ten.vercel.app?token="
+    }
+]
