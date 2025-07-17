@@ -6,6 +6,7 @@ import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../shared/services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
+import { CryptoService } from '../../../shared/services/crypto.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class LoginComponent {
 
   ngOnInit() {
     this.createLoginForm();
-    this.getCookies();
+    if (localStorage.getItem("rememberMeFlag") == "Y") { this.getFormDataFromLocalStorage() }
   }
 
   createLoginForm() {
@@ -57,8 +58,16 @@ export class LoginComponent {
     this.loginForm = new FormGroup({
       userEmailId: new FormControl(email, [Validators.required, Validators.email]),
       userPassword: new FormControl(password, Validators.required),
-      rememberMe: new FormControl()
+      rememberMe: new FormControl(true)
     });
+  }
+
+  getFormDataFromLocalStorage() {
+    const emailEncrypted = localStorage.getItem('rememberedEmail');
+    const passwordEncrypted = localStorage.getItem('rememberedPassword');
+    if (emailEncrypted && passwordEncrypted) {
+      this.setFormData(CryptoService.decrypt(emailEncrypted), CryptoService.decrypt(passwordEncrypted));
+    }
   }
 
   submitForm() {
@@ -69,16 +78,36 @@ export class LoginComponent {
     }
     if (this.loginForm?.status == "VALID") {
       this.createLoginPayload();
-      this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
-        if (data.success) {
-          this.setSessionStorage(data);
-          this.setCookies();
-          this.checkBrowserTrustFlag(this.loginFormPayload.email);
-        }
-      }, (error) => {
-        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
-        this.openSnackbar(err, "danger", 6000);
-      })
+      if (this.loginForm.value.rememberMe) { this.rememberMe() }
+      let browserTrustStatus = this.checkBrowserTrustFlag(this.loginFormPayload.email) ?? false;
+      if (browserTrustStatus) {
+        /* Will call a workflow without otp  -- todo */
+        this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
+          if (data.success) {
+            if (data?.otpGenerated) {
+              this.navigateToOtpVerification(data?.transactionId);
+            }
+          }
+        }, (error) => {
+          let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
+          this.openSnackbar(err, "danger", 5000);
+        })
+        /* to do */
+      } else {
+        this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
+          if (data.success) {
+            if (data?.otpGenerated) {
+              this.navigateToOtpVerification(data?.transactionId);
+            } else if (!data?.otpGenerated) {
+              this.setSessionStorage(data);
+            }
+          }
+        }, (error) => {
+          let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
+          this.openSnackbar(err, "danger", 5000);
+        })
+      }
+
     }
   }
 
@@ -99,18 +128,18 @@ export class LoginComponent {
     }
   }
 
-  checkBrowserTrustFlag(email: string) {
+  checkBrowserTrustFlag(email: string): Boolean {
     let flagValue = localStorage.getItem("browser-trust-flag");
     let trustedEmails = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
     if (flagValue === null) {
       this.browserTrustFlag = false;
-      this.navigateToOtpVerification();
+      return false;
     } else if (flagValue === "trusted" && trustedEmails.includes(email)) {
       this.browserTrustFlag = true;
-      this.navigateToDashboard();
+      return true;
     } else {
       this.browserTrustFlag = false;
-      this.navigateToOtpVerification();
+      return false;
     }
   }
 
@@ -122,41 +151,29 @@ export class LoginComponent {
     sessionStorage.setItem("user-role-id", data?.data?.roleId);
   }
 
-  setCookies() {
-    let flag = this.loginForm.controls['rememberMe'].value;
-    if (flag) {
-      this.cookieService.set('user-email', this.loginFormPayload.email, 7);
-      this.cookieService.set('user-password', this.loginFormPayload.password, 7);
-    }
-  }
-
-  getCookies() {
-    let userEmail = this.cookieService.get('user-email');
-    let userPassword = this.cookieService.get('user-password');
-    this.setFormData(userEmail, userPassword);
-  }
-
   navigateToRegister() {
     this.router.navigate(["../auth/register"]);
   }
 
   navigateToDashboard() {
-    this.openSnackbar("Login is successfull, you will be redirected to dashboard !!!", "success", 6000);
+    this.openSnackbar("Login is successfull, you will be redirected to dashboard !!!", "success", 5000);
     setTimeout(() => {
       this.loginService.loginEvent(sessionStorage.getItem("access-token") ?? "");
       this.router.navigate(["../dashboard/applications"]);
-    }, 6000);
+    }, 5000);
   }
 
-  navigateToOtpVerification() {
-    this.openSnackbar("OTP is generated succesfully, you will be redirected to OTP verification page !!!", "info", 6000);
+  navigateToOtpVerification(transactionId: any) {
+    this.openSnackbar("OTP is generated succesfully, you will be redirected to OTP verification page !!!", "info", 5000);
     setTimeout(() => {
       this.router.navigate(["../auth/otp-verification"], {
         state: {
           rememberMeFlag: this.loginForm.controls['rememberMe'].value,
+          transactionId: transactionId,
+          emailId: this.loginForm.controls['userEmailId'].value,
         }
       });
-    }, 6000);
+    }, 5000);
   }
 
   openSnackbar(message: any, type: any, duration: any) {
@@ -167,6 +184,17 @@ export class LoginComponent {
     setTimeout(() => {
       this.snackbarFlag = false;
     }, duration);
+  }
+
+  rememberMe() {
+    localStorage.setItem("rememberMeFlag", "Y");
+    const encryptedEmail = CryptoService.encrypt(this.loginForm.controls['userEmailId'].value);
+    const encryptedPassword = CryptoService.encrypt(this.loginForm.controls['userPassword'].value);
+    localStorage.setItem("rememberedEmail", encryptedEmail);
+    localStorage.setItem("rememberedPassword", encryptedPassword);
+    let trustedEmailsArray = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
+    trustedEmailsArray.push(this.loginForm.controls['userEmailId'].value);
+    localStorage.setItem("trusted-emails", JSON.stringify(trustedEmailsArray));
   }
 
 }

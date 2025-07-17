@@ -6,6 +6,7 @@ import { SnackbarDetailedComponent } from '../../../shared/snackbar/snackbar-det
 import { SharedService } from '../../../shared/services/shared.service';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
+import { CryptoService } from '../../../shared/services/crypto.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -26,6 +27,8 @@ export class OtpVerificationComponent {
   snackbarFlag: boolean = false;
   rememberMeFlag: boolean = false;
   otpLength = 6;
+  transactionId: any;
+  emailId: any;
 
   constructor(
     private readonly otpService: OtpService,
@@ -35,36 +38,16 @@ export class OtpVerificationComponent {
   ) { }
 
   ngOnInit() {
-    this.generateOtp();
     this.getDataFromState();
     this.createOtpForm();
-  }
-
-  generateOtp() {
-    let emailId = sessionStorage.getItem("user-email");
-    let requestBody = {
-      "gearId": "1625",
-      "scenarioId": "00002",
-      "userEmail": emailId,
-      "emailOTP": true,
-      "mobileOTP": false
-    }
-    this.otpService.generateOtp(requestBody).subscribe((data) => {
-      if (data.success) {
-        this.openSnackbar("OTP generation is successfull, otp will be valid for 10 mins", "success", 6000);
-      }
-    },
-      (error) => {
-        let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.message;
-        console.log(error);
-        this.openSnackbar(err, "danger", 6000);
-      })
   }
 
   getDataFromState() {
     const state = window?.history?.state;
     if (state) {
       this.rememberMeFlag = state?.rememberMeFlag ?? false;
+      this.transactionId = state?.transactionId;
+      this.emailId = state?.emailId ?? CryptoService.decrypt(localStorage.getItem("rememberedEmail") || "");
     }
   }
 
@@ -88,13 +71,16 @@ export class OtpVerificationComponent {
 
   submitOtp() {
     this.createOtpPayload();
-    let emailId = sessionStorage.getItem("user-email");
-    this.otpService.verifyOtp(emailId, this.otpFormPayload.otp).subscribe((data) => {
-      console.log(data);
+    this.otpService.verifyOtp(this.emailId, this.otpFormPayload.otp).subscribe((data) => {
       if (data.success) {
-        if (this.rememberMeFlag) {
-          this.setBrowserTrustFlag(emailId);
-        }
+        // if (this.rememberMeFlag) {
+        //   this.setBrowserTrustFlag(emailId);
+        // }
+        this.otpService.resumeWorklflow(this.transactionId).subscribe((data) => {
+          if (data.success) {
+            this.setSessionStorage(data);
+          }
+        })
         this.navigateToDashboard();
       } else if (!data.success) {
         this.openSnackbar("OTP is incorrect", "danger", 6000);
@@ -105,6 +91,15 @@ export class OtpVerificationComponent {
         console.log(error);
         this.openSnackbar(err, "danger", 6000);
       })
+  }
+
+  setSessionStorage(data: any) {
+    console.log(data);
+    sessionStorage.setItem("access-token", data?.data?.downstreamResponse?.microserviceResponse?.data?.accessToken);
+    sessionStorage.setItem("refresh-token", data?.data?.downstreamResponse?.microserviceResponse?.data?.refreshToken);
+    sessionStorage.setItem("user-email", data?.data?.downstreamResponse?.microserviceResponse?.data?.email);
+    sessionStorage.setItem("user-role", data?.data?.downstreamResponse?.microserviceResponse?.data?.roleName);
+    sessionStorage.setItem("user-role-id", data?.data?.downstreamResponse?.microserviceResponse?.data?.roleId);
   }
 
   setBrowserTrustFlag(email: any) {

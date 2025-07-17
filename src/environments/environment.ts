@@ -6,10 +6,11 @@
     production: false,
     cmsUrl: 'http://localhost:1780/',
     ssoService: 'http://localhost:1605/1625/auth-service/v2/api',
-    umtService: 'http://localhost:1605/1689/notification-service',
-    apiGatewayService: 'https://ts-api-gateway-service-1605-z7txd.ondigitalocean.app/',
+    notificationService: 'http://localhost:1689',
     ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/',
     tsAuthService: 'http://localhost:1625/v2/api/auth/',
+    apiGatewayService: 'http://localhost:1605/api-gateway',  // API Gateway Service Endpoint
+    SECRET_KEY: 'your-secret-key-123',
   };
   
   /*

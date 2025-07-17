@@ -11,7 +11,7 @@ export class OtpService {
   constructor(private readonly http: HttpClient) { }
 
   verifyOtp(userEmailId: any, otp: any): Observable<any> {
-    let assetUrl = environment.umtService + '/v2/api/notifications/verify-otp';
+    let assetUrl = environment.notificationService + '/v2/api/notifications/verify-otp';
     let body = {
       "email": userEmailId,
       "otpCode": otp
@@ -19,8 +19,8 @@ export class OtpService {
     return this.http.post(assetUrl, body);
   }
 
-  generateOtp(requestBody: any): Observable<any> {
-    let assetUrl = environment.umtService + '/v2/api/notifications/send';
-    return this.http.post(assetUrl, requestBody);
+  resumeWorklflow(transactionId: any): Observable<any> {
+    let assetUrl = environment.apiGatewayService + '/resume-workflow/' + transactionId;
+    return this.http.get(assetUrl);
   }
 }

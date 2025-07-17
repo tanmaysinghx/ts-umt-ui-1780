@@ -15,7 +15,7 @@ export class LoginService {
   constructor(private readonly http: HttpClient, private readonly router: Router) { }
 
   login(userEmailId: string, password: string): Observable<any> {
-    let assetUrl = environment.ssoService + '/auth/login';
+    let assetUrl = environment.apiGatewayService + '/1625/v2/api/auth/login';
     let body = {
       "email": userEmailId,
       "password": password
@@ -24,7 +24,7 @@ export class LoginService {
   }
 
   generateOtp(emailId: any): Observable<any> {
-    let assetUrl = environment.umtService + '/v2/api/notifications/send';
+    let assetUrl = environment.notificationService + '/v2/api/notifications/send';
     let body = {
       "userEmail": emailId
     }
