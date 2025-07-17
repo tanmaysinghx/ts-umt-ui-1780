@@ -22,12 +22,12 @@ export class CommonService {
   }
 
   verifyJWTToken(token: string): Observable<any> {
-    const assetUrl = environment.tsAuthService + 'verify/verify-token';
+    const assetUrl = environment.apiGatewayService + '/1625/v2/api/auth/verify/verify-token';
     return this.http.post(assetUrl, { token });
   }
 
   generateJWTTokenBasedOnRefreshToken(refreshToken: string): Observable<any> {
-    const assetUrl = environment.tsAuthService + 'refresh-token';
+    const assetUrl = environment.apiGatewayService + '/1625/v2/api/auth/refresh-token';
     return this.http.post(assetUrl, { refreshToken });
   }
 }
