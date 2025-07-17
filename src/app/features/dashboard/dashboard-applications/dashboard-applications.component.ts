@@ -88,7 +88,7 @@ export class DashboardApplicationsComponent {
 
         this.commonService.generateJWTTokenBasedOnRefreshToken(refreshToken).subscribe((data: any) => {
           if (data?.success) {
-            const newAccessToken = data?.data?.accessToken;
+            const newAccessToken = data?.data?.downstreamResponse?.microserviceResponse?.data?.accessToken;
             sessionStorage.setItem('access-token', newAccessToken);
 
             const url = app.appUrl + `${encodeURIComponent(newAccessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
