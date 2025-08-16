@@ -4,7 +4,10 @@ FROM node:18 AS builder
 WORKDIR /app
 
 COPY package*.json ./
+
+# Install project dependencies and Angular CLI globally
 RUN npm install
+RUN npm install -g @angular/cli
 
 COPY . .
 RUN npm run build --configuration=production
