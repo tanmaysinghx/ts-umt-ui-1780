@@ -12,14 +12,15 @@ RUN npm run build --configuration=production
 # Step 2: Serve it using Nginx
 FROM nginx:alpine
 
-# Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the built app from step 1
-COPY --from=builder /app/dist/ts-umt-ui-1780/browser /usr/share/nginx/html
+# For standard Angular SPA (no SSR)
+COPY --from=builder /app/dist/ts-umt-ui-1780 /usr/share/nginx/html
 
+# For Angular SSR (if you use server build)
+# COPY --from=builder /app/dist/ts-umt-ui-1780/browser /usr/share/nginx/html
 
-# Copy custom nginx config if you want (optional)
+# Copy custom nginx.conf if you want (for SPA route fallback)
 # COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
