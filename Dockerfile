@@ -9,8 +9,8 @@ RUN npm run build --configuration=production
 # Step 2: Serve it with Nginx
 FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
-COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/dist/ts-umt-ui-1780/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Optional: If you have SPA routing, add nginx.conf for fallback
 # COPY nginx.conf /etc/nginx/nginx.conf
