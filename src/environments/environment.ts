@@ -11,6 +11,7 @@
     tsAuthService: 'http://localhost:1625/v2/api/auth/',
     apiGatewayService: 'http://localhost:1605/api-gateway',  // API Gateway Service Endpoint
     SECRET_KEY: 'your-secret-key-123',
+    region: 'docker'
   };
   
   /*

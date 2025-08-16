@@ -81,25 +81,29 @@ export class LoginComponent {
       if (this.loginForm.value.rememberMe) { this.rememberMe() }
       let browserTrustStatus = this.checkBrowserTrustFlag(this.loginFormPayload.email) ?? false;
       if (browserTrustStatus) {
-        /* Will call a workflow without otp  -- todo */
         this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
           if (data.success) {
-            if (data?.otpGenerated) {
+            if (data?.configSummary?.otpFlow) {
               this.navigateToOtpVerification(data?.transactionId);
+            } else if (!data?.configSummary?.otpFlow) {
+              this.setSessionStorage(data.data.downstreamResponse.data);
+              this.setLocalStorage(data.data.downstreamResponse.data);
+              this.navigateToDashboard();
             }
           }
         }, (error) => {
           let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
           this.openSnackbar(err, "danger", 5000);
         })
-        /* to do */
       } else {
         this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
           if (data.success) {
-            if (data?.otpGenerated) {
+            if (data?.configSummary?.otpFlow) {
               this.navigateToOtpVerification(data?.transactionId);
-            } else if (!data?.otpGenerated) {
-              this.setSessionStorage(data);
+            } else if (!data?.configSummary?.otpFlow) {
+              this.setSessionStorage(data.data.downstreamResponse.data);
+              this.setLocalStorage(data.data.downstreamResponse.data);
+              this.navigateToDashboard();
             }
           }
         }, (error) => {
@@ -144,11 +148,16 @@ export class LoginComponent {
   }
 
   setSessionStorage(data: any) {
-    sessionStorage.setItem("access-token", data?.data?.accessToken);
-    sessionStorage.setItem("refresh-token", data?.data?.refreshToken);
-    sessionStorage.setItem("user-email", data?.data?.email);
-    sessionStorage.setItem("user-role", data?.data?.roleName);
-    sessionStorage.setItem("user-role-id", data?.data?.roleId);
+    sessionStorage.setItem("access-token", data?.accessToken);
+    sessionStorage.setItem("refresh-token", data?.refreshToken);
+    sessionStorage.setItem("user-email", data?.email);
+    sessionStorage.setItem("user-role", data?.roleName);
+    sessionStorage.setItem("user-role-id", data?.roleId);
+  }
+
+  setLocalStorage(data: any) {
+    localStorage.setItem("access-token", data?.accessToken);
+    localStorage.setItem("refresh-token", data?.refreshToken);
   }
 
   navigateToRegister() {
