@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonService } from '../../services/common.service';
 import { DashboardService } from '../services/dashboard.service';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-applications',
@@ -11,7 +12,8 @@ import { DashboardService } from '../services/dashboard.service';
   templateUrl: './dashboard-applications.component.html',
   styleUrl: './dashboard-applications.component.scss'
 })
-export class DashboardApplicationsComponent {
+
+export class DashboardApplicationsComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
   darkMode: boolean = localStorage.getItem('theme') === 'dark';
@@ -70,7 +72,7 @@ export class DashboardApplicationsComponent {
 
     this.commonService.checkJWTTokenIsValid(accessToken).subscribe((isValid: boolean) => {
       if (isValid) {
-        const url = app.appUrl + `${encodeURIComponent(accessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
+        const url = app.appUrl + `${encodeURIComponent(accessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}&userEmail=${encodeURIComponent(sessionStorage.getItem('user-email') || '')}`;
 
         setTimeout(() => {
           app.status = 'Running';
@@ -91,7 +93,7 @@ export class DashboardApplicationsComponent {
             const newAccessToken = data?.data?.downstreamResponse?.microserviceResponse?.data?.accessToken;
             sessionStorage.setItem('access-token', newAccessToken);
 
-            const url = app.appUrl + `${encodeURIComponent(newAccessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}`;
+            const url = app.appUrl + `${encodeURIComponent(newAccessToken)}&refreshtoken=${encodeURIComponent(refreshToken)}&userEmail=${encodeURIComponent(data?.data?.downstreamResponse?.microserviceResponse?.data?.email)}`;
 
             app.status = 'Running';
             this.loadingAppId = null;
