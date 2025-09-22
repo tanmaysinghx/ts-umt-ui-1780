@@ -134,26 +134,27 @@ export class DashboardApplicationsComponent implements OnInit {
   }
 
   private openApp(app: any, accessToken: string, refreshToken: string, email: string) {
-    let url: string;
-    if (app.appUrl.includes('token=')) {
-      url = app.appUrl.replace(/token=[^&]*/, `token=${encodeURIComponent(accessToken)}`);
-    } else {
-      const separator = app.appUrl.includes('?') ? '&' : '?';
-      url =
-        app.appUrl +
-        `${separator}accessToken=${encodeURIComponent(accessToken)}&refreshToken=${encodeURIComponent(refreshToken)}&userEmail=${encodeURIComponent(email)}`;
+  let baseUrl = app.appUrl.replace(/([?&])(token|accessToken|refreshToken|userEmail)=[^&]*/g, '');
+  baseUrl = baseUrl.replace(/[?&]$/, '');
+  const separator = baseUrl.includes('?') ? '&' : '?';
+  const url =
+    baseUrl +
+    `${separator}accessToken=${encodeURIComponent(accessToken)}&refreshToken=${encodeURIComponent(
+      refreshToken
+    )}&userEmail=${encodeURIComponent(email)}`;
+  console.log('Final App URL:', url);
+  app.status = 'Preparing to Launch...';
+  setTimeout(() => {
+    app.status = 'Running';
+    this.loadingAppId = null;
+  }, 2000);
+  setTimeout(() => {
+    if (app.status === 'Running') {
+      window.open(url, '_blank');
     }
-    app.status = 'Preparing to Launch...';
-    setTimeout(() => {
-      app.status = 'Running';
-      this.loadingAppId = null;
-    }, 2000);
-    setTimeout(() => {
-      if (app.status === 'Running') {
-        window.open(url, '_blank');
-      }
-    }, 4000);
-  }
+  }, 4000);
+}
+
 
   private handleLaunchFailure(app: any, message: string) {
     app.status = message;
