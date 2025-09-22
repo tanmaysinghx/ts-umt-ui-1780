@@ -23,14 +23,14 @@ export class CommonService {
 
   verifyJWTToken(token: string): Observable<any> {
     const assetUrl = environment.apiGatewayService + '/1625/v2/api/auth/verify/verify-token?workflowCode=16250005&region=docker&apiVersion=v1&method=POST';
-    const email = sessionStorage.getItem('user-email') || '';
+    const email = localStorage.getItem('user-email');
     const body = { "email": email, "token": token };
     return this.http.post(assetUrl, body);
   }
 
   generateJWTTokenBasedOnRefreshToken(refreshToken: string): Observable<any> {
     const assetUrl = environment.apiGatewayService + '/1625/v2/api/auth/refresh-token?workflowCode=16250004&region=docker&apiVersion=v1&method=POST';
-    const email = sessionStorage.getItem('user-email') || '';
+    const email = localStorage.getItem('user-email');
     const body = { "email": email, "refreshToken": refreshToken };
     return this.http.post(assetUrl, body);
   }

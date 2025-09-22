@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SnackbarDetailedComponent } from '../../../shared/snackbar/snackbar-detailed/snackbar-detailed.component';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,58 +7,64 @@ import { Router } from '@angular/router';
 import { SharedService } from '../../../shared/services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CryptoService } from '../../../shared/services/crypto.service';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [SnackbarDetailedComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-  providers: []
+  styleUrls: ['./login.component.scss']
 })
-
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   snackbarMessage: any;
   snackbarType: any;
   snackbarDuration: any;
-  snackbarFlag: boolean = false;
+  snackbarFlag = false;
   loginForm!: FormGroup;
   loginFormPayload: any;
-  browserTrustFlag: boolean = false;
+  browserTrustFlag = false;
 
   constructor(
     private readonly loginService: LoginService,
     private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
     private readonly sharedService: SharedService,
-    private readonly cookieService: CookieService
+    private readonly cookieService: CookieService,
+    private readonly commonService: CommonService
   ) { }
 
   ngOnInit() {
     this.createLoginForm();
-    if (localStorage.getItem("rememberMeFlag") == "Y") { this.getFormDataFromLocalStorage() }
+    const refreshToken = this.cookieService.get('refresh-token');
+    if (refreshToken) {
+      this.generateNewJWTToken(refreshToken);
+    }
+    if (localStorage.getItem('rememberMeFlag') === 'Y') {
+      this.getFormDataFromLocalStorage();
+    }
   }
 
   createLoginForm() {
     this.loginForm = new FormGroup({
       userEmailId: new FormControl('', [Validators.required, Validators.email]),
       userPassword: new FormControl('', Validators.required),
-      rememberMe: new FormControl()
+      rememberMe: new FormControl(false)
     });
   }
 
   createLoginPayload() {
     this.loginFormPayload = {
-      "email": this.loginForm.controls['userEmailId'].value,
-      "password": this.loginForm.controls['userPassword'].value
-    }
+      email: this.loginForm.controls['userEmailId'].value,
+      password: this.loginForm.controls['userPassword'].value
+    };
   }
 
   setFormData(email: any, password: any) {
-    this.loginForm = new FormGroup({
-      userEmailId: new FormControl(email, [Validators.required, Validators.email]),
-      userPassword: new FormControl(password, Validators.required),
-      rememberMe: new FormControl(true)
+    this.loginForm.setValue({
+      userEmailId: email,
+      userPassword: password,
+      rememberMe: true
     });
   }
 
@@ -66,123 +72,125 @@ export class LoginComponent {
     const emailEncrypted = localStorage.getItem('rememberedEmail');
     const passwordEncrypted = localStorage.getItem('rememberedPassword');
     if (emailEncrypted && passwordEncrypted) {
-      this.setFormData(CryptoService.decrypt(emailEncrypted), CryptoService.decrypt(passwordEncrypted));
+      this.setFormData(
+        CryptoService.decrypt(emailEncrypted),
+        CryptoService.decrypt(passwordEncrypted)
+      );
     }
   }
 
   submitForm() {
     this.cdr.detectChanges();
-    if (this.loginForm?.status == "INVALID") {
-      this.openSnackbar("Please review form errors and correct them before submitting the form again !!!", "danger", 6000);
+    if (this.loginForm?.invalid) {
+      this.openSnackbar('Please correct errors before submitting.', 'danger', 6000);
       this.validateFormErrors();
+      return;
     }
-    if (this.loginForm?.status == "VALID") {
-      this.createLoginPayload();
-      if (this.loginForm.value.rememberMe) { this.rememberMe() }
-      let browserTrustStatus = this.checkBrowserTrustFlag(this.loginFormPayload.email) ?? false;
-      if (browserTrustStatus) {
-        this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
-          if (data.success) {
-            if (data?.configSummary?.otpFlow) {
-              this.navigateToOtpVerification(data?.transactionId);
-            } else if (!data?.configSummary?.otpFlow) {
-              this.setSessionStorage(data.data.downstreamResponse.data);
-              this.setLocalStorage(data.data.downstreamResponse.data);
-              this.navigateToDashboard();
-            }
-          }
-        }, (error) => {
-          let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
-          this.openSnackbar(err, "danger", 5000);
-        })
-      } else {
-        this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe((data) => {
-          if (data.success) {
-            if (data?.configSummary?.otpFlow) {
-              this.navigateToOtpVerification(data?.transactionId);
-            } else if (!data?.configSummary?.otpFlow) {
-              this.setSessionStorage(data.data.downstreamResponse.data);
-              this.setLocalStorage(data.data.downstreamResponse.data);
-              this.navigateToDashboard();
-            }
-          }
-        }, (error) => {
-          let err = "Please review server errors and correct them before submitting the form again !!!  " + error.error.error;
-          this.openSnackbar(err, "danger", 5000);
-        })
-      }
 
-    }
+    this.createLoginPayload();
+
+    const browserTrustStatus = this.checkBrowserTrustFlag(this.loginFormPayload.email);
+
+    this.loginService.login(this.loginFormPayload.email, this.loginFormPayload.password).subscribe({
+      next: (data) => {
+        if (data.success) {
+          if (data?.configSummary?.otpFlow) {
+            this.navigateToOtpVerification(data?.transactionId);
+          } else {
+            this.storeTokens(data.data.downstreamResponse.data);
+            if (this.loginForm.value.rememberMe) {
+              this.rememberMe();
+            } else {
+              localStorage.removeItem('rememberMeFlag');
+              localStorage.removeItem('rememberedEmail');
+              localStorage.removeItem('rememberedPassword');
+            }
+
+            this.navigateToDashboard();
+          }
+        } else {
+          this.handleLoginFailure();
+        }
+      },
+      error: (error) => {
+        this.handleLoginFailure(error);
+      }
+    });
   }
+
+  private handleLoginFailure(error?: any) {
+    const err = 'Login failed: ' + (error?.error?.error || 'Invalid credentials or server error');
+    this.openSnackbar(err, 'danger', 5000);
+    localStorage.removeItem('rememberMeFlag');
+    localStorage.removeItem('rememberedEmail');
+    localStorage.removeItem('rememberedPassword');
+  }
+
 
   validateFormErrors() {
-    if (this.loginForm?.status == "INVALID") {
-      if (this.loginForm?.controls['userEmailId']?.status == "INVALID") {
-        if (this.loginForm.controls['userEmailId'].errors?.['required']) {
-          this.loginForm?.controls['userEmailId']?.setErrors({ customError: 'EMAIL_REQUIRED' })
-        } else if (this.loginForm.controls['userEmailId'].errors?.['email']) {
-          this.loginForm?.controls['userEmailId']?.setErrors({ customError: 'EMAIL_INCORRECT' })
-        }
+    if (this.loginForm.controls['userEmailId']?.invalid) {
+      if (this.loginForm.controls['userEmailId'].hasError('required')) {
+        this.loginForm.controls['userEmailId'].setErrors({ customError: 'EMAIL_REQUIRED' });
+      } else if (this.loginForm.controls['userEmailId'].hasError('email')) {
+        this.loginForm.controls['userEmailId'].setErrors({ customError: 'EMAIL_INCORRECT' });
       }
-      if (this.loginForm?.controls['userPassword']?.status == "INVALID") {
-        if (this.loginForm.controls['userPassword'].errors?.['required']) {
-          this.loginForm?.controls['userPassword']?.setErrors({ customError: 'PASSWORD_REQUIRED' })
-        }
+    }
+
+    if (this.loginForm.controls['userPassword']?.invalid) {
+      if (this.loginForm.controls['userPassword'].hasError('required')) {
+        this.loginForm.controls['userPassword'].setErrors({ customError: 'PASSWORD_REQUIRED' });
       }
     }
   }
 
-  checkBrowserTrustFlag(email: string): Boolean {
-    let flagValue = localStorage.getItem("browser-trust-flag");
-    let trustedEmails = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
-    if (flagValue === null) {
-      this.browserTrustFlag = false;
-      return false;
-    } else if (flagValue === "trusted" && trustedEmails.includes(email)) {
+  checkBrowserTrustFlag(email: string): boolean {
+    const flagValue = localStorage.getItem('browser-trust-flag');
+    const trustedEmails = JSON.parse(localStorage.getItem('trusted-emails') || '[]');
+    if (flagValue === 'trusted' && trustedEmails.includes(email)) {
       this.browserTrustFlag = true;
       return true;
-    } else {
-      this.browserTrustFlag = false;
-      return false;
     }
+    this.browserTrustFlag = false;
+    return false;
   }
 
-  setSessionStorage(data: any) {
-    sessionStorage.setItem("access-token", data?.accessToken);
-    sessionStorage.setItem("refresh-token", data?.refreshToken);
-    sessionStorage.setItem("user-email", data?.email);
-    sessionStorage.setItem("user-role", data?.roleName);
-    sessionStorage.setItem("user-role-id", data?.roleId);
-  }
-
-  setLocalStorage(data: any) {
-    localStorage.setItem("access-token", data?.accessToken);
-    localStorage.setItem("refresh-token", data?.refreshToken);
+  private storeTokens(data: any) {
+    // Access Token in localStorage
+    localStorage.setItem('access-token', data?.accessToken);
+    // User details in localStorage
+    localStorage.setItem('user-email', data?.email);
+    localStorage.setItem('user-role', data?.roleName);
+    localStorage.setItem('user-role-id', data?.roleId);
+    // Refresh Token in cookie (HttpOnly recommended on backend)
+    this.cookieService.set('refresh-token', data?.refreshToken, {
+      path: '/',
+      sameSite: 'Strict'
+    });
   }
 
   navigateToRegister() {
-    this.router.navigate(["../auth/register"]);
+    this.router.navigate(['../auth/register']);
   }
 
   navigateToDashboard() {
-    this.openSnackbar("Login is successfull, you will be redirected to dashboard !!!", "success", 5000);
+    this.openSnackbar('Login successful! Redirecting...', 'success', 5000);
     setTimeout(() => {
-      this.loginService.loginEvent(sessionStorage.getItem("access-token") ?? "");
-      this.router.navigate(["../dashboard/applications"]);
-    }, 5000);
+      this.loginService.loginEvent(localStorage.getItem('access-token') ?? '');
+      this.router.navigate(['../dashboard/applications']);
+    }, 2000);
   }
 
   navigateToOtpVerification(transactionId: any) {
-    this.openSnackbar("OTP is generated succesfully, you will be redirected to OTP verification page !!!", "info", 5000);
+    this.openSnackbar('OTP generated. Redirecting...', 'info', 5000);
     setTimeout(() => {
-      this.router.navigate(["../auth/otp-verification"], {
+      this.router.navigate(['../auth/otp-verification'], {
         state: {
           rememberMeFlag: this.loginForm.controls['rememberMe'].value,
           transactionId: transactionId,
-          emailId: this.loginForm.controls['userEmailId'].value,
+          emailId: this.loginForm.controls['userEmailId'].value
         }
       });
-    }, 5000);
+    }, 2000);
   }
 
   openSnackbar(message: any, type: any, duration: any) {
@@ -196,14 +204,41 @@ export class LoginComponent {
   }
 
   rememberMe() {
-    localStorage.setItem("rememberMeFlag", "Y");
+    localStorage.setItem('rememberMeFlag', 'Y');
     const encryptedEmail = CryptoService.encrypt(this.loginForm.controls['userEmailId'].value);
     const encryptedPassword = CryptoService.encrypt(this.loginForm.controls['userPassword'].value);
-    localStorage.setItem("rememberedEmail", encryptedEmail);
-    localStorage.setItem("rememberedPassword", encryptedPassword);
-    let trustedEmailsArray = JSON.parse(localStorage.getItem("trusted-emails") || "[]");
-    trustedEmailsArray.push(this.loginForm.controls['userEmailId'].value);
-    localStorage.setItem("trusted-emails", JSON.stringify(trustedEmailsArray));
+    localStorage.setItem('rememberedEmail', encryptedEmail);
+    localStorage.setItem('rememberedPassword', encryptedPassword);
+    const trustedEmailsArray = JSON.parse(localStorage.getItem('trusted-emails') || '[]');
+    if (!trustedEmailsArray.includes(this.loginForm.controls['userEmailId'].value)) {
+      trustedEmailsArray.push(this.loginForm.controls['userEmailId'].value);
+    }
+    localStorage.setItem('trusted-emails', JSON.stringify(trustedEmailsArray));
   }
 
+  generateNewJWTToken(refreshToken: string) {
+    console.log('Existing Refresh Token Found', refreshToken);
+    this.commonService.generateJWTTokenBasedOnRefreshToken(refreshToken).subscribe({
+      next: (data) => {
+        if (data?.data?.downstreamResponse?.data?.accessToken) {
+          console.log('New JWT Token Generated Successfully');
+          this.storeTokens(data.data.downstreamResponse.data);
+          this.loginService.loginEvent(localStorage.getItem('access-token') ?? '');
+          this.router.navigate(['../dashboard/applications']);
+        } else {
+          this.handleSessionExpiry();
+        }
+      },
+      error: () => {
+        this.handleSessionExpiry();
+      }
+    });
+  }
+
+  private handleSessionExpiry() {
+    this.openSnackbar('Your session has expired, please login again !!!', 'danger', 6000);
+    localStorage.clear();
+    this.cookieService.deleteAll();
+    this.router.navigate(['../auth/login']);
+  }
 }

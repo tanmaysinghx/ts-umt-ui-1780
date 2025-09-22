@@ -57,15 +57,21 @@
             <!-- Dynamic Status -->
             <div class="flex items-center gap-2 mb-4">
                 <span class="w-2 h-2 rounded-full" [ngClass]="{
-          'bg-green-500 animate-pulse': app.status === 'Running',
-          'bg-yellow-400': app.status === 'Starting...',
-          'bg-orange-500': app.status === 'Verifying JWT Token...',
-          'bg-purple-500': app.status === 'Generating new JWT Token...',
-          'bg-red-500': app.status === 'Failed to Launch',
-          'bg-gray-400': app.status === 'Not Running'
-        }"></span>
-                <span class="text-sm text-gray-700 dark:text-gray-300">{{ app.status }}</span>
+      'bg-green-500 animate-pulse': app.status === 'Running',
+      'bg-yellow-400': app.status === 'Starting...' || app.status === 'Checking session...',
+      'bg-orange-500': app.status === 'Verifying JWT Token...' || app.status === 'Validating token with server...',
+      'bg-purple-500': app.status === 'Generating new JWT Token...' || app.status === 'Refreshing token...' || app.status === 'Requesting new access token...',
+      'bg-blue-500': app.status === 'Preparing secure environment...',
+      'bg-indigo-500': app.status === 'Syncing user profile...',
+      'bg-pink-500': app.status === 'Finalizing connection...',
+      'bg-red-500': app.status?.startsWith('Failed to Launch'),
+      'bg-gray-400': app.status === 'Not Running' || !app.status
+    }"></span>
+                <span class="text-sm text-gray-700 dark:text-gray-300">
+                    {{ app.status }}
+                </span>
             </div>
+
 
             <div class="flex justify-between items-center mt-4">
                 <button
