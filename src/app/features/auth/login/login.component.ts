@@ -155,6 +155,7 @@ export class LoginComponent implements OnInit {
   }
 
   private storeTokens(data: any) {
+    console.log("ddd", data);
     // Access Token in localStorage
     localStorage.setItem('access-token', data?.accessToken);
     // User details in localStorage
