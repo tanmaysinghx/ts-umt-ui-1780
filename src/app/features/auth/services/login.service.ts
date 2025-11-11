@@ -15,7 +15,7 @@ export class LoginService {
   constructor(private readonly http: HttpClient, private readonly router: Router) { }
 
   login(userEmailId: string, password: string): Observable<any> {
-    let assetUrl = environment.apiGatewayService + '/trigger-workflow/WF1625E20001?apiEndpoint=/v2/api/auth/login';
+    let assetUrl = environment.apiGatewayService + '/trigger-workflow/WF1625E10001?apiEndpoint=/v2/api/auth/login';
     let body = {
       "email": userEmailId,
       "password": password
