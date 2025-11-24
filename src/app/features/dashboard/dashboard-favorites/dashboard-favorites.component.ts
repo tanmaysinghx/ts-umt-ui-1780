@@ -7,13 +7,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 @Component({
-  selector: 'app-dashboard-applications',
+  selector: 'app-dashboard-favorites',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './dashboard-applications.component.html',
-  styleUrls: ['./dashboard-applications.component.scss'],
+  templateUrl: './dashboard-favorites.component.html',
+  styleUrls: ['./dashboard-favorites.component.scss'],
 })
-export class DashboardApplicationsComponent implements OnInit {
+export class DashboardFavoritesComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
   darkMode: boolean = localStorage.getItem('theme') === 'dark';
@@ -21,7 +21,7 @@ export class DashboardApplicationsComponent implements OnInit {
 
   appData: any[] = [];
 
-  // === FAVORITES CORE ===
+  // favorites
   private readonly FAVORITES_KEY = 'favorite-apps';
   private favoriteAppIds = new Set<string>();
 
@@ -31,16 +31,16 @@ export class DashboardApplicationsComponent implements OnInit {
     private readonly cookieService: CookieService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadFavorites();
     this.getApplicationList();
   }
 
   // =========================
-  // APPLICATION DATA
+  // DATA + FILTERS
   // =========================
 
-  getApplicationList() {
+  getApplicationList(): void {
     this.dashboardService.getApplications().subscribe((data: any) => {
       if (data) {
         this.appData = data;
@@ -48,31 +48,58 @@ export class DashboardApplicationsComponent implements OnInit {
     });
   }
 
-  filterApplications() {
+  // Only favorites, then apply search + category
+  filterApplications(): any[] {
+    const q = this.searchQuery.trim().toLowerCase();
+
+    return this.appData.filter((app) => {
+      const id = String(app.id ?? '');
+      if (!id || !this.favoriteAppIds.has(id)) {
+        return false;
+      }
+
+      const matchesSearch =
+        (app.title || '').toLowerCase().includes(q) ||
+        (app.description || '').toLowerCase().includes(q);
+
+      const matchesCategory = this.selectedCategory
+        ? app.category === this.selectedCategory
+        : true;
+
+      return matchesSearch && matchesCategory;
+    });
+  }
+
+  get favoritesCount(): number {
+    return this.appData.filter((app) =>
+      this.favoriteAppIds.has(String(app.id ?? ''))
+    ).length;
+  }
+
+  get runningFavoritesCount(): number {
     return this.appData.filter(
       (app) =>
-        app.title?.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
-        (this.selectedCategory ? app.category === this.selectedCategory : true)
-    );
-  }
-
-  get runningAppsCount(): number {
-    return this.appData.filter((app) => app.status === 'Running').length;
+        app.status === 'Running' &&
+        this.favoriteAppIds.has(String(app.id ?? ''))
+    ).length;
   }
 
   // =========================
-  // FAVORITES LOGIC
+  // FAVORITES
   // =========================
 
-  private loadFavorites() {
+  private loadFavorites(): void {
     const stored = localStorage.getItem(this.FAVORITES_KEY);
-    if (stored) {
-      const ids = JSON.parse(stored);
+    if (!stored) return;
+    try {
+      const ids: string[] = JSON.parse(stored);
       this.favoriteAppIds = new Set(ids);
+    } catch {
+      this.favoriteAppIds.clear();
     }
   }
 
-  private saveFavorites() {
+  private saveFavorites(): void {
     localStorage.setItem(
       this.FAVORITES_KEY,
       JSON.stringify(Array.from(this.favoriteAppIds))
@@ -80,11 +107,12 @@ export class DashboardApplicationsComponent implements OnInit {
   }
 
   isFavorite(app: any): boolean {
-    return this.favoriteAppIds.has(String(app.id));
+    return this.favoriteAppIds.has(String(app?.id ?? ''));
   }
 
-  toggleFavorite(app: any) {
-    const id = String(app.id);
+  toggleFavorite(app: any): void {
+    const id = String(app?.id ?? '');
+    if (!id) return;
 
     if (this.favoriteAppIds.has(id)) {
       this.favoriteAppIds.delete(id);
@@ -93,23 +121,24 @@ export class DashboardApplicationsComponent implements OnInit {
     }
 
     this.saveFavorites();
+    // No extra logic needed; filterApplications() will drop items that are no longer favorites
   }
 
   // =========================
-  // UI CONTROL
+  // UI
   // =========================
 
-  toggleDarkMode() {
+  toggleDarkMode(): void {
     this.darkMode = !this.darkMode;
     localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', this.darkMode);
   }
 
   // =========================
-  // APP LAUNCH FLOW
+  // LAUNCH FLOW (same as dashboard)
   // =========================
 
-  async launchApp(app: any) {
+  async launchApp(app: any): Promise<void> {
     if (this.loadingAppId) return;
 
     this.loadingAppId = app.id;
@@ -138,6 +167,7 @@ export class DashboardApplicationsComponent implements OnInit {
       setTimeout(() => (app.status = 'Validating token with server...'), 1200);
       const isValid = await this.checkTokenValidity(accessToken);
       if (!isValid) {
+        setTimeout(() => (app.status = 'Requesting new access token...'), 1800);
         try {
           accessToken = await this.refreshAccessToken(refreshToken);
         } catch {
@@ -147,18 +177,23 @@ export class DashboardApplicationsComponent implements OnInit {
       }
     }
 
+    setTimeout(() => (app.status = 'Preparing secure environment...'), 2000);
+    setTimeout(() => (app.status = 'Syncing user profile...'), 2600);
+    setTimeout(() => (app.status = 'Finalizing connection...'), 3200);
+
     setTimeout(() => {
       app.status = 'Running';
       this.loadingAppId = null;
       this.openApp(app, accessToken!, refreshToken, email);
-    }, 3500);
+    }, 4000);
   }
 
   private isTokenExpired(token: string): boolean {
     try {
       const decoded = jwtDecode<JwtPayload>(token);
+      if (!decoded?.exp) return true;
       const now = Math.floor(Date.now() / 1000);
-      return !decoded.exp || decoded.exp < now;
+      return decoded.exp < now;
     } catch {
       return true;
     }
@@ -170,13 +205,16 @@ export class DashboardApplicationsComponent implements OnInit {
         .generateJWTTokenBasedOnRefreshToken(refreshToken)
         .subscribe({
           next: (data: any) => {
-            const token = data?.data?.downstreamResponse?.data?.accessToken;
-            if (token) {
-              localStorage.setItem('access-token', token);
-              resolve(token);
-            } else reject('Failed');
+            const newAccessToken =
+              data?.data?.downstreamResponse?.data?.accessToken;
+            if (data?.success && newAccessToken) {
+              localStorage.setItem('access-token', newAccessToken);
+              resolve(newAccessToken);
+            } else {
+              reject('Refresh failed');
+            }
           },
-          error: () => reject('Failed'),
+          error: () => reject('Refresh failed'),
         });
     });
   }
@@ -195,22 +233,43 @@ export class DashboardApplicationsComponent implements OnInit {
     accessToken: string,
     refreshToken: string,
     email: string
-  ) {
-    const separator = app.appUrl.includes('?') ? '&' : '?';
+  ): void {
+    let baseUrl = app.appUrl.replace(
+      /([?&])(token|accessToken|refreshToken|userEmail)=[^&]*/g,
+      ''
+    );
+    baseUrl = baseUrl.replace(/[?&]$/, '');
+    const separator = baseUrl.includes('?') ? '&' : '?';
     const url =
-      app.appUrl +
-      `${separator}accessToken=${accessToken}&refreshToken=${refreshToken}&userEmail=${email}`;
+      baseUrl +
+      `${separator}accessToken=${encodeURIComponent(
+        accessToken
+      )}&refreshToken=${encodeURIComponent(
+        refreshToken
+      )}&userEmail=${encodeURIComponent(email)}`;
 
-    window.open(url, '_blank');
+    console.log('Final App URL (Favorites):', url);
+
+    app.status = 'Preparing to Launch...';
+    setTimeout(() => {
+      app.status = 'Running';
+      this.loadingAppId = null;
+    }, 2000);
+
+    setTimeout(() => {
+      if (app.status === 'Running') {
+        window.open(url, '_blank');
+      }
+    }, 4000);
   }
 
-  private handleLaunchFailure(app: any, message: string) {
+  private handleLaunchFailure(app: any, message: string): void {
     app.status = message;
     this.loadingAppId = null;
     this.clearSession();
   }
 
-  private clearSession() {
+  private clearSession(): void {
     localStorage.removeItem('access-token');
     localStorage.removeItem('user-email');
     this.cookieService.delete('refresh-token');

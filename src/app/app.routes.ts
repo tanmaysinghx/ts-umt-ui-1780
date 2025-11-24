@@ -6,7 +6,6 @@ import { OtpVerificationComponent } from './features/auth/otp-verification/otp-v
 import { MaintenancePageComponent } from './shared/maintenance-page/maintenance-page.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ServerErrorPageComponent } from './shared/server-error-page/server-error-page.component';
-import { UserChatsComponent } from './features/communication/user-chats/user-chats.component';
 import { MyProfileComponent } from './features/my-section/my-profile/my-profile.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
 import { DashboardApplicationsComponent } from './features/dashboard/dashboard-applications/dashboard-applications.component';
@@ -15,6 +14,7 @@ import { SessionManagementComponent } from './features/session-management/sessio
 import { SecuritySettingsComponent } from './features/security-settings/security-settings.component';
 import { MyAccessComponent } from './features/my-section/my-access/my-access.component';
 import { MyProfilePasswordChangeComponent } from './features/my-section/my-profile-password-change/my-profile-password-change.component';
+import { DashboardFavoritesComponent } from './features/dashboard/dashboard-favorites/dashboard-favorites.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -33,13 +33,12 @@ export const routes: Routes = [
 
     //dashboard urls
     { path: 'dashboard/applications', component: DashboardApplicationsComponent },
-    { path: 'dashboard/application-favorites', component: DashboardApplicationsComponent },
+    { path: 'dashboard/application-favorites', component: DashboardFavoritesComponent },
 
     //service urls
     { path: 'maintenance-page', component: MaintenancePageComponent },
     { path: 'page-not-found', component: PageNotFoundComponent },
     { path: 'server-error-page', component: ServerErrorPageComponent },
-    { path: 'user-chats', component: UserChatsComponent },
 
     // user management urls
     { path: 'user-management/user-list', component: UserListComponent },

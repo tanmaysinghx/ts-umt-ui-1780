@@ -7,29 +7,29 @@
   >
     <div>
       <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-        Applications
+        Favorite Applications
       </h1>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Launch and monitor your connected tools from a single surface.
+        Quick-launch your pinned tools across the workspace.
       </p>
     </div>
 
     <div class="grid grid-cols-3 gap-3 min-w-[260px]">
-      <!-- Total Apps -->
+      <!-- Total Favorites -->
       <div
         class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
       >
         <div
           class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
         >
-          Total Apps
+          Favorites
         </div>
         <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
-          {{ appData.length }}
+          {{ favoritesCount }}
         </div>
       </div>
 
-      <!-- Running -->
+      <!-- Running Favorites -->
       <div
         class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
       >
@@ -39,21 +39,21 @@
           Running
         </div>
         <div class="mt-1 text-xl font-bold text-emerald-500">
-          {{ runningAppsCount }}
+          {{ runningFavoritesCount }}
         </div>
       </div>
 
-      <!-- Categories -->
+      <!-- All Apps Info (optional context) -->
       <div
         class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
       >
         <div
           class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
         >
-          Categories
+          All Apps Loaded
         </div>
         <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
-          3
+          {{ appData.length }}
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@
           <input
             type="text"
             [(ngModel)]="searchQuery"
-            placeholder="Search applications..."
+            placeholder="Search favorites..."
             class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
@@ -270,7 +270,7 @@
     </div>
   </div>
 
-  <!-- Empty State -->
+  <!-- EMPTY STATE -->
   <div
     *ngIf="filterApplications().length === 0"
     class="mt-10 flex flex-col items-center justify-center text-center text-sm text-gray-500 dark:text-gray-400"
@@ -289,9 +289,10 @@
         d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v9A2.25 2.25 0 004.5 16.5H9m6.75-7.5H18a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 018 20.25H5.25A2.25 2.25 0 013 18"
       />
     </svg>
-    <p>No applications match your current filters.</p>
+    <p>No favorite applications yet.</p>
     <p class="mt-1 text-xs">
-      Adjust the search text or category to see more apps.
+      Mark applications as favorites from the Applications screen to see them
+      here.
     </p>
   </div>
 </div>
