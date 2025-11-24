@@ -5,7 +5,7 @@
   aria-label="Sidebar"
   *ngIf="apiResponseData"
 >
-  <!-- Header with Logo -->
+  <!-- Header with Logo + Version / Env -->
   <div class="flex items-center h-16 px-4 bg-white/95 dark:bg-gray-900/95">
     <button
       aria-expanded="true"
@@ -35,9 +35,24 @@
         class="h-6 mr-2"
         alt="Portal Logo"
       />
-      <span class="text-base font-semibold text-gray-800 dark:text-white">
-        Portal
-      </span>
+      <div class="flex flex-col">
+        <span class="text-base font-semibold text-gray-800 dark:text-white">
+          Portal
+        </span>
+      </div>
+      <!-- Version + Env line -->
+        <div class="flex items-center gap-1 mt-0.5 pl-2">
+          <span
+            class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700"
+          >
+            {{ appVersion }}
+          </span>
+          <span
+            class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+          >
+            {{ environmentLabel }}
+          </span>
+        </div>
     </div>
   </div>
 
@@ -175,7 +190,13 @@
   *ngIf="apiResponseData"
 >
   <div class="flex items-center h-14 px-3 border-b border-gray-700">
-    <span class="text-sm font-semibold">Menu</span>
+    <div class="flex flex-col">
+      <span class="text-sm font-semibold">Menu</span>
+      <!-- Version + Env (small inline) -->
+      <span class="mt-0.5 text-[10px] text-gray-400">
+        {{ appVersion }} · {{ environmentLabel }}
+      </span>
+    </div>
   </div>
 
   <div class="flex-1 overflow-y-auto px-3 py-4">

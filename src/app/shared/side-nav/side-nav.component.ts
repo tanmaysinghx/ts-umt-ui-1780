@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class SideNavComponent implements OnInit, OnDestroy {
   apiResponseData: any[] = [];
   userType: string = '0005';
+  appVersion = 'Pre-Alpha';
+  environmentLabel = 'DEV'; // or 'QA', 'PROD', etc.
 
   private subscription = new Subscription();
 

@@ -20,6 +20,7 @@ export class HeaderComponent {
   userProfileImage: string = 'https://flowbite.com/docs/images/people/profile-picture-5.jpg';
   userRole: any = 'Username';
   userEmail: any = 'user@example.com';
+  versionLabel = 'ALPHA-001';
 
   constructor(private readonly sharedService: SharedService, private readonly router: Router, private readonly loginService: LoginService) { }
 
