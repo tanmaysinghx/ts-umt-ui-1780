@@ -1,353 +1,349 @@
 <div
-  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800
-         text-gray-900 dark:text-white py-10 px-6"
+  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6"
 >
-  <!-- Header -->
-  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+  <!-- Header + Actions -->
+  <div
+    class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+  >
     <div>
       <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-        Profile
+        My Profile
       </h1>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Update your basic details and manage connected accounts.
+        Manage your personal information, role details, and how you appear
+        across apps.
       </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        (click)="toggleDarkMode()"
+        class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm"
+      >
+        <span class="mr-2">
+          {{ darkMode ? "Light mode" : "Dark mode" }}
+        </span>
+        <span
+          class="inline-block h-4 w-4 rounded-full"
+          [ngClass]="darkMode ? 'bg-yellow-400' : 'bg-gray-500'"
+        ></span>
+      </button>
+
+      <button
+        type="button"
+        (click)="refreshProfile()"
+        [disabled]="loading"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-900 disabled:opacity-60 disabled:cursor-not-allowed dark:bg-gray-700 dark:hover:bg-black transition"
+      >
+        <svg
+          *ngIf="loading"
+          class="w-4 h-4 mr-2 animate-spin"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+        <span>Refresh</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="saveProfile()"
+        [disabled]="loading"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed dark:bg-blue-600 dark:hover:bg-blue-700 transition"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+        <span>Save changes</span>
+      </button>
     </div>
   </div>
 
-  <div class="grid gap-6 lg:grid-cols-3">
-    <!-- Left column -->
-    <div class="space-y-6 lg:col-span-1">
-      <!-- Profile summary card -->
-      <div
-        class="p-6 bg-white border border-gray-200 rounded-2xl shadow-lg
-               dark:bg-gray-900 dark:border-gray-700"
-      >
-        <div class="flex items-center gap-4 mb-4">
-          <img
-            class="w-20 h-20 rounded-2xl object-cover ring-2 ring-blue-500/40"
-            src="/images/users/bonnie-green-2x.png"
-            alt="Profile picture"
-          />
-          <div>
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Bonnie Green
-            </h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              examplecompany.com
-            </p>
-            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Product Designer · San Francisco
-            </p>
+  <!-- Error -->
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700 dark:bg-red-900/40 dark:border-red-700 dark:text-red-200"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid gap-4 md:grid-cols-3 mb-6">
+    <!-- Identity -->
+    <div
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg flex flex-col gap-3"
+    >
+      <div class="flex items-center gap-4">
+        <img
+          [src]="avatarUrl"
+          alt="Avatar"
+          class="h-12 w-12 rounded-full border border-gray-300 dark:border-gray-600"
+        />
+        <div>
+          <div class="text-sm font-semibold text-gray-900 dark:text-white">
+            {{ profile.fullName || "Unnamed user" }}
           </div>
-        </div>
-
-        <div class="flex gap-3">
-          <button
-            type="button"
-            class="inline-flex items-center px-3 py-2 text-xs font-medium text-white rounded-lg
-                   bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-                   dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            <svg
-              class="w-4 h-4 mr-2"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 16v2a2 2 0 002 2h2m4-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2M4 8V6a2 2 0 012-2h2" />
-            </svg>
-            Change photo
-          </button>
-
-          <button
-            type="button"
-            class="px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg
-                   hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-200
-                   dark:bg-gray-900 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-                   dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-          >
-            Remove
-          </button>
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            {{ profile.email }}
+          </div>
         </div>
       </div>
-
-      <!-- Social accounts card -->
-      <div
-        class="p-6 bg-white border border-gray-200 rounded-2xl shadow-lg
-               dark:bg-gray-900 dark:border-gray-700"
+      <button
+        type="button"
+        (click)="changeAvatar()"
+        class="mt-2 inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
       >
-        <h3 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
-          Connected accounts
-        </h3>
+        Change photo
+      </button>
+    </div>
 
-        <div class="space-y-4">
-          <!-- Facebook -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div
-                class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center
-                       dark:bg-blue-900/40"
-              >
-                <svg
-                  class="w-4 h-4 text-blue-600 dark:text-blue-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
-                  ></path>
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-900 dark:text-white">
-                  Facebook
-                </p>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                  www.facebook.com/themesberg
-                </p>
-              </div>
-            </div>
-            <span
-              class="px-3 py-1 text-[11px] font-medium rounded-full bg-green-100 text-green-800
-                     dark:bg-green-900 dark:text-green-200"
-            >
-              Linked
-            </span>
-          </div>
+    <!-- Role -->
+    <div
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
+    >
+      <div
+        class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2"
+      >
+        Role & org
+      </div>
+      <div class="text-sm text-gray-900 dark:text-white font-medium">
+        {{ profile.jobTitle || "Not set" }}
+      </div>
+      <div class="mt-1 text-xs text-gray-600 dark:text-gray-400">
+        {{ profile.department || "No department" }}
+      </div>
+      <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+        Timezone:
+        <span class="font-medium text-gray-800 dark:text-gray-100">
+          {{ profile.timezone }}
+        </span>
+      </div>
+    </div>
 
-          <!-- GitHub -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div
-                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center
-                       dark:bg-gray-800"
-              >
-                <svg
-                  class="w-4 h-4 text-gray-700 dark:text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 496 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"
-                  ></path>
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs font-medium text-gray-900 dark:text-white">
-                  GitHub
-                </p>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                  Not connected
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              class="px-3 py-1.5 text-[11px] font-medium text-white rounded-lg bg-blue-700
-                     hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-                     dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Connect
-            </button>
-          </div>
+    <!-- Contact -->
+    <div
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
+    >
+      <div
+        class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2"
+      >
+        Contact & location
+      </div>
+      <div class="text-xs text-gray-500 dark:text-gray-400">
+        Phone:
+        <span class="font-medium text-gray-800 dark:text-gray-100">
+          {{ profile.phone || "Not set" }}
+        </span>
+      </div>
+      <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+        Location:
+        <span class="font-medium text-gray-800 dark:text-gray-100">
+          {{ profile.location || "Not set" }}
+        </span>
+      </div>
+      <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+        Skills:
+        <span class="font-medium text-gray-800 dark:text-gray-100">
+          {{ profile.skills }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Cards -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Personal info -->
+    <div
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
+    >
+      <h2 class="text-base font-semibold text-gray-900 dark:text-white mb-4">
+        Personal information
+      </h2>
+
+      <div class="space-y-4 text-sm">
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Full name
+          </label>
+          <input
+            [(ngModel)]="profile.fullName"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
         </div>
 
-        <div class="mt-5">
-          <button
-            type="button"
-            class="inline-flex items-center px-4 py-2 text-xs font-medium text-white rounded-lg
-                   bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-                   dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
           >
-            Save social changes
-          </button>
+            Email
+          </label>
+          <input
+            [(ngModel)]="profile.email"
+            type="email"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Pronouns (optional)
+          </label>
+          <input
+            [(ngModel)]="profile.pronouns"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Phone number
+          </label>
+          <input
+            [(ngModel)]="profile.phone"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Location
+          </label>
+          <input
+            [(ngModel)]="profile.location"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Timezone
+          </label>
+          <select
+            [(ngModel)]="profile.timezone"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          >
+            <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+            <option value="UTC">UTC</option>
+            <option value="America/New_York">America/New_York</option>
+            <option value="Europe/London">Europe/London</option>
+          </select>
         </div>
       </div>
     </div>
 
-    <!-- Right column -->
-    <div class="lg:col-span-2">
-      <div
-        class="p-6 bg-white border border-gray-200 rounded-2xl shadow-lg
-               dark:bg-gray-900 dark:border-gray-700"
-      >
-        <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-          General information
-        </h2>
+    <!-- Role, skills, about -->
+    <div
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
+    >
+      <h2 class="text-base font-semibold text-gray-900 dark:text:white mb-4">
+        Role & profile details
+      </h2>
 
-        <form action="#">
-          <div class="grid grid-cols-6 gap-6">
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="first-name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="first-name"
-                name="first-name"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Bonnie"
-              />
-            </div>
+      <div class="space-y-4 text-sm">
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Job title
+          </label>
+          <input
+            [(ngModel)]="profile.jobTitle"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
 
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="last-name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="last-name"
-                name="last-name"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Green"
-              />
-            </div>
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Department / team
+          </label>
+          <input
+            [(ngModel)]="profile.department"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
 
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="country"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Country
-              </label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="United States"
-              />
-            </div>
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            Skills / tags
+          </label>
+          <input
+            [(ngModel)]="profile.skills"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            Comma-separated (e.g. Angular, Node.js, TypeScript).
+          </p>
+        </div>
 
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="city"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                City
-              </label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. San Francisco"
-              />
-            </div>
+        <div>
+          <label
+            class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1"
+          >
+            About you
+          </label>
+          <textarea
+            [(ngModel)]="profile.about"
+            rows="4"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          ></textarea>
+        </div>
+      </div>
 
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="email"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="examplecompany.com"
-              />
-            </div>
-
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="phone-number"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Phone Number
-              </label>
-              <input
-                type="text"
-                id="phone-number"
-                name="phone-number"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. +(12)3456 789"
-              />
-            </div>
-
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="birthday"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Birthday
-              </label>
-              <input
-                type="text"
-                id="birthday"
-                name="birthday"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="15/08/1990"
-              />
-            </div>
-
-            <div class="col-span-6 sm:col-span-3">
-              <label
-                for="organization"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Organization
-              </label>
-              <input
-                type="text"
-                id="organization"
-                name="organization"
-                class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg
-                       shadow-sm focus:ring-blue-500 focus:border-blue-500
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                       dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Company Name"
-              />
-            </div>
-
-            <div class="col-span-6">
-              <button
-                type="submit"
-                class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white rounded-lg
-                       bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-                       dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Save changes
-              </button>
-            </div>
-          </div>
-        </form>
+      <div class="mt-6 flex justify-end">
+        <button
+          type="button"
+          (click)="resetProfile()"
+          class="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          Reset to last saved version
+        </button>
       </div>
     </div>
   </div>

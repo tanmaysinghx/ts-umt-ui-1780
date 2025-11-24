@@ -17,6 +17,8 @@ import { DashboardApplicationsComponent } from './features/dashboard/dashboard-a
 import { MyAccountComponent } from './features/my-section/my-account/my-account.component';
 import { SessionManagementComponent } from './features/session-management/session-management.component';
 import { SecuritySettingsComponent } from './features/security-settings/security-settings.component';
+import { MyAccessComponent } from './features/my-section/my-access/my-access.component';
+import { MyProfilePasswordChangeComponent } from './features/my-section/my-profile-password-change/my-profile-password-change.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -30,9 +32,12 @@ export const routes: Routes = [
     //my-section urls
     { path: 'my-section/my-profile', component: MyProfileComponent },
     { path: 'my-section/my-account', component: MyAccountComponent },
+    { path: 'my-section/my-access', component: MyAccessComponent },
+    { path: 'my-section/my--profile-change-passsword', component: MyProfilePasswordChangeComponent },
 
     //dashboard urls
     { path: 'dashboard/applications', component: DashboardApplicationsComponent },
+    { path: 'dashboard/application-favorites', component: DashboardApplicationsComponent },
 
     //account-id-creation urls
     { path: 'account-id-creation/profile-details', component: ProfileDetailsComponent },
