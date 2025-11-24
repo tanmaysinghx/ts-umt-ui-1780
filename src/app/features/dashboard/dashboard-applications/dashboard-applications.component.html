@@ -1,85 +1,265 @@
 <div
-    class="min-h-screen bg-gradient-to-b to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6">
-
-    <!-- Search and Filter Section -->
-    <div class="mb-6">
-        <div class="flex items-center gap-4">
-            <input type="text" [(ngModel)]="searchQuery" placeholder="Search applications..."
-                class="w-full max-w-xs px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 placeholder-gray-500 dark:placeholder-gray-400" />
-
-            <select [(ngModel)]="selectedCategory"
-                class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500">
-                <option value="">All Categories</option>
-                <option value="dev-tools">Dev Tools</option>
-                <option value="infra">Infra</option>
-                <option value="tickets">Tickets</option>
-            </select>
-        </div>
+  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6"
+>
+  <!-- HEADER + SUMMARY -->
+  <div
+    class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+  >
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+        Applications
+      </h1>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        Launch and monitor your connected tools from a single surface.
+      </p>
     </div>
 
-    <!-- Application Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div *ngFor="let app of filterApplications()"
-            class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl cursor-pointer"
-            (click)="launchApp(app)">
-            <!-- Loader Overlay -->
-            <div *ngIf="loadingAppId === app.id"
-                class="absolute inset-0 bg-white/70 dark:bg-gray-900/70 flex items-center justify-center z-10 rounded-2xl">
-                <div class="flex flex-col items-center gap-2">
-                    <svg class="animate-spin h-6 w-6 text-blue-600 dark:text-blue-400"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                    </svg>
-                    <span class="text-sm text-gray-700 dark:text-gray-300">Launching...</span>
-                </div>
-            </div>
-
-            <!-- Card Content -->
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.title }}</h2>
-                <span
-                    class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 font-medium px-2 py-1 rounded">
-                    {{ app.version }}
-                </span>
-            </div>
-
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ app.description }}</p>
-
-            <div class="flex flex-wrap gap-2 text-xs mb-4">
-                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300">{{
-                    app.category }}</span>
-                <span
-                    class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded dark:bg-yellow-900 dark:text-yellow-300">Critical</span>
-            </div>
-
-            <!-- Dynamic Status -->
-            <div class="flex items-center gap-2 mb-4">
-                <span class="w-2 h-2 rounded-full" [ngClass]="{
-      'bg-green-500 animate-pulse': app.status === 'Running',
-      'bg-yellow-400': app.status === 'Starting...' || app.status === 'Checking session...',
-      'bg-orange-500': app.status === 'Verifying JWT Token...' || app.status === 'Validating token with server...',
-      'bg-purple-500': app.status === 'Generating new JWT Token...' || app.status === 'Refreshing token...' || app.status === 'Requesting new access token...',
-      'bg-blue-500': app.status === 'Preparing secure environment...',
-      'bg-indigo-500': app.status === 'Syncing user profile...',
-      'bg-pink-500': app.status === 'Finalizing connection...',
-      'bg-red-500': app.status?.startsWith('Failed to Launch'),
-      'bg-gray-400': app.status === 'Not Running' || !app.status
-    }"></span>
-                <span class="text-sm text-gray-700 dark:text-gray-300">
-                    {{ app.status }}
-                </span>
-            </div>
-
-
-            <div class="flex justify-between items-center mt-4">
-                <button
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 transition">
-                    Launch
-                </button>
-            </div>
+    <div class="grid grid-cols-3 gap-3 min-w-[260px]">
+      <!-- Total Apps -->
+      <div
+        class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+        >
+          Total Apps
         </div>
-    </div>
+        <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
+          {{ appData.length }}
+        </div>
+      </div>
 
+      <!-- Running -->
+      <div
+        class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+        >
+          Running
+        </div>
+        <div class="mt-1 text-xl font-bold text-emerald-500">
+          {{ runningAppsCount }}
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div
+        class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+        >
+          Categories
+        </div>
+        <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
+          3
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH + FILTER (same styling as session screen) -->
+  <div class="mb-6">
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div class="flex items-center gap-3 w-full sm:max-w-md">
+        <div class="relative flex-1">
+          <span
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <svg
+              class="w-4 h-4 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z"
+              />
+            </svg>
+          </span>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            placeholder="Search applications..."
+            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <select
+          [(ngModel)]="selectedCategory"
+          class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="">All Categories</option>
+          <option value="dev-tools">Dev Tools</option>
+          <option value="infra">Infra</option>
+          <option value="tickets">Tickets</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div
+      *ngFor="let app of filterApplications()"
+      class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl cursor-pointer"
+    >
+      <!-- Loader Overlay -->
+      <div
+        *ngIf="loadingAppId === app.id"
+        class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 flex items-center justify-center z-10 rounded-2xl"
+      >
+        <div class="flex flex-col items-center gap-2">
+          <svg
+            class="animate-spin h-6 w-6 text-blue-600 dark:text-blue-400"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          <span class="text-sm text-gray-700 dark:text-gray-300">
+            Launching...
+          </span>
+        </div>
+      </div>
+
+      <!-- Card Header -->
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-semibold shadow-md"
+          >
+            {{ app.title?.charAt(0) || "A" }}
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{ app.title }}
+            </h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              Version {{ app.version }}
+            </p>
+          </div>
+        </div>
+
+        <span
+          class="text-xs font-medium px-2 py-1 rounded-full"
+          [ngClass]="
+            app.status === 'Running'
+              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+              : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+          "
+        >
+          {{ app.status || "Not Running" }}
+        </span>
+      </div>
+
+      <!-- Description -->
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        {{ app.description }}
+      </p>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 text-xs mb-4">
+        <span
+          class="px-2 py-1 bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300"
+        >
+          {{ app.category }}
+        </span>
+        <span
+          class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded dark:bg-yellow-900 dark:text-yellow-300"
+        >
+          Critical
+        </span>
+      </div>
+
+      <!-- Dynamic Status Row -->
+      <div class="flex items-center gap-2 mb-4">
+        <span
+          class="w-2 h-2 rounded-full"
+          [ngClass]="{
+            'bg-green-500 animate-pulse': app.status === 'Running',
+            'bg-yellow-400':
+              app.status === 'Starting...' ||
+              app.status === 'Checking session...',
+            'bg-orange-500':
+              app.status === 'Verifying JWT Token...' ||
+              app.status === 'Validating token with server...',
+            'bg-purple-500':
+              app.status === 'Generating new JWT Token...' ||
+              app.status === 'Refreshing token...' ||
+              app.status === 'Requesting new access token...',
+            'bg-blue-500': app.status === 'Preparing secure environment...',
+            'bg-indigo-500': app.status === 'Syncing user profile...',
+            'bg-pink-500': app.status === 'Finalizing connection...',
+            'bg-red-500': app.status?.startsWith('Failed to Launch'),
+            'bg-gray-400': app.status === 'Not Running' || !app.status
+          }"
+        ></span>
+        <span class="text-sm text-gray-700 dark:text-gray-300">
+          {{ app.status || "Not Running" }}
+        </span>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex justify-between items-center mt-2">
+        <span class="text-xs text-gray-400 dark:text-gray-500">
+          ID: {{ app.id || "N/A" }}
+        </span>
+        <button
+          type="button"
+          (click)="launchApp(app); $event.stopPropagation()"
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 transition"
+        >
+          Launch
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="filterApplications().length === 0"
+    class="mt-10 flex flex-col items-center justify-center text-center text-sm text-gray-500 dark:text-gray-400"
+  >
+    <svg
+      class="w-10 h-10 mb-3 text-gray-300 dark:text-gray-600"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="1.5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v9A2.25 2.25 0 004.5 16.5H9m6.75-7.5H18a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 018 20.25H5.25A2.25 2.25 0 013 18"
+      />
+    </svg>
+    <p>No applications match your current filters.</p>
+    <p class="mt-1 text-xs">
+      Adjust the search text or category to see more apps.
+    </p>
+  </div>
 </div>

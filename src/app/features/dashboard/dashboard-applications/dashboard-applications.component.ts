@@ -11,7 +11,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './dashboard-applications.component.html',
-  styleUrls: ['./dashboard-applications.component.scss']
+  styleUrls: ['./dashboard-applications.component.scss'],
 })
 export class DashboardApplicationsComponent implements OnInit {
   searchQuery = '';
@@ -25,7 +25,7 @@ export class DashboardApplicationsComponent implements OnInit {
     private readonly commonService: CommonService,
     private readonly dashboardService: DashboardService,
     private readonly cookieService: CookieService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getApplicationList();
@@ -40,9 +40,10 @@ export class DashboardApplicationsComponent implements OnInit {
   }
 
   filterApplications() {
-    return this.appData.filter(app =>
-      app.title.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
-      (this.selectedCategory ? app.category === this.selectedCategory : true)
+    return this.appData.filter(
+      (app) =>
+        app.title.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
+        (this.selectedCategory ? app.category === this.selectedCategory : true)
     );
   }
 
@@ -63,9 +64,9 @@ export class DashboardApplicationsComponent implements OnInit {
     }
     let accessToken = localStorage.getItem('access-token');
     const email = localStorage.getItem('user-email') || '';
-    setTimeout(() => app.status = 'Checking session...', 500);
+    setTimeout(() => (app.status = 'Checking session...'), 500);
     if (!accessToken || this.isTokenExpired(accessToken)) {
-      setTimeout(() => app.status = 'Refreshing token...', 1200);
+      setTimeout(() => (app.status = 'Refreshing token...'), 1200);
       try {
         accessToken = await this.refreshAccessToken(refreshToken);
       } catch {
@@ -73,10 +74,10 @@ export class DashboardApplicationsComponent implements OnInit {
         return;
       }
     } else {
-      setTimeout(() => app.status = 'Validating token with server...', 1200);
+      setTimeout(() => (app.status = 'Validating token with server...'), 1200);
       const isValid = await this.checkTokenValidity(accessToken);
       if (!isValid) {
-        setTimeout(() => app.status = 'Requesting new access token...', 1800);
+        setTimeout(() => (app.status = 'Requesting new access token...'), 1800);
         try {
           accessToken = await this.refreshAccessToken(refreshToken);
         } catch {
@@ -85,9 +86,9 @@ export class DashboardApplicationsComponent implements OnInit {
         }
       }
     }
-    setTimeout(() => app.status = 'Preparing secure environment...', 2000);
-    setTimeout(() => app.status = 'Syncing user profile...', 2600);
-    setTimeout(() => app.status = 'Finalizing connection...', 3200);
+    setTimeout(() => (app.status = 'Preparing secure environment...'), 2000);
+    setTimeout(() => (app.status = 'Syncing user profile...'), 2600);
+    setTimeout(() => (app.status = 'Finalizing connection...'), 3200);
     setTimeout(() => {
       app.status = 'Running';
       this.loadingAppId = null;
@@ -108,19 +109,22 @@ export class DashboardApplicationsComponent implements OnInit {
 
   private refreshAccessToken(refreshToken: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.commonService.generateJWTTokenBasedOnRefreshToken(refreshToken).subscribe({
-        next: (data: any) => {
-          const newAccessToken = data?.data?.downstreamResponse?.data?.accessToken;
-          console.log('Refreshed Access Token:', newAccessToken);
-          if (data?.success && newAccessToken) {
-            localStorage.setItem('access-token', newAccessToken);
-            resolve(newAccessToken);
-          } else {
-            reject('Refresh failed');
-          }
-        },
-        error: () => reject('Refresh failed')
-      });
+      this.commonService
+        .generateJWTTokenBasedOnRefreshToken(refreshToken)
+        .subscribe({
+          next: (data: any) => {
+            const newAccessToken =
+              data?.data?.downstreamResponse?.data?.accessToken;
+            console.log('Refreshed Access Token:', newAccessToken);
+            if (data?.success && newAccessToken) {
+              localStorage.setItem('access-token', newAccessToken);
+              resolve(newAccessToken);
+            } else {
+              reject('Refresh failed');
+            }
+          },
+          error: () => reject('Refresh failed'),
+        });
     });
   }
 
@@ -128,33 +132,42 @@ export class DashboardApplicationsComponent implements OnInit {
     return new Promise((resolve) => {
       this.commonService.checkJWTTokenIsValid(token).subscribe({
         next: (isValid: boolean) => resolve(isValid),
-        error: () => resolve(false)
+        error: () => resolve(false),
       });
     });
   }
 
-  private openApp(app: any, accessToken: string, refreshToken: string, email: string) {
-  let baseUrl = app.appUrl.replace(/([?&])(token|accessToken|refreshToken|userEmail)=[^&]*/g, '');
-  baseUrl = baseUrl.replace(/[?&]$/, '');
-  const separator = baseUrl.includes('?') ? '&' : '?';
-  const url =
-    baseUrl +
-    `${separator}accessToken=${encodeURIComponent(accessToken)}&refreshToken=${encodeURIComponent(
-      refreshToken
-    )}&userEmail=${encodeURIComponent(email)}`;
-  console.log('Final App URL:', url);
-  app.status = 'Preparing to Launch...';
-  setTimeout(() => {
-    app.status = 'Running';
-    this.loadingAppId = null;
-  }, 2000);
-  setTimeout(() => {
-    if (app.status === 'Running') {
-      window.open(url, '_blank');
-    }
-  }, 4000);
-}
-
+  private openApp(
+    app: any,
+    accessToken: string,
+    refreshToken: string,
+    email: string
+  ) {
+    let baseUrl = app.appUrl.replace(
+      /([?&])(token|accessToken|refreshToken|userEmail)=[^&]*/g,
+      ''
+    );
+    baseUrl = baseUrl.replace(/[?&]$/, '');
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    const url =
+      baseUrl +
+      `${separator}accessToken=${encodeURIComponent(
+        accessToken
+      )}&refreshToken=${encodeURIComponent(
+        refreshToken
+      )}&userEmail=${encodeURIComponent(email)}`;
+    console.log('Final App URL:', url);
+    app.status = 'Preparing to Launch...';
+    setTimeout(() => {
+      app.status = 'Running';
+      this.loadingAppId = null;
+    }, 2000);
+    setTimeout(() => {
+      if (app.status === 'Running') {
+        window.open(url, '_blank');
+      }
+    }, 4000);
+  }
 
   private handleLaunchFailure(app: any, message: string) {
     app.status = message;
@@ -166,5 +179,9 @@ export class DashboardApplicationsComponent implements OnInit {
     localStorage.removeItem('access-token');
     localStorage.removeItem('user-email');
     this.cookieService.delete('refresh-token');
+  }
+
+  get runningAppsCount(): number {
+    return this.appData.filter((app) => app.status === 'Running').length;
   }
 }

@@ -16,6 +16,7 @@ import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
 import { DashboardApplicationsComponent } from './features/dashboard/dashboard-applications/dashboard-applications.component';
 import { MyAccountComponent } from './features/my-section/my-account/my-account.component';
+import { SessionManagementComponent } from './features/session-management/session-management.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -49,6 +50,10 @@ export const routes: Routes = [
 
     // user management urls
     { path: 'user-management/user-list', component: UserListComponent },
+
+    //session management
+    { path: 'session-management', component: SessionManagementComponent },
+
 ];
 
 
