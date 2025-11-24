@@ -30,29 +30,34 @@
     </button>
 
     <div class="flex items-center ml-3">
+      <!-- ✅ Custom TS Logo -->
       <img
-        src="https://flowbite.s3.amazonaws.com/logo.svg"
-        class="h-6 mr-2"
-        alt="Portal Logo"
+        src="assets/images/TS_LOGO.png"
+        class="h-8 mr-2 object-contain"
+        alt="TS Portal Logo"
       />
+
+      <!-- ✅ Application Name -->
       <div class="flex flex-col">
-        <span class="text-base font-semibold text-gray-800 dark:text-white">
+        <span
+          class="text-base font-semibold text-gray-800 dark:text-white leading-tight"
+        >
           Portal
         </span>
       </div>
-      <!-- Version + Env line -->
-        <div class="flex items-center gap-1 mt-0.5 pl-2">
-          <span
-            class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700"
-          >
-            {{ appVersion }}
-          </span>
-          <span
-            class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-          >
-            {{ environmentLabel }}
-          </span>
-        </div>
+      <!-- ✅ Version + Environment -->
+      <div class="flex items-center gap-1 mt-0.5 pl-2">
+        <span
+          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700"
+        >
+          {{ appVersion }}
+        </span>
+        <span
+          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+        >
+          {{ environmentLabel }}
+        </span>
+      </div>
     </div>
   </div>
 
