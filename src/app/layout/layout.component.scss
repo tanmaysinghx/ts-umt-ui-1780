@@ -1,17 +1,13 @@
-/* Base Layout */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Sticky Header */
 .app-header {
   position: sticky;
   top: 0;
   width: 100%;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
 }
 
@@ -45,18 +41,13 @@
   transition: margin-left 0.3s ease;
 }
 
-/* Main Content */
+/* Main Content Card (we add padding via Tailwind; keep base) */
 .main-content {
-  background: white;
-  border-radius: 8px;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-/* Breadcrumbs */
-.breadcrumbs {
-  margin-bottom: 12px;
-}
+/* Breadcrumbs spacing handled in template with mb-3 */
 
 /* Speed Dial */
 .speed-dial {
@@ -68,8 +59,7 @@
 
 /* Logged Out View */
 .auth-view {
-  align-items: center;
-  justify-content: center;
+  display: flex;
 }
 
 /* MOBILE STYLES */
@@ -97,7 +87,6 @@
   }
 }
 
-/* LARGE SCREEN HEADER CENTERING */
 @media (min-width: 1600px) {
   .app-header > * {
     max-width: 1600px;
@@ -105,12 +94,10 @@
   }
 }
 
-/* Hide mobile button on large screens */
 .mobile-toggle-button {
-  display: none;
   background: none;
   border: none;
-  padding: 8px;
-  font-size: 24px;
+  padding: 4px;
+  font-size: 20px;
   cursor: pointer;
 }

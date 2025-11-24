@@ -1,71 +1,111 @@
 <!-- PC Layout (visible on sm and above) -->
-<div *ngIf="!isMobileView" class="app-container hidden sm:flex flex-col min-h-screen">
-    <!-- PC Header -->
-    <header class="app-header" *ngIf="loggedInFlag">
-        <app-header></app-header>
-    </header>
+<div
+  *ngIf="!isMobileView"
+  class="app-container hidden sm:flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800"
+>
+  <!-- PC Header (your header stays in full control of its nav) -->
+  <header class="app-header" *ngIf="loggedInFlag">
+    <app-header></app-header>
+  </header>
 
-    <!-- PC Logged In View -->
-    <div class="app-body" *ngIf="loggedInFlag">
-        <!-- Sidebar -->
-        <nav class="app-sidebar">
-            <app-side-nav></app-side-nav>
-        </nav>
+  <!-- PC Logged In View -->
+  <div class="app-body" *ngIf="loggedInFlag">
+    <!-- Sidebar -->
+    <nav
+      class="app-sidebar bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700"
+    >
+      <app-side-nav></app-side-nav>
+    </nav>
 
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <div class="breadcrumbs">
-                <app-breadcrump></app-breadcrump>
-            </div>
+    <!-- Main Content -->
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <div class="breadcrumbs mb-3">
+        <app-breadcrump></app-breadcrump>
+      </div>
 
-            <div class="main-content">
-                <router-outlet></router-outlet>
-            </div>
-
-            <div class="speed-dial">
-                <app-speed-up-dial></app-speed-up-dial>
-            </div>
-        </div>
-    </div>
-
-    <!-- PC Logged Out View -->
-    <div class="auth-view" *ngIf="!loggedInFlag">
+      <!-- Routed Content Card -->
+      <div
+        class="main-content p-4 rounded-2xl border border-gray-200 bg-white shadow-sm
+               dark:border-gray-700 dark:bg-gray-900"
+      >
         <router-outlet></router-outlet>
+      </div>
+
+      <!-- Speed Dial -->
+      <div class="speed-dial">
+        <app-speed-up-dial></app-speed-up-dial>
+      </div>
     </div>
+  </div>
+
+  <!-- PC Logged Out View -->
+  <div class="auth-view flex flex-1 items-center justify-center" *ngIf="!loggedInFlag">
+    <div
+      class="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-lg
+             dark:border-gray-700 dark:bg-gray-900"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
 
 <!-- Mobile Layout (only visible on small screens) -->
-<div *ngIf="isMobileView" class="sm:hidden flex flex-col min-h-screen">
-    <!-- Mobile Header -->
-    <div class="" *ngIf="loggedInFlag">
-        <header class="sticky top-0 z-50 bg-white shadow flex items-center justify-between px-4 h-14">
-            <button (click)="toggleSidebar()">☰</button>
-            <app-header></app-header>
-        </header>
+<div
+  *ngIf="isMobileView"
+  class="sm:hidden flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800"
+>
+  <!-- Mobile Logged In View -->
+  <div *ngIf="loggedInFlag">
+    <!-- Mobile Header (keep as-is, just slightly refined classes) -->
+    <header
+      class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow flex items-center justify-between px-3 h-14"
+    >
+      <button (click)="toggleSidebar()" class="mobile-toggle-button text-xl">
+        ☰
+      </button>
+      <app-header></app-header>
+    </header>
 
-        <!-- Sidebar Backdrop -->
-        <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleSidebar()"></div>
+    <!-- Sidebar Backdrop -->
+    <div
+      *ngIf="sidebarOpen"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      (click)="toggleSidebar()"
+    ></div>
 
-        <!-- Slide-in Sidebar -->
-        <aside
-            class="fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-white border-r shadow z-50 transform transition-transform duration-300"
-            [class.translate-x-0]="sidebarOpen" [class.-translate-x-full]="!sidebarOpen">
-            <app-side-nav></app-side-nav>
-        </aside>
+    <!-- Slide-in Sidebar -->
+    <aside
+      class="fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow z-50 transform transition-transform duration-300"
+      [class.translate-x-0]="sidebarOpen"
+      [class.-translate-x-full]="!sidebarOpen"
+    >
+      <app-side-nav></app-side-nav>
+    </aside>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 pt-5 bg-gray-50 min-h-[calc(100vh-56px)]">
-            <app-breadcrump></app-breadcrump>
-            <div class="bg-white rounded shadow mt-2">
-                <router-outlet></router-outlet>
-            </div>
-        </main>
-    </div>
-    <div class="" *ngIf="!loggedInFlag">
-        <main class="flex-1 bg-gray-50 min-h-[calc(100vh-56px)]">
-            <div class="bg-white rounded shadow mt-2">
-                <router-outlet></router-outlet>
-            </div>
-        </main>
-    </div>
+    <!-- Main Content Area -->
+    <main class="flex-1 pt-4 px-3 pb-6 bg-transparent min-h-[calc(100vh-56px)]">
+      <app-breadcrump></app-breadcrump>
+      <div
+        class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow mt-3 p-3"
+      >
+        <router-outlet></router-outlet>
+      </div>
+
+      <div class="fixed bottom-5 right-5 z-40">
+        <app-speed-up-dial></app-speed-up-dial>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Logged Out View -->
+  <div *ngIf="!loggedInFlag">
+    <main class="flex-1 flex items-center justify-center px-4 pb-10 pt-6 bg-transparent">
+      <div
+        class="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow p-6"
+      >
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
 </div>

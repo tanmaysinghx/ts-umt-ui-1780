@@ -1,45 +1,69 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-breadcrump',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './breadcrump.component.html',
-  styleUrl: './breadcrump.component.scss'
+  styleUrls: ['./breadcrump.component.scss'],
 })
-export class BreadcrumpComponent {
+export class BreadcrumpComponent implements OnInit, OnDestroy {
+  pathArray: string[] = [];
+  activePathValue = '';
 
-  currentPathValue: any;
-  pathArray: any = [];
-  activePathValue: any;
+  private routerSub?: Subscription;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
-    this.getPathValue();
-  }
+    // Initial build
+    this.buildBreadcrumbFromUrl();
 
-  /* Function gets active path value from url and processes it */
-  getPathValue() {
-    const currentPath = window.location.pathname;
-    this.currentPathValue = currentPath;
-    let temp = this.currentPathValue.split('/');
-    for (let i = 0; i < temp.length; i++) {
-      if (i != 0 && i != temp.length - 1) {
-        let path = this.capitalizeEachWord(temp[i]);
-        this.pathArray.push(path);
-      } else if (i == temp.length - 1) {
-        let path = this.capitalizeEachWord(temp[i]);
-        this.activePathValue = path;
+    // Rebuild on every navigation end
+    this.routerSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.buildBreadcrumbFromUrl();
       }
-    }
+    });
   }
 
-  /* Function to captilize each letter of word */
-  capitalizeEachWord(str: string): string {
-    return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 
+  /** Build breadcrumb segments from current router URL */
+  private buildBreadcrumbFromUrl(): void {
+    // e.g. "/dashboard/profile/settings?tab=general" -> "/dashboard/profile/settings"
+    const url = this.router.url.split('?')[0];
+
+    // Split path and drop empty segments
+    const segments = url.split('/').filter(Boolean); // removes leading "" from initial "/"
+
+    this.pathArray = [];
+    this.activePathValue = '';
+
+    segments.forEach((segment, index) => {
+      const label = this.capitalizeSegment(segment);
+
+      if (index === segments.length - 1) {
+        // Last segment = active page
+        this.activePathValue = label;
+      } else {
+        // Intermediate segments
+        this.pathArray.push(label);
+      }
+    });
+  }
+
+  /** "user-profile" -> "User Profile" */
+  private capitalizeSegment(str: string): string {
+    return str
+      .split('-')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 }

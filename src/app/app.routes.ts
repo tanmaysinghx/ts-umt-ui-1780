@@ -12,7 +12,6 @@ import { ProfileDetailsComponent } from './features/account-id-creation/profile-
 import { CompanyDetailsComponent } from './features/account-id-creation/company-details/company-details.component';
 import { SubscriptionDetailsComponent } from './features/account-id-creation/subscription-details/subscription-details.component';
 import { TermsConditionsReviewComponent } from './features/account-id-creation/terms-conditions-review/terms-conditions-review.component';
-import { UiTestingComponent } from './features/ui-testing/ui-testing.component';
 import { UserListComponent } from './features/user-management/user-list/user-list.component';
 import { DashboardApplicationsComponent } from './features/dashboard/dashboard-applications/dashboard-applications.component';
 import { MyAccountComponent } from './features/my-section/my-account/my-account.component';
@@ -20,8 +19,6 @@ import { SessionManagementComponent } from './features/session-management/sessio
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
-
-    { path: 'ui-testing', component: UiTestingComponent },
 
     //auth urls
     { path: 'auth/login', component: LoginComponent },

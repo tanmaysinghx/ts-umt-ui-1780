@@ -1,70 +1,162 @@
-<!-- Sidebar -->
-<aside id="default-sidebar"
+<!-- 💻 DESKTOP SIDEBAR -->
+<aside
+  id="default-sidebar"
   class="fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-transform -translate-x-full sm:translate-x-0"
-  aria-label="Sidebar" *ngIf="apiResponseData">
-
-  <!-- Header with Logo and Toggle -->
-  <div class="flex items-center h-16 px-4 border-gray-200 dark:border-gray-700">
-    <button aria-expanded="true" aria-controls="sidebar"
-      class="p-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M1 1h15M1 7h15M1 13h15" />
+  aria-label="Sidebar"
+  *ngIf="apiResponseData"
+>
+  <!-- Header with Logo -->
+  <div class="flex items-center h-16 px-4 bg-white/95 dark:bg-gray-900/95">
+    <button
+      aria-expanded="true"
+      aria-controls="sidebar"
+      class="p-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
+    >
+      <svg
+        class="w-5 h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 17 14"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15"
+        />
       </svg>
     </button>
+
     <div class="flex items-center ml-3">
-      <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="h-6 mr-2" alt="Portal Logo" />
-      <span class="text-xl font-semibold text-gray-800 dark:text-white">Portal</span>
+      <img
+        src="https://flowbite.s3.amazonaws.com/logo.svg"
+        class="h-6 mr-2"
+        alt="Portal Logo"
+      />
+      <span class="text-base font-semibold text-gray-800 dark:text-white">
+        Portal
+      </span>
     </div>
   </div>
 
   <!-- Menu Container -->
   <div class="flex-1 flex flex-col overflow-hidden">
-    <!-- Scrollable Menu Area -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4">
+      <!-- Section label -->
+      <p
+        class="mb-3 text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500"
+      >
+        Navigation
+      </p>
+
       <!-- Menu Items -->
-      <ul class="space-y-2">
+      <ul class="space-y-1">
         <ng-container *ngFor="let item of apiResponseData">
           <!-- Single-level item -->
           <li *ngIf="!item.subOptionFlag">
-            <a (click)="navigateTo(item.routerPath)"
-              class="flex items-center w-full p-2 text-sm font-medium text-gray-700 rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-              <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" viewBox="0 0 576 512">
+            <a
+              (click)="navigateTo(item.routerPath)"
+              class="flex items-center w-full px-2 py-2 text-sm rounded-lg cursor-pointer transition-colors duration-150"
+              [ngClass]="{
+                'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                  isActive(item.routerPath),
+                'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700':
+                  !isActive(item.routerPath)
+              }"
+            >
+              <svg
+                class="w-5 h-5"
+                [ngClass]="{
+                  'text-blue-600 dark:text-blue-300': isActive(item.routerPath),
+                  'text-gray-500 dark:text-gray-400': !isActive(item.routerPath)
+                }"
+                viewBox="0 0 576 512"
+              >
                 <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
               </svg>
-              <span class="ml-3">{{ item.name }}</span>
+              <span class="ml-3 truncate">{{ item.name }}</span>
             </a>
           </li>
 
-          <!-- With Dropdown -->
+          <!-- Item with Dropdown -->
           <li *ngIf="item.subOptionFlag">
-            <button type="button"
-              class="flex items-center justify-between w-full p-2 text-sm font-medium text-gray-700 rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-              [attr.aria-controls]="'dropdown-' + item.optionCode" [attr.aria-expanded]="item.isExpanded || 'false'"
-              (click)="toggleDropdown(item)">
+            <button
+              type="button"
+              class="flex items-center justify-between w-full px-2 py-2 text-sm rounded-lg transition-colors duration-150"
+              [ngClass]="{
+                'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                  hasActiveChild(item),
+                'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700':
+                  !hasActiveChild(item)
+              }"
+              [attr.aria-controls]="'dropdown-' + item.optionCode"
+              [attr.aria-expanded]="item.isExpanded || 'false'"
+              (click)="toggleDropdown(item)"
+            >
               <div class="flex items-center">
-                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" viewBox="0 0 640 512">
+                <svg
+                  class="w-5 h-5"
+                  [ngClass]="{
+                    'text-blue-600 dark:text-blue-300': hasActiveChild(item),
+                    'text-gray-500 dark:text-gray-400': !hasActiveChild(item)
+                  }"
+                  viewBox="0 0 640 512"
+                >
                   <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
                 </svg>
-                <span class="ml-3">{{ item.name }}</span>
+                <span class="ml-3 truncate">{{ item.name }}</span>
               </div>
-              <svg class="w-4 h-4 transition-transform duration-200" [class.rotate-180]="item.isExpanded"
-                fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
+              <svg
+                class="w-4 h-4 transition-transform duration-200"
+                [class.rotate-180]="item.isExpanded"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
                   d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"></path>
+                  clip-rule="evenodd"
+                ></path>
               </svg>
             </button>
-            <ul [id]="'dropdown-' + item.optionCode"
-              class="py-2 space-y-1 ml-10 pl-3 border-l border-gray-200 dark:border-gray-600"
-              [class.hidden]="!item.isExpanded">
+
+            <!-- Sub-options -->
+            <ul
+              [id]="'dropdown-' + item.optionCode"
+              class="py-2 space-y-1 ml-9 pl-3 border-l border-gray-200 dark:border-gray-600"
+              [class.hidden]="!item.isExpanded"
+            >
               <li *ngFor="let sub of item.subOptions">
-                <a (click)="navigateTo(sub.routerPath)"
-                  class="flex items-center p-2 text-sm font-normal text-gray-600 rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                  <svg class="w-4 h-4 text-gray-400 dark:text-gray-300" viewBox="0 0 640 512">
-                    <path [attr.d]="sub.svgImagePath" fill="currentColor"></path>
+                <a
+                  (click)="navigateTo(sub.routerPath)"
+                  class="flex items-center px-2 py-2 text-xs rounded-lg cursor-pointer transition-colors duration-150"
+                  [ngClass]="{
+                    'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                      isActive(sub.routerPath),
+                    'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700':
+                      !isActive(sub.routerPath)
+                  }"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    [ngClass]="{
+                      'text-blue-600 dark:text-blue-300': isActive(
+                        sub.routerPath
+                      ),
+                      'text-gray-400 dark:text-gray-300': !isActive(
+                        sub.routerPath
+                      )
+                    }"
+                    viewBox="0 0 640 512"
+                  >
+                    <path
+                      [attr.d]="sub.svgImagePath"
+                      fill="currentColor"
+                    ></path>
                   </svg>
-                  <span class="ml-3">{{ sub.name }}</span>
+                  <span class="ml-3 truncate">{{ sub.name }}</span>
                 </a>
               </li>
             </ul>
@@ -75,52 +167,88 @@
   </div>
 </aside>
 
+<!-- 📱 MOBILE SIDEBAR -->
+<aside
+  id="mobile-sidebar"
+  class="sm:hidden fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-gray-900 text-white border-r border-gray-700 transition-transform"
+  aria-label="Sidebar"
+  *ngIf="apiResponseData"
+>
+  <div class="flex items-center h-14 px-3 border-b border-gray-700">
+    <span class="text-sm font-semibold">Menu</span>
+  </div>
 
-<!-- 📱 MOBILE SIDEBAR: Only visible on screens <640px (Tailwind sm) -->
-<aside id="mobile-sidebar"
-  class="sm:hidden fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-white text-gray-800 border-r border-gray-200 dark:bg-gray-900 dark:text-white dark:border-gray-700 transition-transform"
-  aria-label="Sidebar" *ngIf="apiResponseData">
-  <!-- Menu -->
   <div class="flex-1 overflow-y-auto px-3 py-4">
-    <ul class="space-y-2">
+    <ul class="space-y-1">
       <ng-container *ngFor="let item of apiResponseData">
         <!-- Top-level item -->
         <li *ngIf="!item.subOptionFlag">
-          <a (click)="navigateTo(item.routerPath)"
-            class="flex items-center w-full p-2 text-sm rounded-lg hover:bg-gray-800">
-            <svg class="w-5 h-5 text-gray-300" viewBox="0 0 576 512">
+          <a
+            (click)="navigateTo(item.routerPath)"
+            class="flex items-center w-full px-2 py-2 text-sm rounded-lg cursor-pointer transition-colors duration-150"
+            [ngClass]="{
+              'bg-gray-800 text-white': isActive(item.routerPath),
+              'text-gray-300 hover:bg-gray-800': !isActive(item.routerPath)
+            }"
+          >
+            <svg
+              class="w-5 h-5"
+              [ngClass]="{
+                'text-blue-400': isActive(item.routerPath),
+                'text-gray-400': !isActive(item.routerPath)
+              }"
+              viewBox="0 0 576 512"
+            >
               <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
             </svg>
-            <span class="ml-3">{{ item.name }}</span>
+            <span class="ml-3 truncate">{{ item.name }}</span>
           </a>
         </li>
 
         <!-- Item with sub-options -->
         <li *ngIf="item.subOptionFlag">
-          <button type="button"
-            class="flex items-center justify-between w-full p-2 text-sm rounded-lg hover:bg-gray-800"
-            (click)="toggleDropdown(item)">
+          <button
+            type="button"
+            class="flex items-center justify-between w-full px-2 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-800 transition-colors duration-150"
+            (click)="toggleDropdown(item)"
+          >
             <div class="flex items-center">
-              <svg class="w-5 h-5 text-gray-300" viewBox="0 0 640 512">
+              <svg class="w-5 h-5 text-gray-400" viewBox="0 0 640 512">
                 <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
               </svg>
-              <span class="ml-3">{{ item.name }}</span>
+              <span class="ml-3 truncate">{{ item.name }}</span>
             </div>
-            <svg class="w-4 h-4 transition-transform" [class.rotate-180]="item.isExpanded" fill="currentColor"
-              viewBox="0 0 20 20">
-              <path fill-rule="evenodd"
+            <svg
+              class="w-4 h-4 transition-transform"
+              [class.rotate-180]="item.isExpanded"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clip-rule="evenodd" />
+                clip-rule="evenodd"
+              />
             </svg>
           </button>
-          <ul class="py-2 space-y-1 ml-10 pl-3 border-l border-gray-700" [class.hidden]="!item.isExpanded">
+
+          <ul
+            class="py-2 space-y-1 ml-9 pl-3 border-l border-gray-700"
+            [class.hidden]="!item.isExpanded"
+          >
             <li *ngFor="let sub of item.subOptions">
-              <a (click)="navigateTo(sub.routerPath)"
-                class="flex items-center p-2 text-sm text-gray-300 rounded-lg hover:bg-gray-800">
-                <svg class="w-4 h-4" viewBox="0 0 640 512">
+              <a
+                (click)="navigateTo(sub.routerPath)"
+                class="flex items-center px-2 py-2 text-xs rounded-lg cursor-pointer transition-colors duration-150"
+                [ngClass]="{
+                  'bg-gray-800 text-white': isActive(sub.routerPath),
+                  'text-gray-300 hover:bg-gray-800': !isActive(sub.routerPath)
+                }"
+              >
+                <svg class="w-4 h-4 text-gray-400" viewBox="0 0 640 512">
                   <path [attr.d]="sub.svgImagePath" fill="currentColor"></path>
                 </svg>
-                <span class="ml-3">{{ sub.name }}</span>
+                <span class="ml-3 truncate">{{ sub.name }}</span>
               </a>
             </li>
           </ul>
