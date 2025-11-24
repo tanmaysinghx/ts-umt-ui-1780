@@ -1,80 +1,117 @@
-<!--Login Component-->
-<div
-    class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900 custom-height">
-    <!-- Card -->
-    <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-            Sign in
-        </h2>
-        <form [formGroup]="loginForm" class="mt-8 space-y-6">
-            <!--Email Field-->
-            <div>
-                <!-- Label for valid input -->
-                <label *ngIf="!loginForm.controls['userEmailId'].errors?.['customError']" for="userEmailId"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Your email
-                </label>
-                <!-- Label for invalid input -->
-                <label *ngIf="loginForm.controls['userEmailId'].errors?.['customError']" htmlFor="error"
-                    class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">
-                    Your email
-                </label>
-                <!-- Email input field -->
-                <input type="email" name="userEmailId" id="userEmailId" formControlName="userEmailId"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="name@company.com" required autocomplete="email">
-                <!-- Error message -->
-                <p *ngIf="loginForm.controls['userEmailId'].errors?.['customError']"
-                    class="mt-2 text-sm text-red-600 dark:text-red-500">
-                    <span class="font-medium">Oh, snap!</span> Please verify this field.
-                </p>
-            </div>
-            <!--Password Field-->
-            <div>
-                <!-- Label for valid input -->
-                <label *ngIf="!loginForm.controls['userPassword'].errors?.['customError']" for="userPassword"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Your password
-                </label>
-                <!-- Label for invalid input -->
-                <label *ngIf="loginForm.controls['userPassword'].errors?.['customError']" htmlFor="error"
-                    class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">
-                    Your password
-                </label>
-                <input type="password" name="userPassword" id="userPassword" formControlName="userPassword"
-                    placeholder="••••••••"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    required autocomplete="current-password">
-                <!-- Error message -->
-                <p *ngIf="loginForm.controls['userPassword'].errors?.['customError']"
-                    class="mt-2 text-sm text-red-600 dark:text-red-500">
-                    <span class="font-medium">Oh, snap!</span> Please verify this field.
-                </p>
-            </div>
-            <div class="flex items-start">
-                <div class="flex items-center h-5">
-                    <input id="remember" aria-describedby="remember" name="remember" type="checkbox"
-                        formControlName="rememberMe"
-                        class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <div class="ml-3 text-sm" type="button">
-                    <label for="remember" class="font-medium text-gray-900 dark:text-white">Remember me</label>
-                </div>
-                <a href="#" class="ml-auto text-sm text-primary-700 hover:underline dark:text-primary-500">Lost
-                    Password?</a>
-            </div>
-            <button type="submit" (click)="submitForm()"
-                class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login
-                to your account</button>
-            <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Not registered? <span (click)="navigateToRegister()"
-                    class="text-primary-700 hover:underline dark:text-primary-500 cursor-pointer">Create account</span>
-            </div>
-        </form>
-    </div>
-</div>
+<div class="min-h-screen w-full flex items-center justify-center px-6">
+  <div class="w-full max-w-md">
+    <!-- LOGIN CARD -->
+    <div
+      class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8"
+    >
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          Sign in
+        </h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Secure access to your workspace portal
+        </p>
+      </div>
 
-<div class="snackbar-detailed" *ngIf=snackbarFlag>
-    <app-snackbar-detailed [message]="snackbarMessage" [snackbarType]="snackbarType"
-        [duration]="snackbarDuration"></app-snackbar-detailed>
+      <!-- Google Login -->
+      <button
+        type="button"
+        (click)="loginWithGoogle()"
+        class="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+      >
+        <img
+          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          class="w-5 h-5"
+        />
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">
+          Continue with Google
+        </span>
+      </button>
+
+      <div class="flex items-center my-6">
+        <div class="flex-1 border-t border-gray-200 dark:border-gray-700"></div>
+        <span class="px-3 text-xs text-gray-400">OR</span>
+        <div class="flex-1 border-t border-gray-200 dark:border-gray-700"></div>
+      </div>
+
+      <!-- FORM -->
+      <form [formGroup]="loginForm" class="space-y-5">
+        <!-- Email -->
+        <div>
+          <label
+            class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+          >
+            Email address
+          </label>
+          <input
+            type="email"
+            formControlName="userEmailId"
+            placeholder="name@company.com"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label
+            class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            formControlName="userPassword"
+            placeholder="••••••••"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <!-- Remember & Forgot -->
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              formControlName="rememberMe"
+              class="rounded border-gray-300"
+            />
+            Remember me
+          </label>
+          <a class="text-indigo-600 hover:underline cursor-pointer"
+            >Forgot password?</a
+          >
+        </div>
+
+        <!-- Submit -->
+        <button
+          (click)="submitForm()"
+          type="button"
+          class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 transition font-semibold"
+        >
+          Login to your account
+        </button>
+
+        <!-- Footer -->
+        <p class="text-center text-sm text-gray-500">
+          Not registered?
+          <span
+            (click)="navigateToRegister()"
+            class="text-indigo-600 font-medium hover:underline cursor-pointer"
+          >
+            Create account
+          </span>
+        </p>
+      </form>
+    </div>
+
+    <!-- SNACKBAR -->
+    <div class="mt-4" *ngIf="snackbarFlag">
+      <app-snackbar-detailed
+        [message]="snackbarMessage"
+        [snackbarType]="snackbarType"
+        [duration]="snackbarDuration"
+      >
+      </app-snackbar-detailed>
+    </div>
+  </div>
 </div>

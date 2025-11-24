@@ -6,68 +6,59 @@ import { Component, Input, OnInit } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './snackbar-detailed.component.html',
-  styleUrl: './snackbar-detailed.component.scss'
+  styleUrls: ['./snackbar-detailed.component.scss'],
 })
-export class SnackbarDetailedComponent {
-
+export class SnackbarDetailedComponent implements OnInit {
   @Input() message: any;
   @Input() snackbarType: any;
   @Input() duration: any;
 
-  infoFlag: boolean = false;
-  dangerFlag: boolean = false;
-  successFlag: boolean = false;
-  warningFlag: boolean = false;
-  darkFlag: boolean = false;
+  infoFlag = false;
+  dangerFlag = false;
+  successFlag = false;
+  warningFlag = false;
+  darkFlag = false;
   snackbarMessage: any;
-
 
   ngOnInit() {
     this.openSnackBar(this.message, this.snackbarType, this.duration);
-    console.log("Snackbar Triggered !!!")
+    console.log('Snackbar Triggered !!!');
   }
 
   openSnackBar(message: any, snackbarType: any, duration: any) {
     this.snackbarMessage = message;
-    if (snackbarType == "info") {
+
+    if (snackbarType === 'info') {
       this.infoFlag = true;
-      this.closeSnackbar(duration, snackbarType);
-    } else if (snackbarType == "danger") {
+    } else if (snackbarType === 'danger') {
       this.dangerFlag = true;
-      this.closeSnackbar(duration, snackbarType);
-    } else if (snackbarType == "success") {
+    } else if (snackbarType === 'success') {
       this.successFlag = true;
-      this.closeSnackbar(duration, snackbarType);
-    } else if (snackbarType == "warning") {
+    } else if (snackbarType === 'warning') {
       this.warningFlag = true;
-      this.closeSnackbar(duration, snackbarType);
-    } else if (snackbarType == "dark") {
+    } else if (snackbarType === 'dark') {
       this.darkFlag = true;
-      this.closeSnackbar(duration, snackbarType);
     }
+
+    this.closeSnackbar(duration, snackbarType);
   }
 
   closeSnackbar(duration: any, type: any) {
-    if (type == "info") {
-      setTimeout(() => {
-        this.infoFlag = false;
-      }, duration);
-    } else if (type == "danger") {
-      setTimeout(() => {
-        this.dangerFlag = false;
-      }, duration);
-    } else if (type == "success") {
-      setTimeout(() => {
-        this.successFlag = false;
-      }, duration);
-    } else if (type == "warning") {
-      setTimeout(() => {
-        this.warningFlag = false;
-      }, duration);
-    } else if (type == "dark") {
-      setTimeout(() => {
-        this.darkFlag = false;
-      }, duration);
-    }
+    setTimeout(() => {
+      if (type === 'info') this.infoFlag = false;
+      else if (type === 'danger') this.dangerFlag = false;
+      else if (type === 'success') this.successFlag = false;
+      else if (type === 'warning') this.warningFlag = false;
+      else if (type === 'dark') this.darkFlag = false;
+    }, duration);
+  }
+
+  // manual close (X button)
+  closeNow() {
+    this.infoFlag = false;
+    this.dangerFlag = false;
+    this.successFlag = false;
+    this.warningFlag = false;
+    this.darkFlag = false;
   }
 }

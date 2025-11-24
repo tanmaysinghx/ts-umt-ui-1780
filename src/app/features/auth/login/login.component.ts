@@ -242,4 +242,10 @@ export class LoginComponent implements OnInit {
     this.cookieService.deleteAll();
     this.router.navigate(['../auth/login']);
   }
+
+  loginWithGoogle() {
+  this.openSnackbar('Google SSO integration hook triggered', 'info', 3000);
+  // Hook your OAuth logic here
+}
+
 }

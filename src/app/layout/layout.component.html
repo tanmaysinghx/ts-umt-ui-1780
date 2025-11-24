@@ -26,8 +26,7 @@
 
       <!-- Routed Content Card -->
       <div
-        class="main-content p-4 rounded-2xl border border-gray-200 bg-white shadow-sm
-               dark:border-gray-700 dark:bg-gray-900"
+        class="main-content p-4 rounded-2xl border border-gray-200 bg-white shadow-md backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900"
       >
         <router-outlet></router-outlet>
       </div>
@@ -39,14 +38,12 @@
     </div>
   </div>
 
-  <!-- PC Logged Out View -->
-  <div class="auth-view flex flex-1 items-center justify-center" *ngIf="!loggedInFlag">
-    <div
-      class="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-lg
-             dark:border-gray-700 dark:bg-gray-900"
-    >
-      <router-outlet></router-outlet>
-    </div>
+  <!-- PC Logged Out View - full screen, no extra card -->
+  <div
+    class="auth-view min-h-screen w-full bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800"
+    *ngIf="!loggedInFlag && !isMobileView"
+  >
+    <router-outlet></router-outlet>
   </div>
 </div>
 
@@ -99,13 +96,11 @@
   </div>
 
   <!-- Mobile Logged Out View -->
-  <div *ngIf="!loggedInFlag">
-    <main class="flex-1 flex items-center justify-center px-4 pb-10 pt-6 bg-transparent">
-      <div
-        class="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow p-6"
-      >
-        <router-outlet></router-outlet>
-      </div>
-    </main>
+  <!-- Mobile Logged Out View - full screen -->
+  <div
+    *ngIf="!loggedInFlag && isMobileView"
+    class="flex flex-1 min-h-screen w-full bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800"
+  >
+    <router-outlet></router-outlet>
   </div>
 </div>
