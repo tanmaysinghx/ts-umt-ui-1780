@@ -17,6 +17,8 @@ import { MyProfilePasswordChangeComponent } from './features/my-section/my-profi
 import { DashboardFavoritesComponent } from './features/dashboard/dashboard-favorites/dashboard-favorites.component';
 import { ManageUsersComponent } from './features/admin/manage-users/manage-users.component';
 import { MonitoringUsersComponent } from './features/admin/monitoring-users/monitoring-users.component';
+import { RoleManagerComponent } from './features/admin/role-manager/role-manager.component';
+import { ApplicationManagerComponent } from './features/admin/application-manager/application-manager.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -54,6 +56,8 @@ export const routes: Routes = [
     //admin urls
     { path: 'admin/manage-users', component: ManageUsersComponent },
     { path: 'admin/monitor-users', component: MonitoringUsersComponent },
+    { path: 'admin/role-manager', component: RoleManagerComponent },
+    { path: 'admin/application-manager', component: ApplicationManagerComponent },
 
 ];
 
