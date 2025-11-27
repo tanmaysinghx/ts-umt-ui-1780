@@ -22,6 +22,37 @@ export class HeaderComponent {
   userEmail: any = 'user@example.com';
   versionLabel = 'ALPHA-001';
 
+  isNotificationsOpen = false;
+  notifications = [
+    {
+      id: 1,
+      title: 'New Session Detected',
+      message: 'A new login from Chrome on Windows.',
+      time: '2m ago',
+      read: false,
+      icon: 'shield-check',
+      color: 'blue'
+    },
+    {
+      id: 2,
+      title: 'Password Update',
+      message: 'Your password was successfully updated.',
+      time: '1d ago',
+      read: true,
+      icon: 'lock-closed',
+      color: 'green'
+    },
+    {
+      id: 3,
+      title: 'System Maintenance',
+      message: 'Scheduled maintenance in 2 hours.',
+      time: '2d ago',
+      read: true,
+      icon: 'exclamation-circle',
+      color: 'yellow'
+    }
+  ];
+
   constructor(private readonly sharedService: SharedService, private readonly router: Router, private readonly loginService: LoginService) { }
 
   ngOnInit() {
@@ -34,8 +65,8 @@ export class HeaderComponent {
   }
 
   getSessionStorage() {
-    this.userEmail = sessionStorage?.getItem('user-email') ?? null;
-    this.userRole = sessionStorage?.getItem('user-role')?.toUpperCase() ?? null;
+    this.userEmail = localStorage.getItem('user-email') ?? null;
+    this.userRole = localStorage.getItem('user-role')?.toUpperCase() ?? null;
   }
 
   toggleTheme() {
@@ -51,6 +82,12 @@ export class HeaderComponent {
 
   toggleUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
+    if (this.isUserMenuOpen) this.isNotificationsOpen = false;
+  }
+
+  toggleNotifications() {
+    this.isNotificationsOpen = !this.isNotificationsOpen;
+    if (this.isNotificationsOpen) this.isUserMenuOpen = false;
   }
 
   signOut() {

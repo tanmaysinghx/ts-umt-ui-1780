@@ -35,7 +35,12 @@ export class SideNavComponent implements OnInit, OnDestroy {
   }
 
   private checkUserType() {
-    this.userType = sessionStorage?.getItem('user-role-id') ?? '0005';
+    const role = localStorage.getItem('user-role')?.toUpperCase();
+    if (role === 'ADMIN' || role === 'SUPERUSER') {
+      this.userType = '0002';
+    } else {
+      this.userType = '0005';
+    }
   }
 
   private getApiResponse() {

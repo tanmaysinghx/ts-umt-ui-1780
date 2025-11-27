@@ -1,0 +1,218 @@
+<div class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6">
+  <!-- Header + Actions -->
+  <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+        User Monitoring
+      </h1>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        Track user activities, system events, and security logs.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        (click)="loadActivities()"
+        [disabled]="loading"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 transition"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          [class.animate-spin]="loading"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>Refresh Logs</span>
+      </button>
+
+      <button
+        type="button"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 transition"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span>Export CSV</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="grid gap-4 md:grid-cols-3 mb-6">
+    <!-- Total Events -->
+    <div class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg">
+      <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
+        Total Events
+      </div>
+      <div class="flex items-baseline gap-2 mb-1">
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">
+          {{ activities.length }}
+        </div>
+        <div class="text-xs text-gray-500 dark:text-gray-400">logged today</div>
+      </div>
+    </div>
+
+    <!-- Failed Actions -->
+    <div class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg">
+      <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
+        Failed Actions
+      </div>
+      <div class="flex items-baseline gap-2 mb-1">
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">
+          {{ failedActionsCount }}
+        </div>
+        <div class="text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          requires attention
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg">
+      <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
+        System Status
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+        </span>
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">
+          All systems operational
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="mb-4 flex items-center justify-between gap-4">
+    <div class="relative w-full max-w-md">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+        </svg>
+      </span>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search logs by user, action, resource, device..."
+        class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 focus:outline-none"
+      />
+    </div>
+
+    <span class="text-xs text-gray-500 dark:text-gray-400">
+      {{ filteredActivities.length }} event(s) found
+    </span>
+  </div>
+
+  <!-- Activity Grid -->
+  <div class="grid grid-cols-1 gap-4">
+    <div
+      *ngFor="let log of filteredActivities"
+      class="group p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-4"
+    >
+      <!-- Left: User & Action -->
+      <div class="flex items-start gap-4 flex-1">
+        <!-- Icon/Avatar -->
+        <div class="flex-shrink-0">
+          <img
+            *ngIf="log.user.avatar"
+            [src]="log.user.avatar"
+            alt="Avatar"
+            class="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-gray-700"
+          />
+          <div
+            *ngIf="!log.user.avatar"
+            class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold text-sm border border-gray-200 dark:border-gray-700"
+          >
+            {{ getInitials(log.user.name) }}
+          </div>
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+              {{ log.user.name }}
+            </h3>
+            <span class="text-xs text-gray-500 dark:text-gray-400">
+              {{ log.user.email }}
+            </span>
+          </div>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mt-0.5">
+            <span class="font-medium">{{ log.action }}</span> on <span class="font-medium text-gray-900 dark:text-gray-100">{{ log.resource }}</span>
+          </p>
+          
+          <!-- New Details Section -->
+          <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <div *ngIf="log.device" class="flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              {{ log.device }}
+            </div>
+            <div *ngIf="log.os" class="flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+              {{ log.os }}
+            </div>
+            <div *ngIf="log.location" class="flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              {{ log.location }}
+            </div>
+            <div *ngIf="log.ip" class="flex items-center gap-1 font-mono">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+              {{ log.ip }}
+            </div>
+          </div>
+
+          <p *ngIf="log.details" class="text-xs text-gray-500 dark:text-gray-400 mt-2 italic border-l-2 border-gray-200 dark:border-gray-700 pl-2">
+            "{{ log.details }}"
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: Status & Time -->
+      <div class="flex flex-row sm:flex-col items-center sm:items-end gap-3 sm:gap-1 ml-14 sm:ml-0 min-w-[120px]">
+        <span
+          class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+          [ngClass]="getStatusColor(log.status)"
+        >
+          {{ log.status }}
+        </span>
+        <div class="text-right">
+          <div class="text-xs font-medium text-gray-900 dark:text-white">
+            {{ formatDate(log.timestamp) }}
+          </div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+            {{ log.timestamp | date:'shortTime' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div
+    *ngIf="!loading && filteredActivities.length === 0"
+    class="mt-10 flex flex-col items-center justify-center text-center text-sm text-gray-500 dark:text-gray-400"
+  >
+    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+      <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white">No logs found</h3>
+    <p class="mt-1 max-w-sm mx-auto">
+      No activity logs match your search criteria.
+    </p>
+    <button
+      (click)="searchQuery = ''"
+      class="mt-4 text-blue-600 hover:text-blue-500 font-medium"
+    >
+      Clear search
+    </button>
+  </div>
+</div>

@@ -15,6 +15,8 @@ import { SecuritySettingsComponent } from './features/security-settings/security
 import { MyAccessComponent } from './features/my-section/my-access/my-access.component';
 import { MyProfilePasswordChangeComponent } from './features/my-section/my-profile-password-change/my-profile-password-change.component';
 import { DashboardFavoritesComponent } from './features/dashboard/dashboard-favorites/dashboard-favorites.component';
+import { ManageUsersComponent } from './features/admin/manage-users/manage-users.component';
+import { MonitoringUsersComponent } from './features/admin/monitoring-users/monitoring-users.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -48,6 +50,10 @@ export const routes: Routes = [
 
     //secuirty settings
     { path: 'security-settings', component: SecuritySettingsComponent },
+
+    //admin urls
+    { path: 'admin/manage-users', component: ManageUsersComponent },
+    { path: 'admin/monitor-users', component: MonitoringUsersComponent },
 
 ];
 
