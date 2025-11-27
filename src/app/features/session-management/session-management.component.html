@@ -1,10 +1,10 @@
 <div
-  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800
-         text-gray-900 dark:text-white py-10 px-6"
+  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6"
 >
-
   <!-- Header + Actions -->
-  <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+  <div
+    class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+  >
     <div>
       <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
         Active Sessions
@@ -16,7 +16,7 @@
 
     <div class="flex items-center gap-3">
       <!-- Dark mode toggle (optional, consistent with your other component) -->
-      <button
+      <!-- <button
         type="button"
         (click)="toggleDarkMode()"
         class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg border
@@ -28,15 +28,13 @@
         </span>
         <span class="inline-block h-4 w-4 rounded-full"
               [ngClass]="darkMode ? 'bg-yellow-400' : 'bg-gray-500'"></span>
-      </button>
+      </button> -->
 
       <button
         type="button"
         (click)="loadSessions()"
         [disabled]="loading"
-        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800
-               rounded-lg hover:bg-gray-900 disabled:opacity-60 disabled:cursor-not-allowed
-               dark:bg-gray-700 dark:hover:bg-black transition"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-900 disabled:opacity-60 disabled:cursor-not-allowed dark:bg-gray-700 dark:hover:bg-black transition"
       >
         <svg
           class="w-4 h-4 mr-2 animate-spin"
@@ -45,10 +43,19 @@
           fill="none"
           viewBox="0 0 24 24"
         >
-          <circle class="opacity-25" cx="12" cy="12" r="10"
-                  stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
         </svg>
         <span>Refresh</span>
       </button>
@@ -57,9 +64,7 @@
         type="button"
         (click)="terminateOtherSessions()"
         [disabled]="loading || otherSessions.length === 0"
-        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600
-               rounded-lg hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed
-               dark:bg-red-700 dark:hover:bg-red-800 transition"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed dark:bg-red-700 dark:hover:bg-red-800 transition"
       >
         <svg
           class="w-4 h-4 mr-2"
@@ -69,8 +74,11 @@
           stroke="currentColor"
           stroke-width="2"
         >
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0h8l-1-3H9l-1 3z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0h8l-1-3H9l-1 3z"
+          />
         </svg>
         <span>Terminate other sessions</span>
       </button>
@@ -78,9 +86,10 @@
   </div>
 
   <!-- Error message -->
-  <div *ngIf="errorMessage"
-       class="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700
-              dark:bg-red-900/40 dark:border-red-700 dark:text-red-200">
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700 dark:bg-red-900/40 dark:border-red-700 dark:text-red-200"
+  >
     {{ errorMessage }}
   </div>
 
@@ -88,8 +97,7 @@
   <div class="grid gap-4 md:grid-cols-3 mb-6">
     <!-- Current session card -->
     <div
-      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl
-             shadow-lg flex flex-col justify-between"
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg flex flex-col justify-between"
     >
       <div class="flex items-center justify-between mb-3">
         <div>
@@ -101,8 +109,7 @@
           </p>
         </div>
         <span
-          class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800
-                 dark:bg-green-900 dark:text-green-300"
+          class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
         >
           Active
         </span>
@@ -127,19 +134,18 @@
 
     <!-- Total sessions card -->
     <div
-      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
-             rounded-2xl shadow-lg"
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
     >
-      <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
+      <div
+        class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2"
+      >
         Total Sessions
       </div>
       <div class="flex items-baseline gap-2 mb-1">
         <div class="text-3xl font-bold text-gray-900 dark:text-white">
           {{ sessions.length }}
         </div>
-        <div class="text-xs text-gray-500 dark:text-gray-400">
-          active
-        </div>
+        <div class="text-xs text-gray-500 dark:text-gray-400">active</div>
       </div>
       <div class="text-xs text-gray-600 dark:text-gray-400">
         {{ otherSessions.length }} on other device(s)
@@ -148,15 +154,16 @@
 
     <!-- Security recommendation card -->
     <div
-      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
-             rounded-2xl shadow-lg"
+      class="p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg"
     >
-      <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
+      <div
+        class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2"
+      >
         Security Health
       </div>
       <p class="text-sm text-gray-700 dark:text-gray-200">
-        Regularly terminate sessions you don’t recognize — especially from unknown
-        locations or browsers.
+        Regularly terminate sessions you don’t recognize — especially from
+        unknown locations or browsers.
       </p>
     </div>
   </div>
@@ -164,7 +171,9 @@
   <!-- Search -->
   <div class="mb-4 flex items-center justify-between gap-4">
     <div class="relative w-full max-w-md">
-      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <span
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
         <svg
           class="w-4 h-4 text-gray-400"
           xmlns="http://www.w3.org/2000/svg"
@@ -173,18 +182,18 @@
           stroke="currentColor"
           stroke-width="2"
         >
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z"
+          />
         </svg>
       </span>
       <input
         type="text"
         [(ngModel)]="searchQuery"
         placeholder="Search by device, IP, location..."
-        class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300
-               dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900
-               dark:text-white placeholder-gray-500 dark:placeholder-gray-400
-               focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 focus:outline-none"
+        class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 focus:outline-none"
       />
     </div>
 
@@ -194,20 +203,15 @@
   </div>
 
   <!-- Sessions Grid -->
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-  >
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <div
       *ngFor="let session of filteredSessions"
-      class="relative group p-5 bg-white dark:bg-gray-900 border border-gray-200
-             dark:border-gray-700 rounded-2xl shadow-lg transition-transform
-             hover:scale-[1.02] hover:shadow-xl"
+      class="relative group p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl"
     >
       <!-- Loader overlay per session -->
       <div
         *ngIf="loadingSessionId === session.id"
-        class="absolute inset-0 bg-white/70 dark:bg-gray-900/70 flex items-center justify-center
-               z-10 rounded-2xl"
+        class="absolute inset-0 bg-white/70 dark:bg-gray-900/70 flex items-center justify-center z-10 rounded-2xl"
       >
         <div class="flex flex-col items-center gap-2">
           <svg
@@ -243,41 +247,51 @@
             {{ session.device }}
           </h2>
           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            {{ session.userAgent || 'User agent not available' }}
+            {{ session.userAgent || "User agent not available" }}
           </p>
         </div>
 
         <span
           class="text-xs font-medium px-2 py-1 rounded-full"
-          [ngClass]="session.current
-            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-            : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'"
+          [ngClass]="
+            session.current
+              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+          "
         >
-          {{ session.current ? 'Current' : 'Active' }}
+          {{ session.current ? "Current" : "Active" }}
         </span>
       </div>
 
       <!-- Details -->
       <div class="text-sm text-gray-700 dark:text-gray-200 mb-3">
         <div class="flex items-center justify-between">
-          <span class="text-xs text-gray-500 dark:text-gray-400">IP Address</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400"
+            >IP Address</span
+          >
           <span class="font-medium">{{ session.ipAddress }}</span>
         </div>
 
         <div class="flex items-center justify-between mt-1">
           <span class="text-xs text-gray-500 dark:text-gray-400">Location</span>
           <span class="font-medium">
-            {{ session.location || 'Unknown' }}
+            {{ session.location || "Unknown" }}
           </span>
         </div>
 
         <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
-          <div>Signed in: <span class="font-medium text-gray-800 dark:text-gray-100">
-            {{ formatDate(session.createdAt) }}
-          </span></div>
-          <div>Last active: <span class="font-medium text-gray-800 dark:text-gray-100">
-            {{ formatDate(session.lastActiveAt) }}
-          </span></div>
+          <div>
+            Signed in:
+            <span class="font-medium text-gray-800 dark:text-gray-100">
+              {{ formatDate(session.createdAt) }}
+            </span>
+          </div>
+          <div>
+            Last active:
+            <span class="font-medium text-gray-800 dark:text-gray-100">
+              {{ formatDate(session.lastActiveAt) }}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -292,9 +306,7 @@
           type="button"
           (click)="terminateSession(session)"
           [disabled]="loading || loadingSessionId === session.id"
-          class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white
-                 bg-red-600 rounded-lg hover:bg-red-700 transition disabled:opacity-60
-                 disabled:cursor-not-allowed dark:bg-red-700 dark:hover:bg-red-800"
+          class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition disabled:opacity-60 disabled:cursor-not-allowed dark:bg-red-700 dark:hover:bg-red-800"
         >
           <svg
             class="w-4 h-4 mr-1"
@@ -304,13 +316,19 @@
             stroke="currentColor"
             stroke-width="2"
           >
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
           Terminate
         </button>
 
-        <span *ngIf="session.current" class="text-xs text-gray-400 dark:text-gray-500">
+        <span
+          *ngIf="session.current"
+          class="text-xs text-gray-400 dark:text-gray-500"
+        >
           This device
         </span>
       </div>
@@ -320,8 +338,7 @@
   <!-- Empty state -->
   <div
     *ngIf="!loading && filteredSessions.length === 0"
-    class="mt-10 flex flex-col items-center justify-center text-center text-sm text-gray-500
-           dark:text-gray-400"
+    class="mt-10 flex flex-col items-center justify-center text-center text-sm text-gray-500 dark:text-gray-400"
   >
     <svg
       class="w-10 h-10 mb-3 text-gray-300 dark:text-gray-600"
@@ -331,8 +348,11 @@
       stroke="currentColor"
       stroke-width="1.5"
     >
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v9A2.25 2.25 0 004.5 16.5H9m6.75-7.5H18a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 018 20.25H5.25A2.25 2.25 0 013 18" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v9A2.25 2.25 0 004.5 16.5H9m6.75-7.5H18a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 018 20.25H5.25A2.25 2.25 0 013 18"
+      />
     </svg>
     <p>No active sessions found.</p>
     <p class="mt-1 text-xs">

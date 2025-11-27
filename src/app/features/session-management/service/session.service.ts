@@ -36,11 +36,11 @@ export class SessionService {
     });
   }
 
-  /** Example: terminate single session (adjust URL/verb to your backend) */
+  /** Terminate single session */
   terminateSession(sessionId: string): Observable<any> {
-    return this.http.post(
-      `${this.baseUrl}/terminate-session`,
-      { sessionId },
+    return this.http.patch(
+      `${this.baseUrl}/${sessionId}/revoke`,
+      { id: sessionId },
       {
         headers: this.buildAuthHeaders(),
       }

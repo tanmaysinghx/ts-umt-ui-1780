@@ -2,15 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SessionService } from './service/session.service';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface UserSession {
   id: string;
-  device: string; // e.g. "Windows · Chrome"
+  device: string;
   ipAddress: string;
-  location?: string; // e.g. "Noida, IN"
+  location?: string;
+  browser?: string;
+  os?: string;
   userAgent?: string;
-  createdAt: string; // ISO date
-  lastActiveAt: string; // ISO date
+  createdAt: string;
+  lastActiveAt: string;
+  expiresAt?: string;
+  isActive: boolean;
   current: boolean;
 }
 
@@ -23,18 +28,19 @@ export interface UserSession {
 })
 export class SessionManagementComponent implements OnInit {
   searchQuery = '';
-  darkMode: boolean = localStorage.getItem('theme') === 'dark';
 
   sessions: UserSession[] = [];
   loading = false;
   loadingSessionId: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private readonly sessionService: SessionService) {}
+  constructor(
+    private readonly sessionService: SessionService,
+    private readonly cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     // sync dark mode class with local storage
-    document.documentElement.classList.toggle('dark', this.darkMode);
     this.loadSessions();
   }
 
@@ -65,17 +71,25 @@ export class SessionManagementComponent implements OnInit {
     this.sessionService.getSessions().subscribe({
       next: (res: any) => {
         const raw = res?.data || [];
+        const currentRefreshToken = this.cookieService.get('refresh-token');
+        console.log('Current refresh token:', currentRefreshToken);
 
         this.sessions = raw.map((s: any) => ({
           id: s.id,
-          device: s.device, // "MacBook Pro"
-          ipAddress: s.ipAddress, // "::1"
-          location: s.location, // "New York, USA"
-          userAgent: `${s.browser} · ${s.os}`, // "Chrome 120 · macOS 14.2"
+          device: s.device,
+          ipAddress: s.ipAddress,
+          location: s.location,
+          browser: s.browser,
+          os: s.os,
+          userAgent: `${s.browser} · ${s.os}`,
           createdAt: s.createdAt,
           lastActiveAt: s.lastActiveAt,
-          current: !!s.isActive, // treat isActive as current
-        }));
+          expiresAt: s.expiresAt,
+          isActive: s.isActive,
+          current: s.refreshToken === currentRefreshToken,
+        })).filter((s: { isActive: any; }) => s.isActive);
+
+        console.log('Loaded sessions:', this.sessions);
 
         this.loading = false;
       },
@@ -85,12 +99,6 @@ export class SessionManagementComponent implements OnInit {
         this.loading = false;
       },
     });
-  }
-
-  toggleDarkMode(): void {
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', this.darkMode);
   }
 
   terminateSession(session: UserSession): void {
