@@ -63,8 +63,20 @@ export class SessionManagementComponent implements OnInit {
     this.errorMessage = null;
 
     this.sessionService.getSessions().subscribe({
-      next: (data: any) => {
-        this.sessions = data || [];
+      next: (res: any) => {
+        const raw = res?.data || [];
+
+        this.sessions = raw.map((s: any) => ({
+          id: s.id,
+          device: s.device, // "MacBook Pro"
+          ipAddress: s.ipAddress, // "::1"
+          location: s.location, // "New York, USA"
+          userAgent: `${s.browser} · ${s.os}`, // "Chrome 120 · macOS 14.2"
+          createdAt: s.createdAt,
+          lastActiveAt: s.lastActiveAt,
+          current: !!s.isActive, // treat isActive as current
+        }));
+
         this.loading = false;
       },
       error: (err: any) => {
