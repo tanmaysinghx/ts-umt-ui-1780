@@ -19,6 +19,7 @@ import { ManageUsersComponent } from './features/admin/manage-users/manage-users
 import { MonitoringUsersComponent } from './features/admin/monitoring-users/monitoring-users.component';
 import { RoleManagerComponent } from './features/admin/role-manager/role-manager.component';
 import { ApplicationManagerComponent } from './features/admin/application-manager/application-manager.component';
+import { AddApplicationComponent } from './features/admin/add-application/add-application.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -58,7 +59,5 @@ export const routes: Routes = [
     { path: 'admin/monitor-users', component: MonitoringUsersComponent },
     { path: 'admin/role-manager', component: RoleManagerComponent },
     { path: 'admin/application-manager', component: ApplicationManagerComponent },
-
+    { path: 'admin/add-application', component: AddApplicationComponent },
 ];
-
-
