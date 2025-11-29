@@ -1,0 +1,470 @@
+<div
+  class="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden"
+>
+  <div
+    class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 via-cyan-500 to-emerald-500 z-[60] opacity-80"
+    style="width: 45%"
+  ></div>
+
+  <div class="fixed inset-0 z-0 pointer-events-none">
+    <div class="absolute inset-0 bg-[#020617]"></div>
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
+    ></div>
+    <div
+      class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[5000ms]"
+    ></div>
+    <div
+      class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] mix-blend-screen"
+    ></div>
+  </div>
+
+  <header
+    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#020617]/80 border-b border-white/5"
+  >
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3 cursor-pointer" routerLink="/">
+        <div
+          class="relative h-9 w-9 flex items-center justify-center bg-gradient-to-tr from-indigo-500 to-cyan-500 rounded-lg shadow-lg shadow-indigo-500/20"
+        >
+          <img
+            src="assets/images/TS_LOGO.png"
+            alt="TS Group"
+            class="h-5 w-auto object-contain brightness-200 contrast-200"
+          />
+        </div>
+        <span class="text-lg font-bold tracking-tight text-white"
+          >TS Group</span
+        >
+      </div>
+      <a
+        routerLink="/blog"
+        class="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-2 group"
+      >
+        <svg
+          class="w-4 h-4 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+        Back to Blog
+      </a>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-6 relative z-10 pt-32 pb-20">
+    <div
+      *ngIf="isLoading"
+      class="flex flex-col justify-center items-center py-40 gap-4"
+    >
+      <div class="relative">
+        <div class="w-16 h-16 border-4 border-white/5 rounded-full"></div>
+        <div
+          class="absolute top-0 left-0 w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"
+        ></div>
+      </div>
+      <p class="text-slate-500 text-sm font-mono animate-pulse">
+        Initializing Data Stream...
+      </p>
+    </div>
+
+    <article
+      *ngIf="!isLoading && post"
+      class="max-w-4xl mx-auto animate-in fade-in duration-700 slide-in-from-bottom-4 relative"
+    >
+      <div
+        class="hidden xl:flex flex-col gap-4 absolute -left-24 top-0 text-slate-500"
+      >
+        <button
+          class="p-3 rounded-full bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-400 transition-all border border-white/5 hover:border-cyan-500/50"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            ></path>
+          </svg>
+        </button>
+        <button
+          class="p-3 rounded-full bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-400 transition-all border border-white/5 hover:border-indigo-500/50"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        class="flex flex-wrap items-center gap-6 mb-8 text-sm font-mono border-b border-white/5 pb-6"
+      >
+        <span
+          class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 uppercase tracking-wider text-xs font-bold shadow-[0_0_10px_rgba(6,182,212,0.2)]"
+        >
+          {{ post.category }}
+        </span>
+        <div
+          class="flex items-center gap-6 text-slate-500 text-xs uppercase tracking-wide"
+        >
+          <span class="flex items-center gap-2">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+            {{ post.date | date : "longDate" }}
+          </span>
+          <span class="flex items-center gap-2">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            12 Min Read
+          </span>
+        </div>
+      </div>
+
+      <h1
+        class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-10 leading-tight tracking-tight"
+      >
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-400"
+        >
+          {{ post.title }}
+        </span>
+      </h1>
+
+      <div
+        class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm mb-12 hover:border-white/20 transition-colors"
+      >
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <div
+              class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 p-[2px]"
+            >
+              <div
+                class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden"
+              >
+                <span class="font-bold text-xl text-white">{{
+                  post.author.charAt(0)
+                }}</span>
+              </div>
+            </div>
+            <div
+              class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full"
+              title="Online"
+            ></div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-white">{{ post.author }}</h3>
+            <p class="text-slate-400 text-sm font-mono">
+              {{ post.role || 'Author' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            *ngIf="post.linkedin"
+            [href]="post.linkedin"
+            target="_blank"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#0077b5]/10 hover:bg-[#0077b5]/20 border border-[#0077b5]/30 text-[#0077b5] hover:text-[#0077b5] font-medium transition-all group"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path
+                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+              />
+            </svg>
+            <span>Connect</span>
+            <svg
+              class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="relative aspect-video rounded-2xl overflow-hidden mb-12 border border-white/10 shadow-2xl shadow-cyan-900/10 group"
+      >
+        [Image of Angular architecture diagram]
+
+        <img
+          [src]="post.image"
+          [alt]="post.title"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60"
+        ></div>
+
+        <div
+          class="absolute bottom-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded border border-white/10 text-[10px] font-mono text-slate-300"
+        >
+          FIG 1.0 // SYSTEM OVERVIEW
+        </div>
+      </div>
+
+      <p
+        class="text-xl md:text-2xl text-slate-200 mb-12 font-light leading-relaxed border-l-4 border-indigo-500 pl-6 italic"
+      >
+        "{{ post.excerpt }}"
+      </p>
+
+      <div class="space-y-8 text-lg">
+        <ng-container
+          *ngFor="let block of post.content; let i = index"
+          [ngSwitch]="block.type"
+        >
+          <p *ngSwitchCase="'paragraph'" class="text-slate-300 leading-relaxed">
+            {{ asParagraph(block).text }}
+          </p>
+
+          <div *ngSwitchCase="'heading'" class="group/head mt-12 mb-4">
+            <h2
+              class="text-3xl font-bold text-white relative inline-block cursor-pointer"
+            >
+              <span class="relative z-10">{{ asHeading(block).text }}</span>
+              <span
+                class="text-indigo-500 opacity-0 group-hover/head:opacity-100 ml-2 transition-opacity"
+                >#</span
+              >
+              <div
+                class="absolute bottom-1 left-0 w-full h-2 bg-indigo-500/20 -skew-x-12 z-0"
+              ></div>
+            </h2>
+          </div>
+
+          <div
+            *ngSwitchCase="'code'"
+            class="my-8 rounded-xl overflow-hidden border border-white/10 bg-[#0d1117] shadow-2xl relative group/code"
+          >
+            <div
+              class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5"
+            >
+              <div class="flex gap-2">
+                <div
+                  class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"
+                ></div>
+                <div
+                  class="w-3 h-3 rounded-full bg-amber-500/20 border border-amber-500/50"
+                ></div>
+                <div
+                  class="w-3 h-3 rounded-full bg-emerald-500/20 border border-emerald-500/50"
+                ></div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div
+                  class="text-[10px] font-mono text-slate-500 uppercase tracking-wider"
+                >
+                  {{ asCode(block).language }}
+                </div>
+                <button
+                  (click)="copyCode(asCode(block).code, i)"
+                  class="flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-cyan-400 transition-colors"
+                  [class.text-emerald-400]="copiedBlockIndex === i"
+                >
+                  <svg
+                    *ngIf="copiedBlockIndex === i"
+                    class="w-4 h-4 animate-in zoom-in duration-200"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <svg
+                    *ngIf="copiedBlockIndex !== i"
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                    ></path>
+                  </svg>
+                  <span>{{ copiedBlockIndex === i ? "Copied!" : "Copy" }}</span>
+                </button>
+              </div>
+            </div>
+            <pre
+              class="p-6 overflow-x-auto text-sm md:text-base font-mono leading-relaxed text-cyan-100"
+            ><code>{{ asCode(block).code }}</code></pre>
+          </div>
+
+          <figure *ngSwitchCase="'image'" class="my-10">
+            <div
+              class="rounded-xl overflow-hidden border border-white/10 shadow-lg group/img relative"
+            >
+              <img
+                [src]="asImage(block).url"
+                [alt]="asImage(block).caption"
+                class="w-full h-auto"
+              />
+              <div
+                class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center cursor-zoom-in"
+              >
+                <span
+                  class="text-white font-mono text-sm border border-white/20 px-3 py-1 rounded-full bg-black/50"
+                  >Click to Expand</span
+                >
+              </div>
+            </div>
+            <figcaption
+              *ngIf="asImage(block).caption"
+              class="mt-3 text-center text-sm text-slate-500 font-mono"
+            >
+              /// {{ asImage(block).caption }}
+            </figcaption>
+          </figure>
+        </ng-container>
+      </div>
+
+      <div
+        class="mt-16 pt-8 border-t border-white/10 flex justify-between items-center"
+      >
+        <a
+          routerLink="/blog"
+          class="group inline-flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors"
+        >
+          <div
+            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyan-500/10 transition-colors"
+          >
+            <svg
+              class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              ></path>
+            </svg>
+          </div>
+          <span class="font-medium text-sm">Back to Articles</span>
+        </a>
+
+        <div class="flex gap-3">
+          <button
+            class="p-2 rounded-lg bg-white/5 hover:bg-white/10 hover:text-cyan-400 transition-colors text-slate-400"
+            title="Share on Twitter"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+              />
+            </svg>
+          </button>
+          <a
+            [href]="post.linkedin"
+            target="_blank"
+            class="p-2 rounded-lg bg-white/5 hover:bg-white/10 hover:text-blue-500 transition-colors text-slate-400"
+            title="Share on LinkedIn"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <div
+      *ngIf="!isLoading && !post"
+      class="flex flex-col items-center justify-center py-20 text-center"
+    >
+      <div
+        class="w-24 h-24 bg-slate-900/50 rounded-full flex items-center justify-center mb-6 border border-white/5"
+      >
+        <svg
+          class="w-10 h-10 text-slate-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-white mb-2">Article Not Found</h2>
+      <p class="text-slate-400 mb-8 max-w-md">
+        The article you are looking for does not exist in our archives or has
+        been removed.
+      </p>
+      <a
+        routerLink="/blog"
+        class="px-8 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all shadow-lg shadow-cyan-900/20"
+      >
+        Return to Blog
+      </a>
+    </div>
+  </div>
+</div>

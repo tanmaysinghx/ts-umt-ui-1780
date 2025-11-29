@@ -1,123 +1,260 @@
 <div
-    class="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 pt-24 pb-20">
+  class="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden"
+>
+  <div class="fixed inset-0 z-0 pointer-events-none">
+    <div class="absolute inset-0 bg-[#020617]"></div>
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
+    ></div>
+    <div
+      class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[5000ms]"
+    ></div>
+    <div
+      class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] mix-blend-screen"
+    ></div>
+  </div>
 
-    <!-- Background Effects -->
-    <div class="fixed inset-0 z-0 pointer-events-none">
-        <div class="absolute inset-0 bg-[#020617]"></div>
+  <header
+    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#020617]/80 border-b border-white/5"
+  >
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3 cursor-pointer" routerLink="/">
         <div
-            class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]">
+          class="relative h-9 w-9 flex items-center justify-center bg-gradient-to-tr from-indigo-500 to-cyan-500 rounded-lg shadow-lg shadow-indigo-500/20"
+        >
+          <img
+            src="assets/images/TS_LOGO.png"
+            alt="TS Group"
+            class="h-5 w-auto object-contain brightness-200 contrast-200"
+          />
         </div>
-        <div
-            class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[5000ms]">
-        </div>
-        <div
-            class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] mix-blend-screen">
-        </div>
+        <span class="text-lg font-bold tracking-tight text-white"
+          >TS Group</span
+        >
+      </div>
+      <a
+        routerLink="/"
+        class="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-2 group"
+      >
+        <svg
+          class="w-4 h-4 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-6 relative z-10 pt-32 pb-20">
+    <div class="text-center mb-16">
+      <span
+        class="inline-block py-1 px-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+      >
+        /// KNOWLEDGE BASE
+      </span>
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-white">
+        Insights &
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400"
+          >Perspectives</span
+        >
+      </h1>
+      <p
+        class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed font-light"
+      >
+        Exploring the frontiers of technology, enterprise architecture, and
+        artificial intelligence.
+      </p>
     </div>
 
-    <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#020617]/80 border-b border-white/5">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer" routerLink="/">
-                <div
-                    class="relative h-9 w-9 flex items-center justify-center bg-gradient-to-tr from-indigo-500 to-cyan-500 rounded-lg shadow-lg shadow-indigo-500/20">
-                    <img src="assets/images/TS_LOGO.png" alt="TS Group"
-                        class="h-5 w-auto object-contain brightness-200 contrast-200" />
-                </div>
-                <span class="text-lg font-bold tracking-tight text-white">TS Group</span>
-            </div>
-            <a routerLink="/"
-                class="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Back to Home
-            </a>
+    <div class="max-w-4xl mx-auto mb-20 space-y-8">
+      <div class="relative group">
+        <div
+          class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+        >
+          <svg
+            class="h-5 w-5 text-slate-500 group-focus-within:text-cyan-400 transition-colors"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
         </div>
-    </header>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search topics, keywords, or trends..."
+          class="block w-full pl-12 pr-4 py-4 bg-slate-900/50 backdrop-blur-sm border border-white/10 rounded-2xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent transition-all shadow-lg"
+        />
+        <div
+          class="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 rounded-2xl blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"
+        ></div>
+      </div>
 
-    <div class="container mx-auto px-6 relative z-10 pt-10">
+      <div class="flex flex-wrap justify-center gap-2">
+        <button
+          *ngFor="let cat of categories"
+          (click)="selectCategory(cat)"
+          class="px-4 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider border transition-all duration-300"
+          [ngClass]="
+            selectedCategory === cat
+              ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+              : 'bg-slate-900/50 text-slate-500 border-white/5 hover:border-white/20 hover:text-slate-300'
+          "
+        >
+          {{ cat }}
+        </button>
+      </div>
 
-        <!-- Hero Section -->
-        <div class="text-center mb-20">
-            <span
-                class="inline-block py-1 px-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono mb-6 backdrop-blur-md">
-                /// KNOWLEDGE BASE
-            </span>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-white">
-                Insights & <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Perspectives</span>
-            </h1>
-            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
-                Exploring the frontiers of technology, enterprise architecture, and artificial intelligence.
+      <div class="text-center">
+        <p class="text-xs font-mono text-slate-500">
+          /// DISPLAYING {{ filteredPosts.length }} RESULT{{
+            filteredPosts.length !== 1 ? "S" : ""
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div
+      *ngIf="isLoading"
+      class="flex flex-col justify-center items-center py-20 gap-4"
+    >
+      <div
+        class="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"
+      ></div>
+      <span class="text-xs font-mono text-slate-500 animate-pulse"
+        >Establishing Uplink...</span
+      >
+    </div>
+
+    <div
+      *ngIf="!isLoading && filteredPosts.length > 0"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-in fade-in duration-700"
+    >
+      <div
+        *ngFor="let post of filteredPosts"
+        class="group relative flex flex-col h-full"
+      >
+        <div
+          class="absolute -inset-0.5 bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-40 blur transition duration-500"
+        ></div>
+
+        <div
+          [routerLink]="['/blog', post.id]"
+          class="relative flex flex-col h-full bg-slate-900/80 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden group-hover:border-white/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <div
+              class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors z-10"
+            ></div>
+            <img
+              [src]="post.image"
+              [alt]="post.title"
+              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+            />
+            <div class="absolute top-4 left-4 z-20">
+              <span
+                class="px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-sm border border-white/10 text-[10px] font-mono uppercase tracking-wider text-cyan-400 shadow-lg"
+              >
+                {{ post.category }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex flex-col flex-grow p-6">
+            <div
+              class="flex items-center gap-2 text-xs text-slate-500 mb-4 font-mono"
+            >
+              <span>{{ post.date }}</span>
+              <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+              <span>{{ post.author }}</span>
+            </div>
+
+            <h3
+              class="text-xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors line-clamp-2"
+            >
+              {{ post.title }}
+            </h3>
+
+            <p
+              class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow line-clamp-3"
+            >
+              {{ post.excerpt }}
             </p>
-        </div>
 
-        <!-- Loading State -->
-        <div *ngIf="isLoading" class="flex justify-center items-center py-20">
-            <div class="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
-        </div>
-
-        <!-- Blog Grid -->
-        <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div *ngFor="let post of blogPosts" class="group relative flex flex-col h-full">
-
-                <!-- Card Hover Glow -->
-                <div
-                    class="absolute -inset-0.5 bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-40 blur transition duration-500">
-                </div>
-
-                <!-- Card Content -->
-                <div
-                    class="relative flex flex-col h-full bg-slate-900/80 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden group-hover:border-white/10 transition-all duration-300 hover:-translate-y-1">
-
-                    <!-- Image -->
-                    <div class="relative h-48 overflow-hidden">
-                        <div class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors z-10">
-                        </div>
-                        <img [src]="post.image" [alt]="post.title"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-4 left-4 z-20">
-                            <span
-                                class="px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-sm border border-white/10 text-[10px] font-mono uppercase tracking-wider text-cyan-400">
-                                {{ post.category }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="flex flex-col flex-grow p-6">
-                        <div class="flex items-center gap-2 text-xs text-slate-500 mb-4 font-mono">
-                            <span>{{ post.date }}</span>
-                            <span class="w-1 h-1 rounded-full bg-slate-700"></span>
-                            <span>{{ post.author }}</span>
-                        </div>
-
-                        <h3
-                            class="text-xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors line-clamp-2">
-                            {{ post.title }}
-                        </h3>
-
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow line-clamp-3">
-                            {{ post.excerpt }}
-                        </p>
-
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between">
-                            <span
-                                class="text-xs font-bold text-cyan-500 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">Read
-                                Article</span>
-                            <svg class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors transform group-hover:translate-x-1"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-                </div>
+            <div
+              class="pt-4 border-t border-white/5 flex items-center justify-between"
+            >
+              <span
+                class="text-xs font-bold text-cyan-500 uppercase tracking-widest group-hover:text-cyan-400 transition-colors"
+                >Read Article</span
+              >
+              <svg
+                class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors transform group-hover:translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                ></path>
+              </svg>
             </div>
+          </div>
         </div>
-
+      </div>
     </div>
+
+    <div
+      *ngIf="!isLoading && filteredPosts.length === 0"
+      class="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in duration-300"
+    >
+      <div
+        class="w-20 h-20 bg-slate-900/50 rounded-full flex items-center justify-center mb-6 border border-white/5 border-dashed"
+      >
+        <svg
+          class="w-8 h-8 text-slate-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          ></path>
+        </svg>
+      </div>
+      <h3 class="text-xl font-bold text-white mb-2">No data found</h3>
+      <p class="text-slate-400 mb-8 max-w-sm">
+        No articles match your current search query or category filter.
+      </p>
+      <button
+        (click)="searchQuery = ''; selectedCategory = 'All'; applyFilters()"
+        class="px-6 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-bold text-white transition-all"
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
 </div>

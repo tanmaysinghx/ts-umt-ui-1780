@@ -1,62 +1,115 @@
 [
   {
     "id": 1,
-    "title": "The Future of Generative AI in Enterprise",
-    "date": "2024-03-15",
-    "author": "Dr. Sarah Chen",
-    "category": "Artificial Intelligence",
-    "excerpt": "Exploring how Large Language Models are reshaping business workflows and decision-making processes in the modern enterprise landscape.",
-    "content": "Generative AI is not just a buzzword; it's a paradigm shift. In this post, we delve into the practical applications of LLMs in enterprise environments, from automated customer support agents to intelligent code generation and data analysis. We discuss the challenges of data privacy, model fine-tuning, and the importance of a robust AI governance framework.",
-    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop"
-  },
-  {
-    "id": 2,
-    "title": "Microservices vs. Monolith: A 2024 Perspective",
-    "date": "2024-03-10",
-    "author": "James Rodriguez",
-    "category": "System Architecture",
-    "excerpt": "Revisiting the age-old debate with new insights from cloud-native technologies and edge computing trends.",
-    "content": "The choice between microservices and monolithic architectures remains a critical decision for CTOs. While microservices offer scalability and agility, they introduce complexity in deployment and observability. This article analyzes the trade-offs in the context of 2024's technology stack, including the rise of modular monoliths and serverless computing.",
-    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop"
-  },
-  {
-    "id": 3,
-    "title": "Securing the Supply Chain: DevSecOps Best Practices",
-    "date": "2024-03-05",
-    "author": "Elena Sokolov",
-    "category": "Cybersecurity",
-    "excerpt": "Implementing security at every stage of the development lifecycle to prevent vulnerabilities and ensure compliance.",
-    "content": "Supply chain attacks are on the rise. Integrating security into your CI/CD pipeline is no longer optional. We outline key DevSecOps practices, including automated dependency scanning, container signing, and infrastructure-as-code security policies, to build a resilient software supply chain.",
-    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2000&auto=format&fit=crop"
-  },
-  {
-    "id": 4,
-    "title": "Optimizing Angular Performance for High-Scale Apps",
-    "date": "2024-02-28",
-    "author": "Michael Chang",
-    "category": "Frontend Development",
-    "excerpt": "Deep dive into change detection strategies, lazy loading, and signal-based reactivity in modern Angular applications.",
-    "content": "Performance is paramount for user retention. This guide covers advanced Angular optimization techniques. We explore the benefits of OnPush change detection, the new Signals API for fine-grained reactivity, and strategies for efficient state management in large-scale applications.",
-    "image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2000&auto=format&fit=crop"
-  },
-  {
-    "id": 5,
-    "title": "The Rise of Edge AI: Processing Data at the Source",
-    "date": "2024-02-20",
-    "author": "Sarah Chen",
-    "category": "IoT & Edge Computing",
-    "excerpt": "How moving AI inference to the edge is reducing latency and bandwidth costs for IoT ecosystems.",
-    "content": "Edge AI is transforming industries by enabling real-time decision-making without reliance on the cloud. We examine use cases in autonomous vehicles, smart manufacturing, and remote monitoring, highlighting the hardware and software innovations driving this trend.",
-    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop"
-  },
-  {
-    "id": 6,
-    "title": "Kubernetes at Scale: Lessons from the Trenches",
-    "date": "2024-02-15",
-    "author": "David Miller",
-    "category": "DevOps",
-    "excerpt": "Real-world challenges and solutions for managing multi-cluster Kubernetes environments in production.",
-    "content": "Managing Kubernetes at scale is a beast. From networking complexities to resource quota management, we share lessons learned from operating multi-tenant clusters. Topics include GitOps workflows with ArgoCD, service mesh implementation with Istio, and cost optimization strategies.",
-    "image": "https://images.unsplash.com/photo-1667372393119-c85c020799a3?q=80&w=2000&auto=format&fit=crop"
+    "title": "The Complete Angular Handbook: Architecture, Hooks, & Patterns",
+    "date": "2025-11-29",
+    "author": "Tanmay Singh",
+    "linkedin": "https://www.linkedin.com/in/tanmaysinghx/",
+    "category": "Frontend, Angular, Shortnotes",
+    "role": "Software Engineer",
+    "excerpt": "A massive deep-dive into the Angular ecosystem. We cover Standalone Components, every Lifecycle Hook, Service Singletons, Functional Guards, Interceptors, Signals, and the new Deferrable Views.",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Angular has evolved significantly. This guide is designed to be your one-stop reference for building scalable applications in 2024. We will break down the framework into its core pillars."
+      },
+      {
+        "type": "heading",
+        "text": "1. Architecture: Standalone Components"
+      },
+      {
+        "type": "paragraph",
+        "text": "The fundamental building block. Since Angular 15+, we no longer need 'NgModules'. Components are self-contained."
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "@Component({\n  selector: 'app-root',\n  standalone: true,\n  // Import other components, directives, and pipes here\n  imports: [CommonModule, RouterOutlet, UserCardComponent],\n  template: `\n    <header>My App</header>\n    <router-outlet />\n  `\n})\nexport class AppComponent {}"
+      },
+      {
+        "type": "heading",
+        "text": "2. Data Flow: Inputs, Outputs, & Signals"
+      },
+      {
+        "type": "paragraph",
+        "text": "How do components talk to each other? We used to use @Input decorators, but modern Angular prefers 'Signal Inputs' for better reactivity."
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "export class UserCardComponent {\n  // Old Way\n  @Input() legacyName: string = '';\n\n  // New Signal Way (Available in Angular 17.1+)\n  // This creates a read-only signal.\n  userId = input.required<string>();\n  \n  // Output (Event Emitter)\n  @Output() save = new EventEmitter<void>();\n}"
+      },
+      {
+        "type": "heading",
+        "text": "3. Component Lifecycle Hooks"
+      },
+      {
+        "type": "paragraph",
+        "text": "Understanding *when* things happen is crucial. Here is the chronological order of the most important hooks:"
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "export class LifeCycleDemo implements OnInit, OnChanges, AfterViewInit, OnDestroy {\n  \n  // 1. Triggered when @Input values change\n  ngOnChanges(changes: SimpleChanges) {\n    console.log('Inputs changed', changes);\n  }\n\n  // 2. Triggered once after component initialization\n  // BEST PLACE for API calls.\n  ngOnInit() {\n    this.loadData();\n  }\n\n  // 3. Triggered after the HTML template is fully rendered\n  ngAfterViewInit() {\n    // Access DOM elements here (e.g., Canvas, Scroll position)\n  }\n\n  // 4. Triggered just before component is removed\n  // BEST PLACE for cleanup (unsubscribing).\n  ngOnDestroy() {\n    this.stream$.unsubscribe();\n  }\n}"
+      },
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=2000&auto=format&fit=crop",
+        "caption": "Lifecycle Visualization"
+      },
+      {
+        "type": "heading",
+        "text": "4. Services & Dependency Injection"
+      },
+      {
+        "type": "paragraph",
+        "text": "Services hold your business logic and state. Angular's DI system is hierarchical. Using `providedIn: 'root'` makes the service a Singleton (one instance for the whole app)."
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "@Injectable({ providedIn: 'root' })\nexport class AuthService {\n  // BehaviorSubject holds the current value and emits to new subscribers\n  private currentUser = new BehaviorSubject<User | null>(null);\n  \n  // Expose as Observable (read-only) for components\n  user$ = this.currentUser.asObservable();\n\n  login(credentials: any) {\n    // Logic here...\n  }\n}"
+      },
+      {
+        "type": "heading",
+        "text": "5. Modern HTTP Interceptors"
+      },
+      {
+        "type": "paragraph",
+        "text": "We no longer use class-based interceptors. We use functional interceptors to modify HTTP requests globally (e.g., adding Auth Tokens)."
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "export const authInterceptor: HttpInterceptorFn = (req, next) => {\n  const token = localStorage.getItem('token');\n  \n  if (token) {\n    const cloned = req.clone({\n      setHeaders: { Authorization: `Bearer ${token}` }\n    });\n    return next(cloned);\n  }\n  \n  return next(req);\n};"
+      },
+      {
+        "type": "heading",
+        "text": "6. Routing & Functional Guards"
+      },
+      {
+        "type": "paragraph",
+        "text": "Protecting routes is essential. Modern Angular uses Functional Guards which are easier to test and compose."
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "// Route Definition\nexport const routes: Routes = [\n  {\n    path: 'dashboard',\n    loadComponent: () => import('./dashboard.component').then(m => m.DashboardComponent),\n    canActivate: [authGuard]\n  }\n];\n\n// Functional Guard\nexport const authGuard: CanActivateFn = (route, state) => {\n  const authService = inject(AuthService);\n  const router = inject(Router);\n\n  if (authService.isLoggedIn()) {\n    return true;\n  }\n  \n  return router.createUrlTree(['/login']);\n};"
+      },
+      {
+        "type": "heading",
+        "text": "7. Advanced Performance: @defer"
+      },
+      {
+        "type": "paragraph",
+        "text": "Angular 17 introduced Deferrable Views. This allows you to lazy-load specific chunks of a template (like a heavy chart or comment section) only when they are visible in the viewport."
+      },
+      {
+        "type": "code",
+        "language": "html",
+        "code": "\n\n@defer (on viewport) {\n  <app-heavy-chart [data]=\"salesData\" />\n} @placeholder {\n  <div class=\"skeleton-loader\">Loading Chart...</div>\n} @loading (minimum 1s) {\n  <span class=\"spinner\"></span>\n}"
+      }
+    ],
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop"
   }
 ]
