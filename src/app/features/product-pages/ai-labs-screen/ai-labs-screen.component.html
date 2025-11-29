@@ -1,0 +1,180 @@
+<div class="min-h-screen bg-[#030303] text-white font-mono selection:bg-fuchsia-500/30 selection:text-fuchsia-200 overflow-x-hidden relative">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+        
+        <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-fuchsia-600/5 rounded-full blur-[120px] animate-pulse duration-[4000ms]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-cyan-600/5 rounded-full blur-[120px] animate-pulse duration-[7000ms] delay-1000"></div>
+        <div class="absolute top-[40%] left-[40%] w-[30vw] h-[30vw] bg-violet-600/10 rounded-full blur-[100px] animate-pulse duration-[5000ms]"></div>
+
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent h-[50vh] w-full animate-scan"></div>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#030303]/70 backdrop-blur-xl">
+        <div class="container mx-auto px-6 h-16 flex justify-between items-center">
+            <div class="flex items-center gap-3 group cursor-pointer" routerLink="/">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-fuchsia-600 to-cyan-600 rounded blur opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative w-full h-full bg-black rounded border border-white/10 flex items-center justify-center font-bold text-xs z-10">AI</div>
+                </div>
+                <span class="text-sm font-bold tracking-[0.2em] uppercase text-slate-300">TS Group <span class="text-fuchsia-500 animate-pulse">_</span> Labs</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-2 text-[10px] text-emerald-500 border border-emerald-500/20 bg-emerald-500/5 px-2 py-1 rounded">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    SYSTEM ONLINE
+                </div>
+                <a routerLink="/" class="text-xs text-slate-500 hover:text-white transition-colors uppercase tracking-widest hover:underline decoration-fuchsia-500 decoration-2 underline-offset-4">Back to Main</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-32 pb-32">
+
+        <section class="container mx-auto px-6 mb-32 relative">
+            <div class="absolute right-0 top-0 h-full w-32 hidden lg:flex flex-col text-[10px] text-white/5 font-mono select-none overflow-hidden mask-gradient-b">
+                <span *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">01001010 11010100 00101010</span>
+            </div>
+
+            <div class="max-w-4xl relative z-10">
+                <div class="inline-flex items-center gap-3 px-3 py-1 mb-8 border border-fuchsia-500/30 bg-fuchsia-500/5 text-fuchsia-400 text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-fuchsia-500"></span>
+                    </span>
+                    Experimental Division v2.0
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 leading-[0.9] tracking-tighter">
+                    <span class="block text-white">Future</span>
+                    <span class="block relative text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-500" data-text="Intelligence.">
+                        Intelligence.
+                    </span>
+                </h1>
+
+                <div class="flex flex-col md:flex-row gap-12 items-start">
+                    <p class="text-xl text-slate-400 max-w-xl leading-relaxed border-l-2 border-fuchsia-500/50 pl-6">
+                        Exploring the boundaries of generative AI, neural rendering, and autonomous systems.
+                        <span class="text-white font-medium">Building tomorrow, today.</span>
+                    </p>
+                    
+                    <div class="w-full md:w-80 bg-black/80 border border-white/10 rounded-lg p-4 font-mono text-[10px] shadow-2xl backdrop-blur-md">
+                        <div class="flex gap-1.5 mb-3 border-b border-white/10 pb-2">
+                            <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <div class="space-y-1 h-24 overflow-hidden relative">
+                            <div class="text-slate-500">> Initiating Core...</div>
+                            <div class="text-fuchsia-400">> Loading Weights [98%]</div>
+                            <div class="text-slate-300">> Connection Established: 12ms</div>
+                            <div class="text-cyan-400 animate-pulse">> Ready for input_</div>
+                            <div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mx-auto px-6 mb-32">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                @for (metric of metrics; track metric.label) {
+                <div class="group relative p-6 bg-[#080808] border border-white/5 hover:border-white/20 transition-all duration-300 overflow-hidden">
+                    <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-hover:border-fuchsia-500 transition-colors"></div>
+                    <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/20 group-hover:border-cyan-500 transition-colors"></div>
+                    
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <svg class="w-3 h-3 text-slate-700 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        {{ metric.label }}
+                    </p>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-3xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">{{ metric.value }}</span>
+                        <span class="text-xs text-slate-500">{{ metric.unit }}</span>
+                    </div>
+                    <div class="text-[10px] font-bold inline-block px-1.5 py-0.5 rounded bg-white/5" [class.text-emerald-400]="metric.change.startsWith('+')" [class.text-rose-400]="metric.change.startsWith('-')">
+                        {{ metric.change }}
+                    </div>
+                </div>
+                }
+            </div>
+        </section>
+
+        <section class="container mx-auto px-6">
+            <div class="flex items-end justify-between mb-12 border-b border-white/5 pb-4">
+                <h2 class="text-2xl font-bold flex items-center gap-4">
+                    <span class="w-2 h-8 bg-gradient-to-b from-fuchsia-500 to-cyan-500"></span>
+                    Active Protocols
+                </h2>
+                <span class="text-[10px] text-slate-600 font-mono hidden md:block">SECURE_CONNECTION // ENCRYPTED</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @for (exp of experiments; track exp.title) {
+                <div class="group relative bg-[#050505] border border-white/10 hover:border-white/20 transition-colors duration-300 overflow-hidden">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-fuchsia-500/10 to-transparent translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-[1.5s] ease-in-out z-0 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-0 group-hover:opacity-10 transition-opacity z-0 mix-blend-overlay"></div>
+
+                    <div class="relative z-10 p-8">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="w-12 h-12 rounded bg-white/5 border border-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300 shadow-lg shadow-black/50">
+                                <ng-container [ngSwitch]="exp.icon">
+                                    <svg *ngSwitchCase="'microphone'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                    <svg *ngSwitchCase="'code'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                    <svg *ngSwitchCase="'shield-check'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                    <svg *ngSwitchCase="'eye'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </ng-container>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full animate-pulse" [class.bg-emerald-500]="exp.status === 'Active'" [class.bg-amber-500]="exp.status !== 'Active'"></span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">{{ exp.status }}</span>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-fuchsia-400 group-hover:to-cyan-400 transition-all">{{ exp.title }}</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed border-l border-white/10 pl-4 group-hover:border-fuchsia-500/50 transition-colors">{{ exp.description }}</p>
+
+                        <div class="flex flex-wrap gap-2">
+                            @for (tag of exp.tags; track tag) {
+                            <span class="text-[10px] text-slate-400 px-2 py-1 bg-white/5 border border-white/5 rounded hover:border-white/20 hover:text-white transition-colors cursor-default">#{{ tag }}</span>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-600 to-cyan-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                </div>
+                }
+            </div>
+        </section>
+
+        <section class="container mx-auto px-6 mt-32 text-center relative z-10">
+            <div class="relative inline-block group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-fuchsia-600 to-cyan-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                <button class="relative px-10 py-5 bg-[#050505] rounded-full text-white font-bold uppercase tracking-[0.2em] border border-white/10 hover:border-white/30 transition-all flex items-center gap-3">
+                    Initialize Beta Access
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="fixed bottom-0 left-0 w-full bg-[#020202] border-t border-white/5 py-2 z-50 overflow-hidden flex select-none">
+        <div class="whitespace-nowrap animate-marquee flex gap-12 text-[10px] font-mono text-slate-500">
+            <span><span class="text-fuchsia-500">CPU_LOAD:</span> 42%</span>
+            <span><span class="text-cyan-500">GPU_CLUSTER:</span> ONLINE</span>
+            <span><span class="text-fuchsia-500">TRAINING_LOSS:</span> 0.00231</span>
+            <span><span class="text-emerald-500">ACTIVE_NODES:</span> 8,192</span>
+            <span><span class="text-cyan-500">DATA_INGEST:</span> 45 TB/s</span>
+            <span><span class="text-fuchsia-500">SYSTEM_INTEGRITY:</span> 100%</span>
+            <span><span class="text-fuchsia-500">CPU_LOAD:</span> 42%</span>
+            <span><span class="text-cyan-500">GPU_CLUSTER:</span> ONLINE</span>
+            <span><span class="text-fuchsia-500">TRAINING_LOSS:</span> 0.00231</span>
+            <span><span class="text-emerald-500">ACTIVE_NODES:</span> 8,192</span>
+            <span><span class="text-cyan-500">DATA_INGEST:</span> 45 TB/s</span>
+        </div>
+    </div>
+</div>

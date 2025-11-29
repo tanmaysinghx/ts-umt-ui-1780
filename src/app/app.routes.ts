@@ -20,9 +20,12 @@ import { MonitoringUsersComponent } from './features/admin/monitoring-users/moni
 import { RoleManagerComponent } from './features/admin/role-manager/role-manager.component';
 import { ApplicationManagerComponent } from './features/admin/application-manager/application-manager.component';
 import { AddApplicationComponent } from './features/admin/add-application/add-application.component';
+import { LandingScreenComponent } from './features/product-pages/landing-screen/landing-screen.component';
+import { AiLabsScreenComponent } from './features/product-pages/ai-labs-screen/ai-labs-screen.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+    { path: '', component: LandingScreenComponent },
+    { path: 'ai-labs', component: AiLabsScreenComponent },
 
     //auth urls
     { path: 'auth/login', component: LoginComponent },
