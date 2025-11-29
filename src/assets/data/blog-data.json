@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "The Future of Generative AI in Enterprise",
+    "date": "2024-03-15",
+    "author": "Dr. Sarah Chen",
+    "category": "Artificial Intelligence",
+    "excerpt": "Exploring how Large Language Models are reshaping business workflows and decision-making processes in the modern enterprise landscape.",
+    "content": "Generative AI is not just a buzzword; it's a paradigm shift. In this post, we delve into the practical applications of LLMs in enterprise environments, from automated customer support agents to intelligent code generation and data analysis. We discuss the challenges of data privacy, model fine-tuning, and the importance of a robust AI governance framework.",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "title": "Microservices vs. Monolith: A 2024 Perspective",
+    "date": "2024-03-10",
+    "author": "James Rodriguez",
+    "category": "System Architecture",
+    "excerpt": "Revisiting the age-old debate with new insights from cloud-native technologies and edge computing trends.",
+    "content": "The choice between microservices and monolithic architectures remains a critical decision for CTOs. While microservices offer scalability and agility, they introduce complexity in deployment and observability. This article analyzes the trade-offs in the context of 2024's technology stack, including the rise of modular monoliths and serverless computing.",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "title": "Securing the Supply Chain: DevSecOps Best Practices",
+    "date": "2024-03-05",
+    "author": "Elena Sokolov",
+    "category": "Cybersecurity",
+    "excerpt": "Implementing security at every stage of the development lifecycle to prevent vulnerabilities and ensure compliance.",
+    "content": "Supply chain attacks are on the rise. Integrating security into your CI/CD pipeline is no longer optional. We outline key DevSecOps practices, including automated dependency scanning, container signing, and infrastructure-as-code security policies, to build a resilient software supply chain.",
+    "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    "id": 4,
+    "title": "Optimizing Angular Performance for High-Scale Apps",
+    "date": "2024-02-28",
+    "author": "Michael Chang",
+    "category": "Frontend Development",
+    "excerpt": "Deep dive into change detection strategies, lazy loading, and signal-based reactivity in modern Angular applications.",
+    "content": "Performance is paramount for user retention. This guide covers advanced Angular optimization techniques. We explore the benefits of OnPush change detection, the new Signals API for fine-grained reactivity, and strategies for efficient state management in large-scale applications.",
+    "image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    "id": 5,
+    "title": "The Rise of Edge AI: Processing Data at the Source",
+    "date": "2024-02-20",
+    "author": "Sarah Chen",
+    "category": "IoT & Edge Computing",
+    "excerpt": "How moving AI inference to the edge is reducing latency and bandwidth costs for IoT ecosystems.",
+    "content": "Edge AI is transforming industries by enabling real-time decision-making without reliance on the cloud. We examine use cases in autonomous vehicles, smart manufacturing, and remote monitoring, highlighting the hardware and software innovations driving this trend.",
+    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    "id": 6,
+    "title": "Kubernetes at Scale: Lessons from the Trenches",
+    "date": "2024-02-15",
+    "author": "David Miller",
+    "category": "DevOps",
+    "excerpt": "Real-world challenges and solutions for managing multi-cluster Kubernetes environments in production.",
+    "content": "Managing Kubernetes at scale is a beast. From networking complexities to resource quota management, we share lessons learned from operating multi-tenant clusters. Topics include GitOps workflows with ArgoCD, service mesh implementation with Istio, and cost optimization strategies.",
+    "image": "https://images.unsplash.com/photo-1667372393119-c85c020799a3?q=80&w=2000&auto=format&fit=crop"
+  }
+]

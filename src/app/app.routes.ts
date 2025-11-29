@@ -23,11 +23,13 @@ import { AddApplicationComponent } from './features/admin/add-application/add-ap
 import { LandingScreenComponent } from './features/product-pages/landing-screen/landing-screen.component';
 import { AiLabsScreenComponent } from './features/product-pages/ai-labs-screen/ai-labs-screen.component';
 import { ProductScreenComponent } from './features/product-pages/product-screen/product-screen.component';
+import { BlogComponent } from './features/blog/blog.component';
 
 export const routes: Routes = [
     { path: '', component: LandingScreenComponent },
     { path: 'ai-labs', component: AiLabsScreenComponent },
     { path: 'products', component: ProductScreenComponent },
+    { path: 'blog', component: BlogComponent },
 
     //auth urls
     { path: 'auth/login', component: LoginComponent },
