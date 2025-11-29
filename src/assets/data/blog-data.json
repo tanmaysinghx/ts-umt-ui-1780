@@ -111,5 +111,69 @@
       }
     ],
     "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop"
-  }
+  },
+  {
+  "id": 2,
+  "title": "Deep Dive: JVM Architecture & String Pool Internals",
+  "date": "2024-05-12",
+  "author": "Tanmay Singh",
+  "category": "Backend Engineering",
+  "linkedin": "https://www.linkedin.com/in/tanmaysinghx/",
+  "excerpt": "Unraveling the mechanics of the JVM—bytecode execution, class loading, GC behavior, JIT compilation, and the internal architecture of the String Constant Pool.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Many developers write Java code daily without truly understanding how the JVM converts `.java` files into highly optimized native code. A solid grasp of JVM internals is a force multiplier—enabling you to diagnose memory leaks, tune garbage collection, optimize startup time, and prevent production-grade failures."
+    },
+    {
+      "type": "heading",
+      "text": "1. The Compilation & Execution Flow"
+    },
+    {
+      "type": "paragraph",
+      "text": "Java source code is first compiled by `javac` into bytecode—platform-agnostic instructions stored in `.class` files. At runtime, the JVM dynamically loads classes, verifies bytecode safety, interprets instructions, and selectively JIT-compiles hot code paths into machine instructions."
+    },
+    {
+      "type": "code",
+      "language": "text",
+      "code": "[ Source Code (.java) ]\n          ⬇ javac\n[ Bytecode (.class) ]  <-- Platform Independent\n          ⬇\n[ ClassLoader Subsystem ]\n   ├── Bootstrap Loader\n   ├── Extension Loader\n   └── Application Loader\n          ⬇\n[ Bytecode Verifier ]  <-- Ensures stack map frames, type safety, illegal ops\n          ⬇\n[ JVM Runtime Data Areas ]\n          ⬇\n[ Execution Engine ]\n   ├── Interpreter  (Executes line-by-line)\n   ├── C1 JIT (Client Compiler: Fast compilation, moderate optimization)\n   └── C2 JIT (Server Compiler: Aggressive optimization for hot methods)\n          ⬇\n[ Native Machine Code ]"
+    },
+    {
+      "type": "paragraph",
+      "text": "Modern JVMs (HotSpot) use *tiered compilation*, starting with interpretation for warm-up, compiling hotspots with C1, and using C2 for maximum throughput. Techniques like inlining, escape analysis, lock elision, intrinsics, and inline caching heavily accelerate execution."
+    },
+    {
+      "type": "heading",
+      "text": "2. JVM Memory Structure (Post Java 8)"
+    },
+    {
+      "type": "paragraph",
+      "text": "The JVM obtains memory from the OS and splits it into well-defined regions. Since Java 8, PermGen was removed and replaced by Metaspace, which automatically grows using native memory."
+    },
+    {
+      "type": "code",
+      "language": "bash",
+      "code": "1. Heap Memory (Shared Across JVM)\n   - Young Generation\n       • Eden Space\n       • Survivor 0 (S0)\n       • Survivor 1 (S1)\n     -> Minor GC happens here.\n   - Old (Tenured) Generation\n     -> Major GC occurs here.\n   - Stores all Objects allocated via 'new'.\n\n2. Stack Memory (Per Thread)\n   - Each method call creates a Frame.\n   - Contains Local Variables, Operand Stack, Return Address.\n   - No objects; only references & primitives.\n\n3. Metaspace (Native Memory)\n   - Stores class metadata, method objects, vtables.\n   - Dynamically grows; tuned by MaxMetaspaceSize.\n\n4. Code Cache\n   - Stores JIT compiled native code.\n   - Split into Non-Profiled, Profiled, and Non-Method Code areas.\n\n5. PC Register\n   - Holds address of current instruction for each thread.\n\n6. Native Memory\n   - Used by JNI, Threads, DirectByteBuffers, GC structures."
+    },
+    {
+      "type": "heading",
+      "text": "3. The String Constant Pool (SCP) & Internals"
+    },
+    {
+      "type": "paragraph",
+      "text": "Strings get special treatment because they're heavily used. The SCP resides inside the Heap (not Metaspace) and holds interned strings. Literal strings are automatically placed in the pool; `new String()` bypasses it and creates redundant Heap objects."
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "code": "public class StringMagic {\n    public static void main(String[] args) {\n        String s1 = \"Java\";   // added to SCP\n        String s2 = \"Java\";   // refers to same SCP object\n\n        String s3 = new String(\"Java\");  // new Heap object\n\n        System.out.println(s1 == s2);        // true\n        System.out.println(s1 == s3);        // false\n        System.out.println(s1 == s3.intern()); // true\n    }\n}"
+    },
+    {
+      "type": "paragraph",
+      "text": "Interning is a memory optimization technique. It ensures all identical string values share the same reference, enabling faster equality comparison and reduced heap overhead. Under the hood, the SCP uses a hash-based structure backed by `StringTable`, which is periodically cleaned by GC."
+    }
+  ],
+  "image": "https://cdn.bap-software.net/2024/01/03211643/How-is-AI-applied-to-Java-programming-e1704266486769.jpg"
+}
+
 ]
