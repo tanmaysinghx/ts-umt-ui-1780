@@ -155,7 +155,7 @@ export class LandingScreenComponent {
 
   testimonials = [
     {
-      name: 'Sarah Johnson',
+      name: 'John Doe',
       role: 'CTO, TechFlow',
       content:
         'TS Group transformed our legacy systems into a modern, scalable architecture. Their expertise in Angular and Spring Boot is unmatched.',

@@ -664,10 +664,11 @@
             <div class="pt-4 border-t border-white/5 relative">
               <a
                 *ngIf="product.status === 'Live'"
-                routerLink="/auth/login"
+                routerLink="/products"
+                fragment="{{ product }}"
                 class="group/btn relative w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 hover:from-cyan-600 hover:to-violet-600 border border-white/10 text-xs font-bold text-white uppercase tracking-widest transition-all duration-300 overflow-hidden"
               >
-                <span class="relative z-10">Execute Launch</span>
+                <span class="relative z-10">View Details</span>
                 <svg
                   class="w-4 h-4 relative z-10 transition-transform group-hover/btn:translate-x-1"
                   fill="none"

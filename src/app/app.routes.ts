@@ -22,10 +22,12 @@ import { ApplicationManagerComponent } from './features/admin/application-manage
 import { AddApplicationComponent } from './features/admin/add-application/add-application.component';
 import { LandingScreenComponent } from './features/product-pages/landing-screen/landing-screen.component';
 import { AiLabsScreenComponent } from './features/product-pages/ai-labs-screen/ai-labs-screen.component';
+import { ProductScreenComponent } from './features/product-pages/product-screen/product-screen.component';
 
 export const routes: Routes = [
     { path: '', component: LandingScreenComponent },
     { path: 'ai-labs', component: AiLabsScreenComponent },
+    { path: 'products', component: ProductScreenComponent },
 
     //auth urls
     { path: 'auth/login', component: LoginComponent },
