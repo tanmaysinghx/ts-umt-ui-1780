@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface UserSession {
   id: string;
@@ -31,7 +32,7 @@ export class SessionService {
 
   /** GET /v2/api/sessions/get-sessions */
   getSessions(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get-sessions`, {
+    return this.http.get(environment.apiGatewayService + "/trigger-workflow/WF1625E20008?apiEndpoint=/v2/api/sessions/get-sessions", {
       headers: this.buildAuthHeaders(),
     });
   }

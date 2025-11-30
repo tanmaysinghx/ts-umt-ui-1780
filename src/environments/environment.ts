@@ -9,7 +9,8 @@
     notificationService: 'http://localhost:1689',
     ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/',
     tsAuthService: 'http://localhost:1625/v2/api/auth/',
-    apiGatewayService: 'http://localhost:1606/api/v1/api-engine',  // API Gateway Service Endpoint
+    // apiGatewayService: 'http://localhost:1606/api/v1/api-engine',  // API Gateway Service Endpoint
+    apiGatewayService: 'https://api.amolsemwal.com/api/v1/api-engine',  // API Gateway Service Endpoint
     SECRET_KEY: 'your-secret-key-123',
     region: 'docker'
   };

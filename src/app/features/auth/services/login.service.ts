@@ -22,7 +22,7 @@ export class LoginService {
   login(userEmailId: string, password: string): Observable<any> {
     let assetUrl =
       environment.apiGatewayService +
-      '/trigger-workflow/WF1625E10001?apiEndpoint=/v2/api/auth/login';
+      '/trigger-workflow/WF1625E20001?apiEndpoint=/v2/api/auth/login';
     let body = {
       email: userEmailId,
       password: password,
@@ -66,7 +66,7 @@ export class LoginService {
     }
 
     // Pass the headers as the 3rd argument
-    return this.http.post(this.API_URL, payload, { headers: headers });
+    return this.http.post(environment.apiGatewayService + "/trigger-workflow/WF1625E20007?apiEndpoint=/v2/api/sessions/store-session", payload, { headers: headers });
   }
 
   /**
