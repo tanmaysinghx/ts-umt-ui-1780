@@ -1,0 +1,14 @@
+{
+    "version": "0.0.1",
+    "title": "Pre-Alpha Release",
+    "message": "Welcome to the Pre-Alpha version! Please expect some bugs as we are actively working on improvements.",
+    "releaseNotes": [
+        "Initial release of the Unified Management Tool.",
+        "Dashboard with application launching.",
+        "Blog feature with rich content support.",
+        "User and Role management (Admin only).",
+        "Dark mode support."
+    ],
+    "showTimer": true,
+    "timerDuration": 20
+}

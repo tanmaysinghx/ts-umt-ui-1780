@@ -6,7 +6,9 @@
         "description": "Track and resolve tickets",
         "category": "tickets",
         "status": "Not Running",
-        "appUrl": "http://localhost:1725/sso?token="
+        "appUrl": "http://localhost:1725/sso?token=",
+        "disabled": true,
+        "disabledMessage": "Under Deployment"
     },
     {
         "id": "2",

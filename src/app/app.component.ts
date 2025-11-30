@@ -11,11 +11,12 @@ import { RegisterService } from './features/auth/services/register.service';
 import { LayoutComponent } from "./layout/layout.component";
 import { CommonService } from './features/services/common.service';
 import { DashboardService } from './features/dashboard/services/dashboard.service';
+import { ReleaseNotificationComponent } from './shared/release-notification/release-notification.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, LayoutComponent],
+  imports: [HttpClientModule, CommonModule, LayoutComponent, ReleaseNotificationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [HttpClient, SharedService, UiTestingService, LoginService, OtpService, CookieService, RegisterService, CommonService, DashboardService]
