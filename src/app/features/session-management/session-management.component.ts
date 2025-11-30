@@ -70,7 +70,7 @@ export class SessionManagementComponent implements OnInit {
 
     this.sessionService.getSessions().subscribe({
       next: (res: any) => {
-        const raw = res?.data || [];
+        const raw = res?.data?.downstreamResponse?.data || [];
         const currentRefreshToken = this.cookieService.get('refresh-token');
         console.log('Current refresh token:', currentRefreshToken);
 
