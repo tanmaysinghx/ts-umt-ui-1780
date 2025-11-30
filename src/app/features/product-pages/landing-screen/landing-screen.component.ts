@@ -11,6 +11,11 @@ import { RouterLink } from '@angular/router';
 })
 export class LandingScreenComponent {
   currentYear = new Date().getFullYear();
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 
   services = [
     {
