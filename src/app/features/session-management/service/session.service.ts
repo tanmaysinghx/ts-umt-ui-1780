@@ -20,7 +20,7 @@ export interface UserSession {
 export class SessionService {
   private readonly baseUrl = 'http://localhost:1625/v2/api/sessions';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   /** Common auth headers using access-token from localStorage */
   private buildAuthHeaders(): HttpHeaders {
@@ -32,7 +32,7 @@ export class SessionService {
 
   /** GET /v2/api/sessions/get-sessions */
   getSessions(): Observable<any> {
-    return this.http.get(environment.apiGatewayService + "/trigger-workflow/WF1625E20008?apiEndpoint=/v2/api/sessions/get-sessions", {
+    return this.http.get(environment.apiGatewayService + "/trigger-workflow/WF1625E10008?apiEndpoint=/v2/api/sessions/get-sessions", {
       headers: this.buildAuthHeaders(),
     });
   }

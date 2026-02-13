@@ -38,6 +38,8 @@ export const routes: Routes = [
     { path: 'auth/register', component: RegisterComponent },
     { path: 'auth/reset-password', component: ResetPasswordComponent },
     { path: 'auth/otp-verification', component: OtpVerificationComponent },
+    { path: 'auth/sso-login', loadComponent: () => import('./features/auth/sso-login/sso-login.component').then(m => m.SsoLoginComponent) },
+
 
     //my-section urls
     { path: 'my-section/my-profile', component: MyProfileComponent },
