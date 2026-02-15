@@ -217,11 +217,45 @@ export class LoginComponent implements OnInit {
   }
 
   private storeTokens(data: any) {
-    if (!data) return; // Safety check
-    console.log('Storing tokens', data);
+    if (!data) {
+      console.error('storeTokens: No data received!');
+      return;
+    }
 
-    // Delegate to service
-    this.loginService.handleSsoLogin(data);
+    console.log('storeTokens: Raw data received:', JSON.stringify(data));
+
+    // The backend may return tokens at different nesting levels.
+    // Try to find the actual token data.
+    let tokenData = data;
+
+    // If data has a nested 'data' property (double-wrapped response), unwrap it
+    if (data.data && data.data.accessToken) {
+      tokenData = data.data;
+      console.log('storeTokens: Unwrapped nested data.data');
+    }
+
+    // If tokens are at the top level of the response
+    if (tokenData.accessToken) {
+      console.log('storeTokens: Found accessToken, delegating to handleSsoLogin');
+      this.loginService.handleSsoLogin(tokenData);
+    } else {
+      // Last resort: try to find tokens anywhere in the object
+      console.error('storeTokens: No accessToken found in data!', tokenData);
+      console.error('storeTokens: Available keys:', Object.keys(tokenData));
+
+      // Attempt with snake_case keys (some backends return snake_case)
+      if (tokenData.access_token) {
+        const normalized = {
+          accessToken: tokenData.access_token,
+          refreshToken: tokenData.refresh_token || '',
+          email: tokenData.email || localStorage.getItem('user-email') || '',
+          roleName: tokenData.role_name || tokenData.roleName || '',
+          roleId: tokenData.role_id || tokenData.roleId || '',
+        };
+        console.log('storeTokens: Found snake_case tokens, normalizing:', normalized);
+        this.loginService.handleSsoLogin(normalized);
+      }
+    }
   }
 
   navigateToRegister() {
@@ -231,9 +265,7 @@ export class LoginComponent implements OnInit {
   navigateToDashboard() {
     this.openSnackbar('Login successful! Redirecting...', 'success', 5000);
     setTimeout(() => {
-      // loginEvent is already called in handleSsoLogin, but we might need it here if flow differs
-      // Ideally handleSsoLogin handles it all.
-      this.router.navigate(['../dashboard/applications']);
+      this.router.navigate(['/dashboard/applications']);
     }, 2000);
   }
 
@@ -291,7 +323,7 @@ export class LoginComponent implements OnInit {
             console.log('New JWT Token Generated Successfully');
             this.storeTokens(data.data.downstreamResponse.data);
             // loginEvent handled in storeTokens -> handleSsoLogin
-            this.router.navigate(['../dashboard/applications']);
+            this.router.navigate(['/dashboard/applications']);
           } else {
             this.handleSessionExpiry();
           }

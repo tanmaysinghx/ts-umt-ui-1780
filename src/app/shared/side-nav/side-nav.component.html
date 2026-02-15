@@ -1,60 +1,35 @@
 <!-- 💻 DESKTOP SIDEBAR -->
-<aside
-  id="default-sidebar"
-  class="fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-transform -translate-x-full sm:translate-x-0"
-  aria-label="Sidebar"
-  *ngIf="apiResponseData"
->
+<aside id="default-sidebar"
+  class="fixed top-0 left-0 z-30 w-64 h-[calc(100vh-4rem)] flex flex-col bg-white/80 backdrop-blur-lg border-r border-gray-200/40 dark:bg-gray-900/80 dark:border-gray-700/40 transition-transform -translate-x-full sm:translate-x-0"
+  aria-label="Sidebar" *ngIf="apiResponseData">
   <!-- Header with Logo + Version / Env -->
-  <div class="flex items-center h-16 px-4 bg-white/95 dark:bg-gray-900/95">
-    <button
-      aria-expanded="true"
-      aria-controls="sidebar"
-      class="p-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
-    >
-      <svg
-        class="w-5 h-5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 17 14"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 1h15M1 7h15M1 13h15"
-        />
+  <div class="flex items-center h-16 px-4 border-b border-gray-200/30 dark:border-gray-700/30">
+    <button aria-expanded="true" aria-controls="sidebar"
+      class="p-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100/80 focus:bg-gray-100/80 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/60 dark:hover:text-white dark:focus:bg-gray-700/60 dark:focus:ring-gray-700">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15" />
       </svg>
     </button>
 
     <div class="flex items-center ml-3">
       <!-- ✅ Custom TS Logo -->
-      <img
-        src="assets/images/TS_LOGO.png"
-        class="h-8 mr-2 object-contain"
-        alt="TS Portal Logo"
-      />
+      <img src="assets/images/TS_LOGO.png" class="h-8 mr-2 object-contain" alt="TS Portal Logo" />
 
       <!-- ✅ Application Name -->
       <div class="flex flex-col">
-        <span
-          class="text-base font-semibold text-gray-800 dark:text-white leading-tight"
-        >
+        <span class="text-base font-semibold text-gray-800 dark:text-white leading-tight">
           Portal
         </span>
       </div>
       <!-- ✅ Version + Environment -->
       <div class="flex items-center gap-1 mt-0.5 pl-2">
         <span
-          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700"
-        >
+          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-indigo-50/80 text-indigo-700 border border-indigo-100/60 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700/40">
           {{ appVersion }}
         </span>
         <span
-          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-        >
+          class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-gray-100/80 text-gray-700 border border-gray-200/60 dark:bg-gray-800/60 dark:text-gray-200 dark:border-gray-600/40">
           {{ environmentLabel }}
         </span>
       </div>
@@ -63,11 +38,9 @@
 
   <!-- Menu Container -->
   <div class="flex-1 flex flex-col overflow-hidden">
-    <div class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4">
+    <div class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 scroll-area">
       <!-- Section label -->
-      <p
-        class="mb-3 text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500"
-      >
+      <p class="mb-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase dark:text-gray-500">
         Navigation
       </p>
 
@@ -76,24 +49,20 @@
         <ng-container *ngFor="let item of apiResponseData">
           <!-- Single-level item -->
           <li *ngIf="!item.subOptionFlag">
-            <a
-              (click)="navigateTo(item.routerPath)"
-              class="flex items-center w-full px-2 py-2 text-sm rounded-lg cursor-pointer transition-colors duration-150"
+            <a (click)="navigateTo(item.routerPath)"
+              class="nav-item flex items-center w-full px-3 py-2.5 text-sm rounded-xl cursor-pointer transition-all duration-200"
               [ngClass]="{
-                'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                'bg-blue-500/10 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300 font-medium shadow-sm shadow-blue-500/5':
                   isActive(item.routerPath),
-                'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700':
+                'text-gray-600 hover:bg-gray-100/70 dark:text-gray-300 dark:hover:bg-gray-700/40 hover:translate-x-1':
                   !isActive(item.routerPath)
-              }"
-            >
-              <svg
-                class="w-5 h-5"
-                [ngClass]="{
-                  'text-blue-600 dark:text-blue-300': isActive(item.routerPath),
-                  'text-gray-500 dark:text-gray-400': !isActive(item.routerPath)
-                }"
-                viewBox="0 0 576 512"
-              >
+              }">
+              <!-- Active indicator bar -->
+              <span *ngIf="isActive(item.routerPath)" class="active-indicator"></span>
+              <svg class="w-5 h-5 flex-shrink-0" [ngClass]="{
+                  'text-blue-600 dark:text-blue-400': isActive(item.routerPath),
+                  'text-gray-400 dark:text-gray-500': !isActive(item.routerPath)
+                }" viewBox="0 0 576 512">
                 <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
               </svg>
               <span class="ml-3 truncate">{{ item.name }}</span>
@@ -102,79 +71,54 @@
 
           <!-- Item with Dropdown -->
           <li *ngIf="item.subOptionFlag">
-            <button
-              type="button"
-              class="flex items-center justify-between w-full px-2 py-2 text-sm rounded-lg transition-colors duration-150"
+            <button type="button"
+              class="nav-item flex items-center justify-between w-full px-3 py-2.5 text-sm rounded-xl transition-all duration-200"
               [ngClass]="{
-                'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                'bg-blue-500/10 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300 font-medium':
                   hasActiveChild(item),
-                'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700':
+                'text-gray-600 hover:bg-gray-100/70 dark:text-gray-300 dark:hover:bg-gray-700/40 hover:translate-x-1':
                   !hasActiveChild(item)
-              }"
-              [attr.aria-controls]="'dropdown-' + item.optionCode"
-              [attr.aria-expanded]="item.isExpanded || 'false'"
-              (click)="toggleDropdown(item)"
-            >
+              }" [attr.aria-controls]="'dropdown-' + item.optionCode" [attr.aria-expanded]="item.isExpanded || 'false'"
+              (click)="toggleDropdown(item)">
               <div class="flex items-center">
-                <svg
-                  class="w-5 h-5"
-                  [ngClass]="{
-                    'text-blue-600 dark:text-blue-300': hasActiveChild(item),
-                    'text-gray-500 dark:text-gray-400': !hasActiveChild(item)
-                  }"
-                  viewBox="0 0 640 512"
-                >
+                <svg class="w-5 h-5 flex-shrink-0" [ngClass]="{
+                    'text-blue-600 dark:text-blue-400': hasActiveChild(item),
+                    'text-gray-400 dark:text-gray-500': !hasActiveChild(item)
+                  }" viewBox="0 0 640 512">
                   <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
                 </svg>
                 <span class="ml-3 truncate">{{ item.name }}</span>
               </div>
-              <svg
-                class="w-4 h-4 transition-transform duration-200"
-                [class.rotate-180]="item.isExpanded"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
+              <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="item.isExpanded"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
                   d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
+                  clip-rule="evenodd"></path>
               </svg>
             </button>
 
             <!-- Sub-options -->
-            <ul
-              [id]="'dropdown-' + item.optionCode"
-              class="py-2 space-y-1 ml-9 pl-3 border-l border-gray-200 dark:border-gray-600"
-              [class.hidden]="!item.isExpanded"
-            >
+            <ul [id]="'dropdown-' + item.optionCode"
+              class="py-1.5 space-y-0.5 ml-9 pl-3 border-l-2 border-gray-200/50 dark:border-gray-600/30"
+              [class.hidden]="!item.isExpanded">
               <li *ngFor="let sub of item.subOptions">
-                <a
-                  (click)="navigateTo(sub.routerPath)"
-                  class="flex items-center px-2 py-2 text-xs rounded-lg cursor-pointer transition-colors duration-150"
+                <a (click)="navigateTo(sub.routerPath)"
+                  class="flex items-center px-3 py-2 text-xs rounded-lg cursor-pointer transition-all duration-200"
                   [ngClass]="{
-                    'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200':
+                    'bg-blue-500/10 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300 font-medium':
                       isActive(sub.routerPath),
-                    'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700':
+                    'text-gray-500 hover:bg-gray-100/70 dark:text-gray-400 dark:hover:bg-gray-700/40 hover:translate-x-1':
                       !isActive(sub.routerPath)
-                  }"
-                >
-                  <svg
-                    class="w-4 h-4"
-                    [ngClass]="{
-                      'text-blue-600 dark:text-blue-300': isActive(
+                  }">
+                  <svg class="w-4 h-4 flex-shrink-0" [ngClass]="{
+                      'text-blue-600 dark:text-blue-400': isActive(
                         sub.routerPath
                       ),
-                      'text-gray-400 dark:text-gray-300': !isActive(
+                      'text-gray-400 dark:text-gray-500': !isActive(
                         sub.routerPath
                       )
-                    }"
-                    viewBox="0 0 640 512"
-                  >
-                    <path
-                      [attr.d]="sub.svgImagePath"
-                      fill="currentColor"
-                    ></path>
+                    }" viewBox="0 0 640 512">
+                    <path [attr.d]="sub.svgImagePath" fill="currentColor"></path>
                   </svg>
                   <span class="ml-3 truncate">{{ sub.name }}</span>
                 </a>
@@ -188,13 +132,10 @@
 </aside>
 
 <!-- 📱 MOBILE SIDEBAR -->
-<aside
-  id="mobile-sidebar"
-  class="sm:hidden fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-gray-900 text-white border-r border-gray-700 transition-transform"
-  aria-label="Sidebar"
-  *ngIf="apiResponseData"
->
-  <div class="flex items-center h-14 px-3 border-b border-gray-700">
+<aside id="mobile-sidebar"
+  class="sm:hidden fixed top-0 left-0 z-30 w-64 h-screen flex flex-col bg-gray-900/95 backdrop-blur-xl text-white border-r border-gray-700/50 transition-transform"
+  aria-label="Sidebar" *ngIf="apiResponseData">
+  <div class="flex items-center h-14 px-3 border-b border-gray-700/50">
     <div class="flex flex-col">
       <span class="text-sm font-semibold">Menu</span>
       <!-- Version + Env (small inline) -->
@@ -204,27 +145,21 @@
     </div>
   </div>
 
-  <div class="flex-1 overflow-y-auto px-3 py-4">
+  <div class="flex-1 overflow-y-auto px-3 py-4 scroll-area">
     <ul class="space-y-1">
       <ng-container *ngFor="let item of apiResponseData">
         <!-- Top-level item -->
         <li *ngIf="!item.subOptionFlag">
-          <a
-            (click)="navigateTo(item.routerPath)"
-            class="flex items-center w-full px-2 py-2 text-sm rounded-lg cursor-pointer transition-colors duration-150"
+          <a (click)="navigateTo(item.routerPath)"
+            class="flex items-center w-full px-3 py-2.5 text-sm rounded-xl cursor-pointer transition-all duration-200"
             [ngClass]="{
-              'bg-gray-800 text-white': isActive(item.routerPath),
-              'text-gray-300 hover:bg-gray-800': !isActive(item.routerPath)
-            }"
-          >
-            <svg
-              class="w-5 h-5"
-              [ngClass]="{
+              'bg-blue-500/20 text-white font-medium': isActive(item.routerPath),
+              'text-gray-300 hover:bg-gray-800/60 hover:translate-x-1': !isActive(item.routerPath)
+            }">
+            <svg class="w-5 h-5 flex-shrink-0" [ngClass]="{
                 'text-blue-400': isActive(item.routerPath),
-                'text-gray-400': !isActive(item.routerPath)
-              }"
-              viewBox="0 0 576 512"
-            >
+                'text-gray-500': !isActive(item.routerPath)
+              }" viewBox="0 0 576 512">
               <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
             </svg>
             <span class="ml-3 truncate">{{ item.name }}</span>
@@ -233,45 +168,32 @@
 
         <!-- Item with sub-options -->
         <li *ngIf="item.subOptionFlag">
-          <button
-            type="button"
-            class="flex items-center justify-between w-full px-2 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-800 transition-colors duration-150"
-            (click)="toggleDropdown(item)"
-          >
+          <button type="button"
+            class="flex items-center justify-between w-full px-3 py-2.5 text-sm rounded-xl text-gray-300 hover:bg-gray-800/60 transition-all duration-200"
+            (click)="toggleDropdown(item)">
             <div class="flex items-center">
-              <svg class="w-5 h-5 text-gray-400" viewBox="0 0 640 512">
+              <svg class="w-5 h-5 text-gray-500 flex-shrink-0" viewBox="0 0 640 512">
                 <path [attr.d]="item.svgImagePath" fill="currentColor"></path>
               </svg>
               <span class="ml-3 truncate">{{ item.name }}</span>
             </div>
-            <svg
-              class="w-4 h-4 transition-transform"
-              [class.rotate-180]="item.isExpanded"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
+            <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="item.isExpanded"
+              fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
+                clip-rule="evenodd" />
             </svg>
           </button>
 
-          <ul
-            class="py-2 space-y-1 ml-9 pl-3 border-l border-gray-700"
-            [class.hidden]="!item.isExpanded"
-          >
+          <ul class="py-1.5 space-y-0.5 ml-9 pl-3 border-l-2 border-gray-700/40" [class.hidden]="!item.isExpanded">
             <li *ngFor="let sub of item.subOptions">
-              <a
-                (click)="navigateTo(sub.routerPath)"
-                class="flex items-center px-2 py-2 text-xs rounded-lg cursor-pointer transition-colors duration-150"
+              <a (click)="navigateTo(sub.routerPath)"
+                class="flex items-center px-3 py-2 text-xs rounded-lg cursor-pointer transition-all duration-200"
                 [ngClass]="{
-                  'bg-gray-800 text-white': isActive(sub.routerPath),
-                  'text-gray-300 hover:bg-gray-800': !isActive(sub.routerPath)
-                }"
-              >
-                <svg class="w-4 h-4 text-gray-400" viewBox="0 0 640 512">
+                  'bg-blue-500/20 text-white font-medium': isActive(sub.routerPath),
+                  'text-gray-400 hover:bg-gray-800/60 hover:translate-x-1': !isActive(sub.routerPath)
+                }">
+                <svg class="w-4 h-4 text-gray-500 flex-shrink-0" viewBox="0 0 640 512">
                   <path [attr.d]="sub.svgImagePath" fill="currentColor"></path>
                 </svg>
                 <span class="ml-3 truncate">{{ sub.name }}</span>

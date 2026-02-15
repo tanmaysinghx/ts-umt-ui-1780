@@ -1,20 +1,20 @@
-<div
-  class="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white py-10 px-6">
+<div class="min-h-screen text-gray-900 dark:text-white py-10 px-6">
   <!-- HEADER + SUMMARY -->
-  <div class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+  <div class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 animate-fade-in">
     <div>
-      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
         Applications
       </h1>
-      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
         Launch and monitor your connected tools from a single surface.
       </p>
     </div>
 
-    <div class="grid grid-cols-3 gap-3 min-w-[260px]">
-      <!-- Total Apps -->
-      <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+    <div class="grid grid-cols-3 gap-3 min-w-[280px]">
+      <!-- Total Apps — Glass -->
+      <div
+        class="stat-card rounded-xl border border-white/40 bg-white/60 backdrop-blur-sm p-3 shadow-sm dark:border-gray-700/40 dark:bg-gray-800/50">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
           Total Apps
         </div>
         <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -22,9 +22,10 @@
         </div>
       </div>
 
-      <!-- Running -->
-      <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      <!-- Running — Glass -->
+      <div
+        class="stat-card rounded-xl border border-white/40 bg-white/60 backdrop-blur-sm p-3 shadow-sm dark:border-gray-700/40 dark:bg-gray-800/50">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
           Running
         </div>
         <div class="mt-1 text-xl font-bold text-emerald-500">
@@ -32,9 +33,10 @@
         </div>
       </div>
 
-      <!-- Categories -->
-      <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      <!-- Categories — Glass -->
+      <div
+        class="stat-card rounded-xl border border-white/40 bg-white/60 backdrop-blur-sm p-3 shadow-sm dark:border-gray-700/40 dark:bg-gray-800/50">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
           Categories
         </div>
         <div class="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -45,7 +47,7 @@
   </div>
 
   <!-- SEARCH + FILTER -->
-  <div class="mb-6">
+  <div class="mb-6 animate-fade-in" style="animation-delay: 0.1s">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex items-center gap-3 w-full sm:max-w-md">
         <div class="relative flex-1">
@@ -57,13 +59,13 @@
             </svg>
           </span>
           <input type="text" [(ngModel)]="searchQuery" placeholder="Search applications..."
-            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            class="w-full pl-9 pr-3 py-2.5 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/40 rounded-xl shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 focus:outline-none transition-all duration-200" />
         </div>
       </div>
 
       <div class="flex items-center gap-3">
         <select [(ngModel)]="selectedCategory"
-          class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          class="px-4 py-2.5 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/40 rounded-xl shadow-sm text-sm dark:text-white focus:ring-2 focus:ring-blue-500/40 focus:outline-none transition-all duration-200">
           <option value="">All Categories</option>
           <option value="dev-tools">Dev Tools</option>
           <option value="infra">Infra</option>
@@ -74,22 +76,28 @@
   </div>
 
   <!-- GRID -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    <div *ngFor="let app of filterApplications()"
-      class="relative group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl"
-      [ngClass]="{'opacity-60 pointer-events-none grayscale': app.disabled}">
-      <!-- Loader Overlay -->
-      <div *ngIf="loadingAppId === app.id"
-        class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 flex items-center justify-center z-10 rounded-2xl">
-        <div class="flex flex-col items-center gap-2">
-          <svg class="animate-spin h-6 w-6 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-          <span class="text-sm text-gray-700 dark:text-gray-300">
-            Launching...
-          </span>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let app of filterApplications(); let i = index"
+      class="app-card relative group p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/40 dark:border-gray-700/30 rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 dark:hover:border-blue-500/20 hover:-translate-y-1"
+      [ngClass]="{'opacity-60 pointer-events-none grayscale': app.disabled}" [style.animation-delay]="(i * 0.05) + 's'">
+
+      <!-- ✨ In-Card Launch Overlay -->
+      <div *ngIf="loadingAppId === app.id" class="card-launch-overlay">
+        <div class="flex flex-col items-center gap-3">
+          <!-- Breathing Icon -->
+          <div class="launch-icon">
+            {{ app.title?.charAt(0) || "A" }}
+          </div>
+
+          <!-- Status -->
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ app.status }}</p>
+
+          <!-- Elegant Spinner -->
+          <div class="card-spinner">
+            <svg viewBox="0 0 50 50">
+              <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" stroke-width="3"></circle>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -98,14 +106,14 @@
         <!-- Left: icon + name -->
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-semibold shadow-md">
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/25 transition-transform duration-300 group-hover:scale-110">
             {{ app.title?.charAt(0) || "A" }}
           </div>
           <div>
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
+            <h2 class="text-base font-semibold text-gray-800 dark:text-white">
               {{ app.title }}
             </h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
+            <p class="text-[11px] text-gray-400 dark:text-gray-500">
               Version {{ app.version }}
             </p>
           </div>
@@ -113,25 +121,26 @@
 
         <!-- Right: status + favorite -->
         <div class="flex items-center gap-2">
-          <span class="text-xs font-medium px-2 py-1 rounded-full inline-block max-w-[100px] truncate align-middle"
+          <span
+            class="text-[11px] font-medium px-2.5 py-1 rounded-full inline-block max-w-[100px] truncate align-middle"
             [title]="app.status || 'Not Running'" [ngClass]="
               app.status === 'Running'
-                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 ring-1 ring-emerald-200/50 dark:ring-emerald-700/30'
+                : 'bg-gray-50 text-gray-600 dark:bg-gray-800/60 dark:text-gray-400 ring-1 ring-gray-200/50 dark:ring-gray-700/30'
             ">
             {{ app.status || "Not Running" }}
           </span>
 
           <!-- Favorite toggle -->
           <button type="button" (click)="toggleFavorite(app); $event.stopPropagation()"
-            class="p-1.5 rounded-full border border-transparent hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition"
+            class="p-1.5 rounded-full border border-transparent hover:border-yellow-400/50 hover:bg-yellow-50/80 dark:hover:bg-yellow-900/20 transition-all duration-200 hover:scale-110 active:scale-95"
             [attr.aria-pressed]="isFavorite(app)" [disabled]="app.disabled" [attr.aria-label]="
               isFavorite(app) ? 'Remove from favorites' : 'Add to favorites'
             ">
             <svg class="w-5 h-5" [ngClass]="
                 isFavorite(app)
-                  ? 'text-yellow-400'
-                  : 'text-gray-300 dark:text-gray-500'
+                  ? 'text-yellow-400 drop-shadow-sm'
+                  : 'text-gray-300 dark:text-gray-600'
               " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path
                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.17 3.6a1 1 0 00.95.69h3.788c.969 0 1.371 1.24.588 1.81l-3.067 2.23a1 1 0 00-.364 1.118l1.17 3.6c.3.921-.755 1.688-1.54 1.118L10 14.347l-3.646 2.646c-.784.57-1.838-.197-1.539-1.118l1.17-3.6a1 1 0 00-.364-1.118L2.554 9.027c-.783-.57-.38-1.81.588-1.81h3.788a1 1 0 00.95-.69l1.17-3.6z" />
@@ -141,16 +150,18 @@
       </div>
 
       <!-- Description -->
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
         {{ app.description }}
       </p>
 
       <!-- Tags -->
       <div class="flex flex-wrap gap-2 text-xs mb-4">
-        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300">
+        <span
+          class="px-2.5 py-1 bg-blue-50/80 text-blue-700 rounded-lg dark:bg-blue-900/20 dark:text-blue-400 ring-1 ring-blue-100/50 dark:ring-blue-800/30">
           {{ app.category }}
         </span>
-        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded dark:bg-yellow-900 dark:text-yellow-300">
+        <span
+          class="px-2.5 py-1 bg-amber-50/80 text-amber-700 rounded-lg dark:bg-amber-900/20 dark:text-amber-400 ring-1 ring-amber-100/50 dark:ring-amber-800/30">
           Critical
         </span>
       </div>
@@ -175,7 +186,7 @@
             'bg-red-500': app.status?.startsWith('Failed to Launch'),
             'bg-gray-400': app.status === 'Not Running' || !app.status
           }"></span>
-        <span class="text-sm text-gray-700 dark:text-gray-300">
+        <span class="text-sm text-gray-600 dark:text-gray-400">
           {{ app.status || "Not Running" }}
         </span>
       </div>
@@ -188,12 +199,15 @@
         </span>
 
         <button *ngIf="!app.disabled" type="button" (click)="launchApp(app); $event.stopPropagation()"
-          class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 transition ml-auto">
+          class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 ml-auto active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
           Launch
         </button>
 
         <button *ngIf="app.disabled" disabled
-          class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed dark:bg-gray-800 dark:text-gray-500 ml-auto">
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100/80 rounded-xl cursor-not-allowed dark:bg-gray-800/60 dark:text-gray-500 ml-auto">
           Locked
         </button>
       </div>

@@ -5,7 +5,7 @@ import { CommonService } from '../../services/common.service';
 import { DashboardService } from '../services/dashboard.service';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard-applications',
@@ -29,8 +29,7 @@ export class DashboardApplicationsComponent implements OnInit {
   constructor(
     private readonly commonService: CommonService,
     private readonly dashboardService: DashboardService,
-    private readonly cookieService: CookieService,
-    private readonly router: Router
+    private readonly cookieService: CookieService
   ) { }
 
   ngOnInit() {
@@ -115,7 +114,7 @@ export class DashboardApplicationsComponent implements OnInit {
     if (this.loadingAppId) return;
 
     this.loadingAppId = app.id;
-    app.status = 'Starting...';
+    app.status = 'Initializing...';
 
     const refreshToken = this.cookieService.get('refresh-token');
     if (!refreshToken) {
@@ -126,10 +125,13 @@ export class DashboardApplicationsComponent implements OnInit {
     let accessToken = localStorage.getItem('access-token');
     const email = localStorage.getItem('user-email') || '';
 
-    setTimeout(() => (app.status = 'Checking session...'), 500);
+    // Step 1: Check session
+    await this.delay(800);
+    app.status = 'Checking session...';
 
     if (!accessToken || this.isTokenExpired(accessToken)) {
-      setTimeout(() => (app.status = 'Refreshing token...'), 1200);
+      await this.delay(600);
+      app.status = 'Refreshing token...';
       try {
         accessToken = await this.refreshAccessToken(refreshToken);
       } catch {
@@ -137,10 +139,12 @@ export class DashboardApplicationsComponent implements OnInit {
         return;
       }
     } else {
-      setTimeout(() => (app.status = 'Validating token with server...'), 1200);
+      await this.delay(600);
+      app.status = 'Validating token...';
       const isValid = await this.checkTokenValidity(accessToken);
       if (!isValid) {
         try {
+          app.status = 'Requesting new token...';
           accessToken = await this.refreshAccessToken(refreshToken);
         } catch {
           this.handleLaunchFailure(app, 'Failed to Launch (Invalid Token)');
@@ -149,11 +153,27 @@ export class DashboardApplicationsComponent implements OnInit {
       }
     }
 
-    setTimeout(() => {
-      app.status = 'Running';
-      this.loadingAppId = null;
-      this.openApp(app, accessToken!, refreshToken, email);
-    }, 3500);
+    // Step 2: Preparing
+    await this.delay(800);
+    app.status = 'Preparing secure environment...';
+
+    // Step 3: Syncing
+    await this.delay(800);
+    app.status = 'Syncing user profile...';
+
+    // Step 4: Finalizing
+    await this.delay(800);
+    app.status = 'Launching...';
+
+    // Step 5: Open the app directly
+    await this.delay(700);
+    app.status = 'Running';
+    this.loadingAppId = null;
+    this.openApp(app, accessToken!, refreshToken, email);
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private isTokenExpired(token: string): boolean {
@@ -198,19 +218,35 @@ export class DashboardApplicationsComponent implements OnInit {
     refreshToken: string,
     email: string
   ) {
-    // Construct the launcher URL
-    const launcherUrl = this.router.serializeUrl(
-      this.router.createUrlTree(['/auth/launch'], {
-        queryParams: {
-          target: app.appUrl,
-          name: app.title,
-          method: app.launchMethod || 'GET' // Default to GET given current behavior, can be 'POST'
-        }
-      })
-    );
+    const url = app.appUrl;
+    if (!url) return;
 
-    // Open in new tab
-    window.open(launcherUrl, '_blank');
+    if (app.launchMethod === 'POST') {
+      // POST handoff via hidden form
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = url;
+      form.target = '_blank';
+      form.style.display = 'none';
+
+      const fields: Record<string, string> = { accessToken, refreshToken, email };
+      for (const [key, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    } else {
+      // GET handoff
+      const separator = url.includes('?') ? '&' : '?';
+      const finalUrl = `${url}${separator}accessToken=${accessToken}&refreshToken=${refreshToken}&userEmail=${email}`;
+      window.open(finalUrl, '_blank');
+    }
   }
 
   private handleLaunchFailure(app: any, message: string) {
@@ -222,6 +258,7 @@ export class DashboardApplicationsComponent implements OnInit {
   private clearSession() {
     localStorage.removeItem('access-token');
     localStorage.removeItem('user-email');
+    localStorage.removeItem('refresh-token');
     this.cookieService.delete('refresh-token');
   }
 }

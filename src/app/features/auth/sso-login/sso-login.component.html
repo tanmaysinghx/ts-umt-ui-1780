@@ -1,7 +1,25 @@
 <div class="min-h-screen w-full flex items-center justify-center px-6 bg-gray-50 dark:bg-gray-900">
     <div class="w-full max-w-md">
-        <!-- LOGIN CARD -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+
+        <!-- AUTO-LOGIN LOADING STATE (Okta-style) -->
+        <div *ngIf="autoLoginAttempted && isLoading"
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 text-center">
+            <div class="mb-6">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+            </div>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Signing you in...
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                Active session detected. Authorizing access to
+                <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ queryParams.client_id ||
+                    'Application' }}</span>
+            </p>
+        </div>
+
+        <!-- LOGIN CARD (shown when no auto-login or auto-login failed) -->
+        <div *ngIf="!autoLoginAttempted || !isLoading"
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
 
             <!-- Logo/Header -->
             <div class="text-center mb-8">
@@ -56,14 +74,14 @@
                             </path>
                         </svg>
                     </span>
-                    Sing in via SSO
+                    Sign in via SSO
                 </button>
 
             </form>
 
             <!-- Footer/Links -->
             <div class="mt-6 text-center text-xs text-gray-500 dark:text-gray-400">
-                <p>Protected by generic SSO Service</p>
+                <p>Protected by TS Group SSO Service</p>
             </div>
 
         </div>

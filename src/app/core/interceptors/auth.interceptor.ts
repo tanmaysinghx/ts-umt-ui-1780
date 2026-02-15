@@ -59,7 +59,7 @@ function handle401Error(
     isRefreshing = true;
     refreshTokenSubject.next(null);
 
-    const refreshToken = cookieService.get('refresh-token');
+    const refreshToken = localStorage.getItem('refresh-token') || cookieService.get('refresh-token');
 
     if (refreshToken) {
       return commonService.generateJWTTokenBasedOnRefreshToken(refreshToken).pipe(
@@ -70,7 +70,7 @@ function handle401Error(
           if (newToken) {
             localStorage.setItem('access-token', newToken);
             refreshTokenSubject.next(newToken);
-            
+
             // Retry original request with new token
             return next(
               req.clone({

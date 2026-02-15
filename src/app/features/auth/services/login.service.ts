@@ -78,8 +78,9 @@ export class LoginService {
     if (data.roleName) localStorage.setItem('user-role', data.roleName);
     if (data.roleId) localStorage.setItem('user-role-id', String(data.roleId)); // Ensure string
 
-    // Stored in Cookie
+    // Store in both localStorage (for SsoLauncher in new tabs) and Cookie
     if (data.refreshToken) {
+      localStorage.setItem('refresh-token', data.refreshToken);
       this.cookieService.set('refresh-token', data.refreshToken, {
         path: '/',
         sameSite: 'Strict',

@@ -10,18 +10,123 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-button {
-    cursor: pointer;
+/* --- IN-CARD LAUNCH OVERLAY --- */
+.card-launch-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-input,
-select {
-    transition: all 0.3s ease;
+:host-context(.dark) .card-launch-overlay {
+    background: rgba(17, 24, 39, 0.88);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
-input:focus,
-select:focus {
-    outline: none;
-    border-color: #4B6EE4;
+/* Breathing Launch Icon */
+.launch-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
+    animation: breath 2s ease-in-out infinite;
 }
 
+/* Elegant SVG Spinner */
+.card-spinner {
+    width: 28px;
+    height: 28px;
+    color: #6366f1;
+}
+
+.card-spinner svg {
+    animation: spinnerRotate 1.4s linear infinite;
+}
+
+.card-spinner circle {
+    stroke-dasharray: 90 150;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: spinnerDash 1.4s ease-in-out infinite;
+    opacity: 0.5;
+}
+
+/* --- CARD ENTRANCE --- */
+.app-card {
+    animation: floatUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stat-card {
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes breath {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.45);
+    }
+}
+
+@keyframes spinnerRotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spinnerDash {
+    0% {
+        stroke-dasharray: 1 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+@keyframes floatUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: overlayFadeIn 0.6s ease both;
+}
