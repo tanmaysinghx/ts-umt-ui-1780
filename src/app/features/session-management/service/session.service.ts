@@ -32,7 +32,7 @@ export class SessionService {
 
   /** GET /v2/api/sessions/get-sessions */
   getSessions(): Observable<any> {
-    return this.http.get(environment.apiGatewayService + "/trigger-workflow/WF1625E10008?apiEndpoint=/v2/api/sessions/get-sessions", {
+    return this.http.get(environment.apiGatewayService + "/session-get", {
       headers: this.buildAuthHeaders(),
     });
   }

@@ -13,6 +13,8 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CryptoService } from '../../../shared/services/crypto.service';
 import { CommonService } from '../../services/common.service';
+import { LoginResponse, SessionPayload } from '../models/auth.models';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +39,7 @@ export class LoginComponent implements OnInit {
     private readonly sharedService: SharedService,
     private readonly cookieService: CookieService,
     private readonly commonService: CommonService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createLoginForm();
@@ -102,7 +104,7 @@ export class LoginComponent implements OnInit {
     this.loginService
       .login(this.loginFormPayload.email, this.loginFormPayload.password)
       .subscribe({
-        next: (data) => {
+        next: (data: LoginResponse) => {
           // ✅ FIX 1: Check downstream success, not just workflow success
           const downstream = data?.data?.downstreamResponse;
 
@@ -153,7 +155,7 @@ export class LoginComponent implements OnInit {
     const metadata = this.loginService.getClientMetadata();
 
     // 3. Prepare Payload
-    const sessionPayload = {
+    const sessionPayload: SessionPayload = {
       refreshToken: refreshToken,
       device: metadata.device,
       os: metadata.os,
@@ -217,19 +219,9 @@ export class LoginComponent implements OnInit {
   private storeTokens(data: any) {
     if (!data) return; // Safety check
     console.log('Storing tokens', data);
-    localStorage.setItem('access-token', data?.accessToken);
-    localStorage.setItem('user-email', data?.email);
-    localStorage.setItem('user-role', data?.roleName);
-    localStorage.setItem('user-role-id', data?.roleId);
 
-    // Stored in Cookie
-    this.cookieService.set('refresh-token', data?.refreshToken, {
-      path: '/',
-      sameSite: 'Strict',
-    });
-
-    // Call session storage immediately after tokens are safe
-    this.storeSessionData();
+    // Delegate to service
+    this.loginService.handleSsoLogin(data);
   }
 
   navigateToRegister() {
@@ -239,7 +231,8 @@ export class LoginComponent implements OnInit {
   navigateToDashboard() {
     this.openSnackbar('Login successful! Redirecting...', 'success', 5000);
     setTimeout(() => {
-      this.loginService.loginEvent(localStorage.getItem('access-token') ?? '');
+      // loginEvent is already called in handleSsoLogin, but we might need it here if flow differs
+      // Ideally handleSsoLogin handles it all.
       this.router.navigate(['../dashboard/applications']);
     }, 2000);
   }
@@ -297,9 +290,7 @@ export class LoginComponent implements OnInit {
           if (data?.data?.downstreamResponse?.data?.accessToken) {
             console.log('New JWT Token Generated Successfully');
             this.storeTokens(data.data.downstreamResponse.data);
-            this.loginService.loginEvent(
-              localStorage.getItem('access-token') ?? ''
-            );
+            // loginEvent handled in storeTokens -> handleSsoLogin
             this.router.navigate(['../dashboard/applications']);
           } else {
             this.handleSessionExpiry();
@@ -323,6 +314,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithGoogle() {
-    this.openSnackbar('Google SSO integration hook triggered', 'info', 3000);
+    // Redirect to backend Google OAuth2 endpoint
+    window.location.href = environment.ssoGoogleUrl;
   }
 }

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,9 +9,63 @@ import { RouterLink } from '@angular/router';
   templateUrl: './landing-screen.component.html',
   styleUrl: './landing-screen.component.scss',
 })
-export class LandingScreenComponent {
+export class LandingScreenComponent implements OnInit {
   currentYear = new Date().getFullYear();
   isMobileMenuOpen = false;
+  darkMode = false;
+  revealElements: Element[] = [];
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedTheme = localStorage.getItem('theme');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      this.darkMode = savedTheme === 'dark' || (!savedTheme && systemDark);
+      this.applyTheme();
+
+      // Initialize Scroll Observer
+      this.setupScrollObserver();
+    }
+  }
+
+  setupScrollObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    }, 100);
+  }
+
+  toggleTheme() {
+    this.darkMode = !this.darkMode;
+    localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  applyTheme() {
+    if (this.darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  onMouseMove(event: MouseEvent, card: HTMLElement) {
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -19,72 +73,47 @@ export class LandingScreenComponent {
 
   services = [
     {
-      name: 'Angular',
-      icon: 'https://angular.io/assets/images/logos/angular/angular.svg',
-      desc: 'Modern Web Apps',
-    },
-    {
-      name: 'React',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
-      desc: 'Dynamic Interfaces',
-    },
-    {
-      name: 'Java',
-      icon: 'https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg',
-      desc: 'Enterprise Backend',
-    },
-    {
-      name: 'Spring Boot',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Spring_Framework_Logo_2018.svg',
-      desc: 'Microservices',
-    },
-    {
-      name: 'Node.js',
-      icon: 'https://nodejs.org/static/images/logo.svg',
-      desc: 'Scalable APIs',
-    },
-    {
-      name: 'React Native',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
-      desc: 'Cross-Platform Mobile',
-    },
-    {
       name: 'Generative AI',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
-      desc: 'LLM Integration',
+      icon: 'assets/icons/ai-brain.svg', // Placeholder, we will use inline SVGs or existing assets if available, but for now names matter most
+      desc: 'LLMs & Agents',
     },
     {
-      name: 'Kafka',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Apache_Kafka_logo.svg',
-      desc: 'Event Streaming',
+      name: 'Data Analytics',
+      icon: 'assets/icons/analytics.svg',
+      desc: 'Predictive Insights',
     },
     {
-      name: 'Redis',
-      icon: 'https://upload.wikimedia.org/wikipedia/en/6/6b/Redis_Logo.svg',
-      desc: 'High Performance Caching',
+      name: 'Cloud Native',
+      icon: 'assets/icons/cloud.svg',
+      desc: 'Scalable Infra',
     },
+    {
+      name: 'Cyber Security',
+      icon: 'assets/icons/shield.svg',
+      desc: 'Zero Trust',
+    }
   ];
 
   serviceOfferings = [
     {
-      title: 'Fullstack Development',
-      desc: 'End-to-end web application development using modern frameworks like Angular, React, and Node.js.',
-      icon: 'code',
-    },
-    {
-      title: 'Mobile App Development',
-      desc: 'Native and cross-platform mobile solutions using React Native for iOS and Android.',
-      icon: 'device-mobile',
-    },
-    {
-      title: 'AI & Machine Learning',
-      desc: 'Intelligent solutions including LLM integration, predictive analytics, and process automation.',
+      title: 'AI Engineering',
+      desc: 'Custom LLM training, RAG pipelines, and autonomous agent systems designed for enterprise scale.',
       icon: 'chip',
     },
     {
-      title: 'Cloud Infrastructure',
-      desc: 'Scalable and secure cloud architecture design and management on AWS, Azure, and GCP.',
+      title: 'Data Intelligence',
+      desc: 'Transform raw data into actionable insights with advanced warehousing and predictive modeling.',
       icon: 'cloud',
+    },
+    {
+      title: 'Cloud Architecture',
+      desc: 'Resilient, auto-scaling infrastructure built on AWS, Azure, and Google Cloud Platform.',
+      icon: 'code',
+    },
+    {
+      title: 'Enterprise Platforms',
+      desc: 'Modernizing legacy systems into distributed, microservices-based architectures.',
+      icon: 'device-mobile',
     },
   ];
 

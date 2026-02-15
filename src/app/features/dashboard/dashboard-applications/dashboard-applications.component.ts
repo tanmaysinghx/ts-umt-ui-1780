@@ -5,6 +5,7 @@ import { CommonService } from '../../services/common.service';
 import { DashboardService } from '../services/dashboard.service';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-applications',
@@ -28,8 +29,9 @@ export class DashboardApplicationsComponent implements OnInit {
   constructor(
     private readonly commonService: CommonService,
     private readonly dashboardService: DashboardService,
-    private readonly cookieService: CookieService
-  ) {}
+    private readonly cookieService: CookieService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit() {
     this.loadFavorites();
@@ -196,12 +198,19 @@ export class DashboardApplicationsComponent implements OnInit {
     refreshToken: string,
     email: string
   ) {
-    const separator = app.appUrl.includes('?') ? '&' : '?';
-    const url =
-      app.appUrl +
-      `${separator}accessToken=${accessToken}&refreshToken=${refreshToken}&userEmail=${email}`;
+    // Construct the launcher URL
+    const launcherUrl = this.router.serializeUrl(
+      this.router.createUrlTree(['/auth/launch'], {
+        queryParams: {
+          target: app.appUrl,
+          name: app.title,
+          method: app.launchMethod || 'GET' // Default to GET given current behavior, can be 'POST'
+        }
+      })
+    );
 
-    window.open(url, '_blank');
+    // Open in new tab
+    window.open(launcherUrl, '_blank');
   }
 
   private handleLaunchFailure(app: any, message: string) {

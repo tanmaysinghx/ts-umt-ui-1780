@@ -57,33 +57,34 @@ export class SsoLoginComponent implements OnInit {
         this.isLoading = true;
         const { email, password } = this.loginForm.value;
 
-        // Use the TS Auth Service logic directly or via API Gateway if preferred
-        // Here we call the backend SSO endpoint directly as per plan
-        const backendUrl = `${environment.ssoService}/sso/authorize`;
-
-        // We need to construct the URL with query params because the backend 
-        // expects them in the query string for the POST as well (based on current controller logic)
-        // or we can send them in body if we updated the controller.
-        // The plan said we'd update the controller to accept JSON body.
-        // Let's assume we will send everything in the body or query as needed.
-        // Current controller reads client_id etc from req.query even for POST.
-        // We will update controller to allow body as well, but for safety let's pass params in query too.
+        // Use API Gateway Workflow for SSO Authorize
+        const gatewayUrl = `${environment.apiGatewayService}/sso-authorize-post`;
 
         const params = new URLSearchParams(this.queryParams).toString();
-        const url = `${backendUrl}?${params}`;
+        const url = `${gatewayUrl}?${params}`;
 
         this.http.post(url, { email, password }).subscribe({
             next: (res: any) => {
                 this.isLoading = false;
-                if (res.redirectUrl) {
-                    window.location.href = res.redirectUrl;
+                // Gateway returns: { success: true, data: { downstreamResponse: { ...actual_response... } } }
+                const downstream = res.data?.downstreamResponse;
+
+                if (downstream?.redirectUrl) {
+                    window.location.href = downstream.redirectUrl;
+                } else if (downstream?.data?.redirectUrl) {
+                    // Check if it's nested in data
+                    window.location.href = downstream.data.redirectUrl;
                 } else {
                     this.openSnackbar('Login successful but no redirect URL', 'warning', 5000);
                 }
             },
             error: (err) => {
                 this.isLoading = false;
-                const msg = err?.error?.message || err?.error || 'Login failed';
+                // Try to extract error message from Gateway wrapped error or direct error
+                const gatewayError = err?.error?.errors?.reason || err?.error?.message;
+                const downstreamError = err?.error?.data?.downstreamResponse?.message || err?.error?.data?.downstreamResponse?.error;
+
+                const msg = downstreamError || gatewayError || 'Login failed';
                 this.openSnackbar(msg, 'danger', 5000);
             },
         });

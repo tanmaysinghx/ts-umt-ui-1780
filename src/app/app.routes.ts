@@ -39,6 +39,8 @@ export const routes: Routes = [
     { path: 'auth/reset-password', component: ResetPasswordComponent },
     { path: 'auth/otp-verification', component: OtpVerificationComponent },
     { path: 'auth/sso-login', loadComponent: () => import('./features/auth/sso-login/sso-login.component').then(m => m.SsoLoginComponent) },
+    { path: 'auth/oauth2/callback', loadComponent: () => import('./features/auth/oauth2-callback/oauth2-callback.component').then(m => m.OAuth2CallbackComponent) },
+    { path: 'auth/launch', loadComponent: () => import('./features/auth/sso-launcher/sso-launcher.component').then(m => m.SsoLauncherComponent) },
 
 
     //my-section urls

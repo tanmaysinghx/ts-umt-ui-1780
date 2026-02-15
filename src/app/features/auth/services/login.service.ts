@@ -1,8 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // ✅ Import HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { LoginRequest, LoginResponse, OtpRequest, SessionPayload, AuthTokenData } from '../models/auth.models';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,29 +13,24 @@ export class LoginService {
   private readonly loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   public isLoggedIn$: Observable<boolean> = this.loggedIn.asObservable();
 
-  private readonly API_URL =
-    'http://localhost:1625/v2/api/sessions/store-session';
-
   constructor(
     private readonly http: HttpClient,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cookieService: CookieService
   ) { }
 
-  login(userEmailId: string, password: string): Observable<any> {
-    let assetUrl =
-      environment.apiGatewayService +
-      '/trigger-workflow/WF1625E10001?apiEndpoint=/v2/api/auth/login';
-    let body = {
+  login(userEmailId: string, password: string): Observable<LoginResponse> {
+    const assetUrl = `${environment.apiGatewayService}/auth-login`;
+    const body: LoginRequest = {
       email: userEmailId,
       password: password,
     };
-    return this.http.post(assetUrl, body);
+    return this.http.post<LoginResponse>(assetUrl, body);
   }
 
-  generateOtp(emailId: any): Observable<any> {
-    let assetUrl =
-      environment.notificationService + '/v2/api/notifications/send';
-    let body = {
+  generateOtp(emailId: string): Observable<any> {
+    const assetUrl = `${environment.notificationService}/v2/api/notifications/send`;
+    const body: OtpRequest = {
       userEmail: emailId,
     };
     return this.http.post(assetUrl, body);
@@ -54,9 +51,7 @@ export class LoginService {
     this.router.navigate(['/login']);
   }
 
-  /* ✅ FIXED: Now attaches Authorization Header */
-  storeSession(payload: any): Observable<any> {
-    // Try getting token from localStorage (set in Component) or sessionStorage (set in Service)
+  storeSession(payload: SessionPayload): Observable<any> {
     const token =
       localStorage.getItem('access-token') || sessionStorage.getItem('token');
 
@@ -65,14 +60,58 @@ export class LoginService {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
 
-    // Pass the headers as the 3rd argument
-    return this.http.post(environment.apiGatewayService + "/trigger-workflow/WF162510007?apiEndpoint=/v2/api/sessions/store-session", payload, { headers: headers });
+    // Use specific session-store workflow ID
+    return this.http.post(`${environment.apiGatewayService}/session-store`, payload, { headers: headers });
+  }
+
+  handleSsoLogin(data: AuthTokenData) {
+    if (!data) {
+      console.error('No auth data provided to handleSsoLogin');
+      return;
+    }
+
+    console.log('Handling SSO Login with data:', data);
+
+    // Ensure we are storing strings
+    if (data.accessToken) localStorage.setItem('access-token', data.accessToken);
+    if (data.email) localStorage.setItem('user-email', data.email);
+    if (data.roleName) localStorage.setItem('user-role', data.roleName);
+    if (data.roleId) localStorage.setItem('user-role-id', String(data.roleId)); // Ensure string
+
+    // Stored in Cookie
+    if (data.refreshToken) {
+      this.cookieService.set('refresh-token', data.refreshToken, {
+        path: '/',
+        sameSite: 'Strict',
+      });
+    }
+
+    // Call session storage immediately after tokens are safe
+    // We construct the payload here since we are in the service
+    const metadata = this.getClientMetadata();
+    const sessionPayload: SessionPayload = {
+      refreshToken: data.refreshToken,
+      device: metadata.device,
+      os: metadata.os,
+      browser: metadata.browser,
+      location: metadata.location,
+    };
+
+    console.log('Triggering session store with payload:', sessionPayload);
+    this.storeSession(sessionPayload).subscribe({
+      next: (res) => console.log('Session stored successfully', res),
+      error: (err) => console.error('Failed to store session', err),
+    });
+
+    if (data.accessToken) {
+      this.loginEvent(data.accessToken);
+    }
   }
 
   /**
    * Helper to gather client metadata from the browser
    */
-  getClientMetadata() {
+  getClientMetadata(): Omit<SessionPayload, 'refreshToken'> {
     const userAgent = window.navigator.userAgent;
 
     return {
