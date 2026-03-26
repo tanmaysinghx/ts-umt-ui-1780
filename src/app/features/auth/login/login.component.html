@@ -105,11 +105,12 @@
     </div>
 
     <!-- SNACKBAR -->
-    <div class="mt-4" *ngIf="snackbarFlag">
+    <div class="mt-4" *ngIf="snackbarService.snackbarState$ | async as state">
       <app-snackbar-detailed
-        [message]="snackbarMessage"
-        [snackbarType]="snackbarType"
-        [duration]="snackbarDuration"
+        *ngIf="state.show"
+        [message]="state.message"
+        [snackbarType]="state.type"
+        [duration]="state.duration"
       >
       </app-snackbar-detailed>
     </div>

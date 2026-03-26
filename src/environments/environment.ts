@@ -9,7 +9,7 @@ export const environment = {
   notificationService: 'http://localhost:1689',
   ssoProdService: 'https://octopus-app-xmsre.ondigitalocean.app/v2/api/',
   tsAuthService: 'http://localhost:1625/v2/api/auth/',
-  apiGatewayService: 'http://localhost:1606/api/v1/api-engine/trigger-workflow',  // API Gateway Workflow Endpoint
+  apiGatewayService: 'https://api.tanmaysinghx.com/api/v1/api-engine/trigger-workflow',  // API Gateway Workflow Endpoint
   ssoGoogleUrl: 'http://localhost:1625/v2/api/auth/oauth2/authorization/google',
   SECRET_KEY: 'your-secret-key-123',
   region: 'docker'
@@ -23,3 +23,6 @@ export const environment = {
  * on performance if an error is thrown.
  */
 /* import 'zone.js/dist/zone-error';  Included with Angular CLI. */
+
+
+

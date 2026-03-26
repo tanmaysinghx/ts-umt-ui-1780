@@ -91,10 +91,7 @@ export class HeaderComponent {
   }
 
   signOut() {
-    sessionStorage.clear();
     this.loginService.logoutEvent();
-
-    this.router.navigate(['/auth/login']);
   }
 
 }
